@@ -14,11 +14,6 @@ const TopContainer = styled.div`
   justify-content: space-between;
 `;
 
-const TempMain = styled.div`
-  height: 100vh;
-  width: 100vw;
-`;
-
 function App() {
   return (
     <>
