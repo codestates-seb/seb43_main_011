@@ -4,17 +4,21 @@ import tippler from "../../images/tippler.png";
 const Footer = () => {
   return (
     <Container>
-      <Info>
-        <Description>Company Tipple</Description>
-        <Description>
-          ADDRESS 서울특별시 서초구 서초대로 396, 강남빌딩 20층 (스파크플러스
-          강남2호점)
-        </Description>
-        <Description>Copyright by Tippler 2023 All rights reserved</Description>
-      </Info>
-      <Logo>
-        <img src={tippler} alt="logo" />
-      </Logo>
+      <ItemArea>
+        <Info>
+          <Description>Company Tipple</Description>
+          <Description>
+            ADDRESS 서울특별시 서초구 서초대로 396, 강남빌딩 20층 (스파크플러스
+            강남2호점)
+          </Description>
+          <Description>
+            Copyright by Tippler 2023 All rights reserved
+          </Description>
+        </Info>
+        <Logo>
+          <img src={tippler} alt="logo" />
+        </Logo>
+      </ItemArea>
     </Container>
   );
 };
@@ -28,6 +32,15 @@ const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
 `;
+
+const ItemArea = styled.div`
+  width: 1444px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const Description = styled.p`
   //폰트스타일넣기
   margin: 0.3em;

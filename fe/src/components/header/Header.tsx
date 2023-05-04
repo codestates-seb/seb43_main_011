@@ -4,13 +4,23 @@ import { FiMenu } from "react-icons/fi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
 const Container = styled.header`
+  height: 85px;
+  background-color: #ffff;
+  box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
+`;
+
+const ItemArea = styled.div`
+  width: 1444px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 73px;
-  padding: 1.25rem 2.5rem 1.25rem 2.5rem;
-  background-color: #ffff;
-  box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
+  margin: 0 auto;
+  > .logo {
+    margin-left: -60px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
 `;
 
 const SerchContainer = styled.div`
@@ -22,7 +32,6 @@ const SerchContainer = styled.div`
   padding: 0.5rem;
   border: 1px solid #d5d4d4;
   border-radius: 10px;
-  padding: 5px 10px;
 `;
 const SerchInput = styled.input`
   border: none;
@@ -33,7 +42,7 @@ const SerchInput = styled.input`
 `;
 const SerchIcon = styled(HiMagnifyingGlass)`
   font-size: 1.5rem;
-  margin-right: 1rem;
+  margin: 0 1rem 0 0.2rem;
 `;
 const Menu = styled.nav`
   display: flex;
@@ -58,19 +67,23 @@ const MenuItem = styled.a`
 const Header = () => {
   return (
     <Container>
-      <img src={logo} alt="Logo" />
-      <SerchContainer>
-        <p>
-          <SerchIcon />
-        </p>
-        <SerchInput type="text" placeholder="오늘의 칵테일은?" />
-      </SerchContainer>
+      <ItemArea>
+        <div className="logo">
+          <img src={logo} alt="Logo" />
+        </div>
+        <SerchContainer>
+          <p>
+            <SerchIcon />
+          </p>
+          <SerchInput type="text" placeholder="오늘의 칵테일은?" />
+        </SerchContainer>
 
-      <Menu>
-        <MenuItem>로그인</MenuItem>
-        <MenuItem>회원가입</MenuItem>
-      </Menu>
-      <FiMenu size="45" color="#96A5FF" />
+        <Menu>
+          <MenuItem>로그인</MenuItem>
+          <MenuItem>회원가입</MenuItem>
+        </Menu>
+        <FiMenu size="45" color="#96A5FF" />
+      </ItemArea>
     </Container>
   );
 };
