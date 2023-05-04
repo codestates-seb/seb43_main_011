@@ -1,5 +1,5 @@
-import { ThemeProvider } from "styled-components";
-import theme from "./components/style/theme";
+import { ThemeProvider } from 'styled-components';
+import theme from './components/style/theme';
 
 function App() {
   return (
