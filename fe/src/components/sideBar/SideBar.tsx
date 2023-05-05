@@ -4,17 +4,23 @@ import { FaGlassWhiskey } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { isClose } from "../../redux/slices/SideView";
 
-const Container = styled.div`
-  width: 35%;
-  min-height: 100vh;
-  height: 100%;
+const Top = styled.div<{ isExpand: boolean }>`
+  position: fixed;
+  background-color: white;
+  transition: 0.5s ease-out;
+  z-index: 2;
+  right: ${(props) => (props.isExpand ? 0 : "-25%")};
+  width: 25%;
   box-shadow: -3px 0 10px 1px #bebebee8;
+  height: 100%;
 `;
 
 const Header = styled.div`
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,7 +30,6 @@ const OutButton = styled.div`
   border: none;
   background-color: inherit;
   border-radius: 10px;
-  margin-left: 20px;
 `;
 
 const RightButtons = styled.div`
@@ -35,14 +40,12 @@ const RightButtons = styled.div`
 
 const UserButton = styled(Link)`
   text-decoration-line: none;
-  border: none;
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
   font-weight: bold;
   padding: 0.6rem;
   border-radius: 5px;
-  font-weight: bold;
   font-size: 1.2rem;
 
   &:hover {
@@ -99,8 +102,10 @@ const BookMark = styled(NavLink)`
 `;
 
 export default function SideBar() {
+  const isExpand = useAppSelector((state) => state.SideView.value);
+  const dispatch = useAppDispatch();
   return (
-    <Container>
+    <Top isExpand={isExpand}>
       <Header>
         <OutButton>
           <IconContext.Provider
@@ -109,7 +114,7 @@ export default function SideBar() {
               color: "#657cff",
             }}
           >
-            <IoIosClose />
+            <IoIosClose onClick={() => dispatch(isClose())} />
           </IconContext.Provider>
         </OutButton>
         <RightButtons>
@@ -129,7 +134,7 @@ export default function SideBar() {
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/dontknow"}>레시피 추천</BookMark>
+            <BookMark to={"/don'tknow"}>레시피 추천</BookMark>
           </Items>
           <Items>
             <FaGlassWhiskey />
@@ -137,6 +142,6 @@ export default function SideBar() {
           </Items>
         </IconContext.Provider>
       </Main>
-    </Container>
+    </Top>
   );
 }

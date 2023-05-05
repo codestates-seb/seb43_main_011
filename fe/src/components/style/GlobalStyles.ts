@@ -10,7 +10,9 @@ const GlobalStyle = createGlobalStyle`
 	ul, li {
 		list-style: none
 	}
-	
+	html, body {
+		height: max-content;
+	}
 	body {
 		font-size: 16px;
 		font-family: 'Nanum Gothic Coding', monospace, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
