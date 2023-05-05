@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isClose } from "../../redux/slices/SideView";
 
-const Top = styled.div<{ isExpand: boolean }>`
+const Container = styled.div<{ isExpand: boolean }>`
   position: fixed;
   background-color: white;
   transition: 0.5s ease-out;
@@ -18,7 +18,7 @@ const Top = styled.div<{ isExpand: boolean }>`
   height: 100%;
 `;
 
-const Header = styled.div`
+const SidebarHeader = styled.div`
   width: 100%;
   padding: 10px 0;
   display: flex;
@@ -26,7 +26,7 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const OutButton = styled.div`
+const CloseSideBarButton = styled.button`
   border: none;
   background-color: inherit;
   border-radius: 10px;
@@ -38,7 +38,7 @@ const RightButtons = styled.div`
   margin-right: 1rem;
 `;
 
-const UserButton = styled(Link)`
+const UserLink = styled(Link)`
   text-decoration-line: none;
   color: #5a5a5a;
   background-color: #ffff;
@@ -90,7 +90,7 @@ const Items = styled.li`
   }
 `;
 
-const BookMark = styled(NavLink)`
+const StypedNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 30px;
@@ -105,43 +105,40 @@ export default function SideBar() {
   const isExpand = useAppSelector((state) => state.sideView.value);
   const dispatch = useAppDispatch();
   return (
-    <Top isExpand={isExpand}>
-      <Header>
-        <OutButton>
-          <IconContext.Provider
-            value={{
-              size: "4rem",
-              color: "#657cff",
-            }}
-          >
-            <IoIosClose onClick={() => dispatch(isClose())} />
-          </IconContext.Provider>
-        </OutButton>
+    <Container isExpand={isExpand}>
+      <SidebarHeader>
+        <CloseSideBarButton>
+          <IoIosClose
+            size={"4rem"}
+            color="#657cff"
+            onClick={() => dispatch(isClose())}
+          />
+        </CloseSideBarButton>
         <RightButtons>
-          <UserButton to={"/user"}>마이페이지</UserButton>
+          <UserLink to={"/user"}>마이페이지</UserLink>
           <LogOutButton>로그아웃</LogOutButton>
         </RightButtons>
-      </Header>
+      </SidebarHeader>
       <Main>
         <IconContext.Provider value={{ size: "2rem" }}>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/"}>도수별 레시피</BookMark>
+            <StypedNavLink to={"/"}>도수별 레시피</StypedNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/custom"}>커스텀 레시피</BookMark>
+            <StypedNavLink to={"/custom"}>커스텀 레시피</StypedNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/don'tknow"}>레시피 추천</BookMark>
+            <StypedNavLink to={"/don'tknow"}>레시피 추천</StypedNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/upload"}>레시피 등록하기</BookMark>
+            <StypedNavLink to={"/upload"}>레시피 등록하기</StypedNavLink>
           </Items>
         </IconContext.Provider>
       </Main>
-    </Top>
+    </Container>
   );
 }
