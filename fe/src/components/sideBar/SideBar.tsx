@@ -102,7 +102,7 @@ const BookMark = styled(NavLink)`
 `;
 
 export default function SideBar() {
-  const isExpand = useAppSelector((state) => state.SideView.value);
+  const isExpand = useAppSelector((state) => state.sideView.value);
   const dispatch = useAppDispatch();
   return (
     <Top isExpand={isExpand}>
