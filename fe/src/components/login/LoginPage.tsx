@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import loginImg from "../../images/login1.png";
-import mainLogo from "../../images/logo.png";
+import mainLogo from "../../images/loginLogo.png";
 import whiteLogo from "../../images/logo-whigte.png";
 import { RiKakaoTalkFill, RiUser3Line, RiLock2Line } from "react-icons/ri";
 import { FaGoogle } from "react-icons/fa";
