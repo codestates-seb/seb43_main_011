@@ -7,12 +7,13 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isClose } from "../../redux/slices/SideView";
 
-const Container = styled.div<{ isExpand: boolean }>`
+const Container = styled.div<{ isOpen: boolean }>`
   position: fixed;
   background-color: white;
-  transition: 0.5s ease-out;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  transition: 0.5s ease-in;
   z-index: 2;
-  right: ${(props) => (props.isExpand ? 0 : "-25%")};
+  right: ${(props) => (props.isOpen ? 0 : "-25%")};
   width: 25%;
   box-shadow: -3px 0 10px 1px #bebebee8;
   height: 100%;
@@ -102,10 +103,10 @@ const StypedNavLink = styled(NavLink)`
 `;
 
 export default function SideBar() {
-  const isExpand = useAppSelector((state) => state.sideView.value);
+  const isOpen = useAppSelector((state) => state.sideView.value);
   const dispatch = useAppDispatch();
   return (
-    <Container isExpand={isExpand}>
+    <Container isOpen={isOpen}>
       <SidebarHeader>
         <CloseSideBarButton>
           <IoIosClose
