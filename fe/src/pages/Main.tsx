@@ -49,13 +49,17 @@ const CardsRow = styled.div`
 `;
 
 // 합치기 전 임시 설정
-export type Data = { [key: string]: number[] };
+// export type Data = { [key: string]: number[] } | number[];
 export default function Main() {
   const pathName = useLocation().pathname;
-  const customData: number[] = Array(20)
+
+  // 임시 레세피 리스트 데이터
+  const customRecipesData = Array(20) // 커스텀 페이지에서 사용할 데이터
     .fill(0)
     .map((_, i) => i + 1);
-  const mainData: Data = {
+
+  const mainRecipesData: { [key: string]: number[] } = {
+    // 메인 || 정규 레시피에서 사용할 데이터
     lv0: Array(7)
       .fill(0)
       .map((_, i): number => i + 1),
@@ -70,6 +74,16 @@ export default function Main() {
       .map((_, i): number => i + 1),
   };
 
+  const searchResultsRecipe: { [key: string]: number[] } = {
+    // 검색 결과 페이지에서 사용할 데이터
+    regular: Array(34)
+      .fill(0)
+      .map((_, i): number => i + 1),
+    custom: Array(17)
+      .fill(0)
+      .map((_, i): number => i + 1),
+  };
+
   return (
     <>
       <Container>
@@ -80,16 +94,29 @@ export default function Main() {
               <AddRecipeButton to={"/upload"}>레시피 등록하기</AddRecipeButton>
             </CustomGuide>
             <CardsRow>
-              {customData.map((i) => {
+              {customRecipesData.map((i) => {
                 return <Card key={i} />;
               })}
             </CardsRow>
           </>
+        ) : pathName === "/searched" ? (
+          <>
+            {Object.keys(searchResultsRecipe).map((key: string, i) => (
+              <CardList
+                list={searchResultsRecipe[key]}
+                category={key}
+                key={i}
+              />
+            ))}
+          </>
         ) : (
           <>
-            <GuideText>정규 레시피</GuideText>
-            {Object.keys(mainData).map((key: string, i) => (
-              <CardList list={mainData[key]} level={key.slice(-1)} key={i} />
+            {Object.keys(mainRecipesData).map((key: string, i) => (
+              <CardList
+                list={mainRecipesData[key]}
+                category={key.slice(-1)}
+                key={i}
+              />
             ))}
           </>
         )}

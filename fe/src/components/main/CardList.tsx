@@ -2,37 +2,36 @@ import styled from "styled-components";
 import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "../card/Card";
+import { useLocation } from "react-router-dom";
 
 const CardsContainer = styled.div`
   width: 100%;
   padding-bottom: 30px;
 `;
 
-const AlcoholLevelBox = styled.div`
+const CategoryBox = styled.div`
   display: flex;
-  justify-content: space-between;
   font-weight: bold;
   font-size: 1.1rem;
   margin: 10px 20px;
-  > .level {
-    flex-basis: 6%;
+  > .category {
     border-top: 2px solid #6f8892e8;
-    border-radius: 0 4px 0 0;
-    padding: 3px 0 0 8px;
-    margin: 8px 0 5px;
+    text-align: center;
+    padding: 5px;
+    margin-top: 4px;
+    flex-basis: 10%;
   }
   > .center {
-    transform: rotate(0.39turn);
-    translate: -5px 9px;
-    height: 33.3px;
-    border-left: 2px solid #6f8892e8;
-    border-radius: 0 0 0 1px;
-    flex-basis: 1%;
+    transform: rotate(-45deg);
+    margin: 0 10.5px 0 10.5px;
+    width: 2px;
+    background-color: #6f8892e8;
   }
-  > .line {
+  > .divider {
     border-bottom: 2px solid #6f8892e8;
     border-radius: 0 0 0 0;
-    flex-basis: 92.6%;
+    flex-basis: 90%;
+    margin-bottom: 4px;
   }
 `;
 interface isTwo {
@@ -65,15 +64,25 @@ const CardsPageNationButton = styled.button`
 
 interface ListProps {
   list: number[];
-  level: string;
+  category: string;
 }
 
-export default function CardList({ list, level }: ListProps) {
+export default function CardList({ list, category }: ListProps) {
+  const pathName = useLocation().pathname;
   const [cardsPageNum, setCardsPageNum] = useState(1);
-  const showCardLength = Number(level) > 1 ? 10 : 5;
+
+  const categoryText =
+    category.length === 1
+      ? `Level ${category}`
+      : category === "regular"
+      ? "정규 레시피"
+      : "커스텀 레시피";
+
+  const showCardLength = Number(category) < 2 ? 5 : 10; // cartegory가 "0", "1"일때만 5 그 외에 string일 경우 10
   const listStart = (cardsPageNum - 1) * showCardLength;
   const listEnd = listStart + showCardLength;
   const showList = list.slice(listStart, listEnd);
+
   const onPrevClick = () => {
     if (cardsPageNum > 1) setCardsPageNum((cardsPageNum) => cardsPageNum - 1);
   };
@@ -83,12 +92,12 @@ export default function CardList({ list, level }: ListProps) {
   };
   return (
     <CardsContainer>
-      <AlcoholLevelBox>
-        <div className="level">Level {level}</div>
+      <CategoryBox>
+        <div className="category">{categoryText}</div>
         <div className="center"></div>
-        <div className="line"></div>
-      </AlcoholLevelBox>
-      <CardsRow isTwo={Number(level) > 1 ? true : false}>
+        <div className="divider"></div>
+      </CategoryBox>
+      <CardsRow isTwo={Number(category) < 2 ? false : true}>
         {showList.map((i) => {
           return <Card key={i} />;
         })}
@@ -96,13 +105,13 @@ export default function CardList({ list, level }: ListProps) {
       {list.length !== showCardLength && (
         <CardsPageNationContainer>
           <CardsPageNationButton>
-            <GrPrevious onClick={onPrevClick} />
+            <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
           </CardsPageNationButton>
           <CardsPageNationDisplay>{`${cardsPageNum} / ${Math.ceil(
             list.length / showCardLength,
           )}`}</CardsPageNationDisplay>
           <CardsPageNationButton>
-            <GrNext onClick={onNextClick} />
+            <GrNext onClick={onNextClick} size={"1.1rem"} />
           </CardsPageNationButton>
         </CardsPageNationContainer>
       )}

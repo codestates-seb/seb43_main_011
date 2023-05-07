@@ -11,6 +11,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Main />} />
           <Route path="/custom" element={<Main />} />
+          <Route path="/searched" element={<Main />} />
         </Route>
       </Routes>
     </>
