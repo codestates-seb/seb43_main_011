@@ -1,1 +1,15 @@
-
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cocktail?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: '@Jesi9520'
+  jpa:
+    hibernate:
+      ddl-auto: create
+logging:
+  level:
+    com:
+      tutorial:
+        spring-boot: DEBUG
+  path: logs
