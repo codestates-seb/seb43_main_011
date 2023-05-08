@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import SideView from "./slices/SideView";
+import RecipeList from "./slices/RecipeSlice";
 
 const store = configureStore({
   reducer: {
     sideView: SideView,
+    recipeList: RecipeList,
   },
 });
 
