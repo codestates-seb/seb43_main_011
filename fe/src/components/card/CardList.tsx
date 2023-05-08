@@ -96,11 +96,11 @@ export default function CardList({ list, category }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={Number(category) < 2 ? false : true}>
-        {showList.map((i) => {
+        {showList.map((_, i) => {
           return <Card key={i} />;
         })}
       </CardsRow>
-      {list.length !== showCardLength && (
+      {list.length >= showCardLength && (
         <CardsPageNationContainer>
           <CardsPageNationButton>
             <GrPrevious onClick={onPrevClick} size={"1.1rem"} />

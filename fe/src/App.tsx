@@ -17,10 +17,7 @@ function App() {
           <Route path="/custom" element={<Main />} />
           <Route path="/searched" element={<Main />} />
           <Route path="/detail" element={<DetailPage />} />
-          <Route
-            path="/cocktailRegistration"
-            element={<CocktailRegistration />}
-          />
+          <Route path="/registration" element={<CocktailRegistration />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
