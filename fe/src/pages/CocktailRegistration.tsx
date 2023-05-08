@@ -2,7 +2,7 @@ import styled from "styled-components";
 import exImage from "../images/ex3.jpeg";
 import { AiFillPlusCircle } from "react-icons/ai";
 
-const Cocktailshare = () => {
+const CocktailRegistration = () => {
   return (
     <Container>
       <EditForm>
@@ -59,7 +59,7 @@ const Cocktailshare = () => {
   );
 };
 
-export default Cocktailshare;
+export default CocktailRegistration;
 
 const UnitSelector = styled.select`
   margin: 0;
@@ -210,7 +210,7 @@ const ListAmount = styled.label`
 `;
 
 const EditForm = styled.div`
-  margin-top: 1px;
+  margin-top: 60px;
   width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능
   height: 100%;
   border-right: 1px solid lightgray;

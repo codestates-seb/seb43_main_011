@@ -6,6 +6,7 @@ const Signup = () => {
   return (
     <Container>
       {/* <BlankFrom></BlankFrom> */}
+      {/* 오른쪽으로 입력폼이 오려면 위의 주석 해제 */}
       <SignupForm>
         <Logo src={logo} alt="logo"></Logo>
         <Label>Nickname</Label>

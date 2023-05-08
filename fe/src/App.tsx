@@ -1,33 +1,30 @@
-import { ThemeProvider } from "styled-components";
-import theme from "./components/style/theme";
-import styled from "styled-components";
-// import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import GlobalStyle from "./components/style/GlobalStyles";
-import Header from "./components/header/Header";
-// import SideBar from "./components/sideBar/SideBar";
-import Footer from "./components/footer/Footer";
-// import MainComponent from "./components/main/MainComponent";
-// import Signup from "./pages/Signup";
-import Cocktailshare from "./pages/Cocktailshare";
-
-const TopContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+import Main from "./pages/Main";
+import Layout from "./pages/Layout";
+import DetailPage from "./pages/DetailPage";
+import LoginPage from "./pages/LoginPage";
+import Signup from "./pages/Signup";
+import CocktailRegistration from "./pages/CocktailRegistration";
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <TopContainer>
-          {/* <Signup /> */}
-          <Header />
-          <Cocktailshare />
-          <Footer />
-        </TopContainer>
-      </ThemeProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Main />} />
+          <Route path="/custom" element={<Main />} />
+          <Route path="/searched" element={<Main />} />
+          <Route path="/detail" element={<DetailPage />} />
+          <Route
+            path="/cocktailRegistration"
+            element={<CocktailRegistration />}
+          />
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
     </>
   );
 }
