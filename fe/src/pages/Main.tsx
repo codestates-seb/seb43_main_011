@@ -83,8 +83,15 @@ export default function Main() {
               <AddRecipeButton to={"/upload"}>레시피 등록하기</AddRecipeButton>
             </CustomGuide>
             <CardsRow>
-              {recipeList.list.map((i) => {
-                return <Card key={i} />;
+              {recipeList.list.map((recipe, i) => {
+                return (
+                  <Card
+                    key={i}
+                    title={recipe.title}
+                    image={recipe.image}
+                    description={recipe.description}
+                  />
+                );
               })}
             </CardsRow>
           </>
