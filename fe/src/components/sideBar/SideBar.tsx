@@ -4,27 +4,33 @@ import { FaGlassWhiskey } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { isClose } from "../../redux/slices/SideView";
 
-const Container = styled.div`
-  width: 35%;
-  min-height: 100vh;
-  height: 100%;
+const Container = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  background-color: white;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  transition: 0.5s ease-in;
+  z-index: 2;
+  right: ${(props) => (props.isOpen ? 0 : "-25%")};
+  width: 25%;
   box-shadow: -3px 0 10px 1px #bebebee8;
+  height: 100%;
 `;
 
-const Header = styled.div`
+const SidebarHeader = styled.div`
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const OutButton = styled.div`
+const CloseSideBarButton = styled.button`
   border: none;
   background-color: inherit;
   border-radius: 10px;
-  margin-left: 20px;
 `;
 
 const RightButtons = styled.div`
@@ -33,16 +39,14 @@ const RightButtons = styled.div`
   margin-right: 1rem;
 `;
 
-const UserButton = styled(Link)`
+const UserLink = styled(Link)`
   text-decoration-line: none;
-  border: none;
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
   font-weight: bold;
   padding: 0.6rem;
   border-radius: 5px;
-  font-weight: bold;
   font-size: 1.2rem;
 
   &:hover {
@@ -87,7 +91,7 @@ const Items = styled.li`
   }
 `;
 
-const BookMark = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 30px;
@@ -99,41 +103,40 @@ const BookMark = styled(NavLink)`
 `;
 
 export default function SideBar() {
+  const isOpen = useAppSelector((state) => state.sideView.value);
+  const dispatch = useAppDispatch();
   return (
-    <Container>
-      <Header>
-        <OutButton>
-          <IconContext.Provider
-            value={{
-              size: "4rem",
-              color: "#657cff",
-            }}
-          >
-            <IoIosClose />
-          </IconContext.Provider>
-        </OutButton>
+    <Container isOpen={isOpen}>
+      <SidebarHeader>
+        <CloseSideBarButton>
+          <IoIosClose
+            size={"4rem"}
+            color="#657cff"
+            onClick={() => dispatch(isClose())}
+          />
+        </CloseSideBarButton>
         <RightButtons>
-          <UserButton to={"/user"}>마이페이지</UserButton>
+          <UserLink to={"/user"}>마이페이지</UserLink>
           <LogOutButton>로그아웃</LogOutButton>
         </RightButtons>
-      </Header>
+      </SidebarHeader>
       <Main>
         <IconContext.Provider value={{ size: "2rem" }}>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/"}>도수별 레시피</BookMark>
+            <StyledNavLink to={"/"}>도수별 레시피</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/custom"}>커스텀 레시피</BookMark>
+            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/dontknow"}>레시피 추천</BookMark>
+            <StyledNavLink to={"/don'tknow"}>레시피 추천</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <BookMark to={"/upload"}>레시피 등록하기</BookMark>
+            <StyledNavLink to={"/upload"}>레시피 등록하기</StyledNavLink>
           </Items>
         </IconContext.Provider>
       </Main>
