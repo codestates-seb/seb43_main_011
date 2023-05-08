@@ -1,11 +1,27 @@
 import styled from "styled-components";
 import cocktail from "../../images/cocktail.png";
-
-const Card = () => {
+import { recipeCard } from "../../redux/slices/RecipeSlice";
+interface CardProps {
+  list: recipeCard;
+}
+const Card = ({ title, image, description }: recipeCard) => {
+  const descriptions = description.split("\n").reverse();
   return (
     <Container>
-      <Image />
-      <Menuname>미도리샤워</Menuname>
+      <Image>
+        {descriptions.map((e, i) => (
+          <HiddenText
+            key={i}
+            className="hidden-text"
+            line={i}
+            leng={descriptions.length}
+          >
+            {e}
+          </HiddenText>
+        ))}
+      </Image>{" "}
+      {/*url={image}*/}
+      <Menuname>{title}</Menuname>
     </Container>
   );
 };
@@ -24,6 +40,10 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
+interface Url {
+  url: string;
+}
+
 const Image = styled.div`
   flex: 5;
   width: 13rem;
@@ -34,6 +54,31 @@ const Image = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 15px 15px 0 0;
+  position: relative;
+  overflow: hidden;
+  &:hover {
+    > .hidden-text {
+      right: 0;
+      margin: 2px 10px;
+    }
+  }
+`;
+
+interface LineNumber {
+  line: number;
+  leng: number;
+}
+
+const HiddenText = styled.p`
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  margin: 2px 10px;
+  position: absolute;
+  bottom: ${(props: LineNumber) => props.line * 2.5 + 1}rem;
+  right: -300%;
+  transition: right 0.35s
+    ${(props: LineNumber) => Math.abs(props.line - props.leng) * 0.2}s;
 `;
 
 const Menuname = styled.div`
