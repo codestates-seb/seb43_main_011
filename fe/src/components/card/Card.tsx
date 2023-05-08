@@ -33,7 +33,7 @@ const Image = styled.div`
   background-image: url(${cocktail});
   background-size: cover;
   background-position: center;
-  border-radius: 15px 15px 0 0; // 수정된 부분
+  border-radius: 15px 15px 0 0;
 `;
 
 const Menuname = styled.div`
