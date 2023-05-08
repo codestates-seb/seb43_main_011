@@ -3,40 +3,51 @@ import { BsBookmarkStar } from "react-icons/bs";
 //BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   min-height: 100vh;
+  position: relative;
 `;
 
 const PhotoArea = styled.div`
-  position: absolute;
+  display: flex;
   width: 433px;
   height: 580px;
-  left: 135px;
-  top: 150px;
   background-color: #96a5ff;
   border-radius: 10px;
 `;
 
 const DetailArea = styled.div`
-  position: absolute;
   width: 535px;
   height: 665px;
-  left: 705px;
-  top: 165px;
+  margin-left: 50px;
+  padding: 50px;
 `;
 
-const Title = styled.div`
+const TitleArea = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 22px;
+`;
+
+const Title = styled.div`
   font-size: 25px;
   font-weight: 800;
+  margin-bottom: 20px;
+`;
+
+const Bookmarker = styled.div`
+  padding-bottom: 15px;
+  margin-left: 15px;
+  cursor: pointer;
 `;
 
 const TitleExplanation = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 0 30px 12px;
+  margin: 0 0 30px 20px;
   font-size: 17px;
 `;
 
@@ -49,8 +60,8 @@ const Ingredient = styled.ul`
 const IngredientItems = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
-  margin-left: 15px;
+  margin-bottom: 20px;
+  margin-left: 12px;
   font-size: 17px;
 `;
 
@@ -63,29 +74,22 @@ const Recipe = styled.ol`
 const RecipeItems = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
-  margin-left: 15px;
+  margin-bottom: 20px;
+  margin-left: 12px;
   font-size: 17px;
-`;
-
-const Bookmarker = styled.div`
-  position: absolute;
-  width: 44px;
-  height: 56px;
-  left: 1276px;
-  top: 163px;
 `;
 
 const WriterButtons = styled.div`
   position: absolute;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 338px;
-  height: 40px;
-  left: 993px;
-  top: 780px;
+  margin-left: 30%;
+  bottom: 5%;
 `;
 
-const DeleteButton = styled.button`
+const Button = styled.button`
   width: 111px;
   height: 40px;
   background-color: #96a5ff;
@@ -94,29 +98,21 @@ const DeleteButton = styled.button`
   color: #ffff;
   font-weight: 800;
   font-size: 24px;
-`;
-
-const EditButton = styled.button`
-  width: 111px;
-  height: 40px;
-  margin-left: 100px;
-  background-color: #96a5ff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  color: #ffff;
-  font-weight: 800;
-  font-size: 24px;
+  border: none;
+  cursor: pointer;
 `;
 
 export default function DetailPage() {
   return (
     <Container>
       <PhotoArea>사진</PhotoArea>
-      <Bookmarker>
-        <BsBookmarkStar size="50" color="#96A5FF" />
-      </Bookmarker>
       <DetailArea>
-        <Title>롱 아일랜드 아이스티</Title>
+        <TitleArea>
+          <Title>롱 아일랜드 아이스티</Title>
+          <Bookmarker>
+            <BsBookmarkStar size="30" color="#96A5FF" />
+          </Bookmarker>
+        </TitleArea>
         <TitleExplanation>
           술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛
         </TitleExplanation>
@@ -139,8 +135,8 @@ export default function DetailPage() {
         </Recipe>
       </DetailArea>
       <WriterButtons>
-        <DeleteButton>Delete</DeleteButton>
-        <EditButton>Edit</EditButton>
+        <Button>Delete</Button>
+        <Button>Edit</Button>
       </WriterButtons>
     </Container>
   );

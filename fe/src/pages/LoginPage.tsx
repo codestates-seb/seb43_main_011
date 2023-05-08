@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import loginImg from "../../images/login1.png";
-import mainLogo from "../../images/loginLogo.png";
-import whiteLogo from "../../images/logo-whigte.png";
-import { RiKakaoTalkFill, RiUser3Line, RiLock2Line } from "react-icons/ri";
+import loginImg from "../images/login.png";
+import mainLogo from "../images/loginLogo.png";
+import { RiKakaoTalkFill } from "react-icons/ri";
 import { FaGoogle } from "react-icons/fa";
 
 const Container = styled.div`
@@ -15,17 +14,9 @@ const Container = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-  flex: 0.6;
+  flex: 1;
   background-size: cover;
-`;
-
-const ImgLogo = styled.img`
-  position: absolute;
-  width: 422px;
-  height: 266px;
-  left: 60px;
-  top: 300px;
-  opacity: 0.65;
+  background-repeat: no-repeat;
 `;
 
 const LoginWrapper = styled.div`
@@ -52,12 +43,12 @@ const InputLogo = styled.img`
 
 const Input = styled.input`
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border-radius: 5px;
   border: 1.5px solid #96a5ff;
-  font-size: 15px;
+  font-size: 17px;
   width: 100%;
-  height: 60px;
+  height: 55px;
 `;
 
 const LoginButton = styled.button`
@@ -67,8 +58,11 @@ const LoginButton = styled.button`
   background-color: #96a5ff;
   color: #ffffff;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   height: 50px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 const SignupButton = styled.button`
   padding: 10px;
@@ -80,6 +74,9 @@ const SignupButton = styled.button`
   height: 50px;
   margin-bottom: 10px;
   border: 1.37931px solid #999999;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const OauthWrapper = styled.div`
@@ -101,28 +98,26 @@ const OauthButton = styled.button`
   &:hover {
     cursor: pointer;
     background-color: #96a5ff;
-    color: #ffff;
+    color: #ffffff;
   }
 `;
 
 export default function LoginPage() {
   return (
     <Container>
-      <ImageWrapper>
-        <ImgLogo src={whiteLogo} />
-      </ImageWrapper>
+      <ImageWrapper />
       <LoginWrapper>
         <InputLogo src={mainLogo} alt="Main logo" />
         <LoginForm>
           <OauthWrapper>
             <OauthButton>
-              <FaGoogle />
+              <FaGoogle size="28" />
             </OauthButton>
             <OauthButton>
-              <RiKakaoTalkFill />
+              <RiKakaoTalkFill size="33" />
             </OauthButton>
           </OauthWrapper>
-          <Input type="text" placeholder="아이디" />
+          <Input type="text" placeholder="이메일" />
           <Input type="password" placeholder="비밀번호" />
           <LoginButton>로그인</LoginButton>
           <SignupButton>회원가입</SignupButton>
