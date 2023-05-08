@@ -51,43 +51,8 @@ const CardsRow = styled.div`
   place-items: center;
 `;
 
-// 합치기 전 임시 설정
-// export type Data = { [key: string]: number[] } | number[];
 export default function Main() {
   const pathName = useLocation().pathname;
-
-  // 임시 레세피 리스트 데이터
-  // 분활한 레시피 데이터 변수 pathName에 따라 값을 변화시킬 하나의 변수로 병합될 예정
-  // const [data, setData] = useState<Data>({})
-  const customRecipesData = Array(20) // 커스텀 페이지에서 사용할 데이터
-    .fill(0)
-    .map((_, i) => i + 1);
-
-  const mainRecipesData: { [key: string]: number[] } = {
-    // 메인 || 정규 레시피에서 사용할 데이터
-    lv0: Array(7)
-      .fill(0)
-      .map((_, i): number => i + 1),
-    lv1: Array(12)
-      .fill(0)
-      .map((_, i): number => i + 1),
-    lv2: Array(10)
-      .fill(0)
-      .map((_, i): number => i + 1),
-    lv3: Array(25)
-      .fill(0)
-      .map((_, i): number => i + 1),
-  };
-
-  const searchResultsRecipe: { [key: string]: number[] } = {
-    // 검색 결과 페이지에서 사용할 데이터
-    regular: Array(34)
-      .fill(0)
-      .map((_, i): number => i + 1),
-    custom: Array(17)
-      .fill(0)
-      .map((_, i): number => i + 1),
-  };
   const dispatch = useAppDispatch();
   const recipeList = useAppSelector((state) => state.recipeList.recipes);
   useEffect(() => {
@@ -119,7 +84,6 @@ export default function Main() {
             </CustomGuide>
             <CardsRow>
               {recipeList.list.map((i) => {
-                // console.log(recipeList, i);
                 return <Card key={i} />;
               })}
             </CardsRow>
@@ -127,14 +91,13 @@ export default function Main() {
         ) : pathName === "/searched" ? (
           <>
             {Object.keys(recipeList).map((key: string, i) => {
-              console.log(recipeList, key);
               return <CardList list={recipeList[key]} category={key} key={i} />;
             })}
           </>
         ) : (
           <>
+            <GuideText>정규 레시피</GuideText>
             {Object.keys(recipeList).map((key: string, i) => {
-              console.log(recipeList, key);
               return (
                 <CardList
                   list={recipeList[key]}
