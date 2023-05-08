@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import GlobalStyle from "./components/style/GlobalStyles";
 import Main from "./pages/Main";
 import Layout from "./pages/Layout";
-import DetailPage from "./pages/DetailPage";
 import LoginPage from "./pages/LoginPage";
+import DetailPage from "./pages/DetailPage";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route path="/searched" element={<Main />} />
           <Route path="/detail" element={<DetailPage />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
       </Routes>
     </>
   );

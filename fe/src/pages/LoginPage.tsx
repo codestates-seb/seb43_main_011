@@ -11,6 +11,7 @@ const Container = styled.div`
   background-image: url(${loginImg});
   background-size: contain;
   background-position: left;
+  background-repeat: no-repeat;
 `;
 
 const ImageWrapper = styled.div`
