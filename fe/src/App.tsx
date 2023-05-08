@@ -1,12 +1,14 @@
 import { ThemeProvider } from "styled-components";
 import theme from "./components/style/theme";
 import styled from "styled-components";
-import { Routes, Route } from "react-router-dom";
+// import { Routes, Route } from "react-router-dom";
 import GlobalStyle from "./components/style/GlobalStyles";
 import Header from "./components/header/Header";
-import SideBar from "./components/sideBar/SideBar";
+// import SideBar from "./components/sideBar/SideBar";
 import Footer from "./components/footer/Footer";
-import MainComponent from "./components/main/MainComponent";
+// import MainComponent from "./components/main/MainComponent";
+// import Signup from "./pages/Signup";
+import Cocktailshare from "./pages/Cocktailshare";
 
 const TopContainer = styled.div`
   display: flex;
@@ -20,8 +22,9 @@ function App() {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <TopContainer>
+          {/* <Signup /> */}
           <Header />
-          <MainComponent />
+          <Cocktailshare />
           <Footer />
         </TopContainer>
       </ThemeProvider>

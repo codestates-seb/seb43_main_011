@@ -22,7 +22,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
-  margin: 40px; // 구분선임 추후 삭제
+  margin: 30px; // 구분선임 추후 삭제
 `;
 
 const Image = styled.div`
@@ -34,7 +34,7 @@ const Image = styled.div`
   background-image: url(${cocktail});
   background-size: cover;
   background-position: center;
-  border-radius: 15px 15px 0 0; // 수정된 부분
+  border-radius: 15px 15px 0 0;
 `;
 
 const Menuname = styled.div`

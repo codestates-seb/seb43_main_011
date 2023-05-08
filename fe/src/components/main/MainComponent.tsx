@@ -8,7 +8,7 @@ const Container = styled.div`
 
 const ItemArea = styled.div`
   height: 100%;
-  width: 1444px;
+  width: 1360px;
   margin: 0 auto;
 `;
 

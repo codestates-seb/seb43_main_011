@@ -10,7 +10,7 @@ const Container = styled.header`
 `;
 
 const ItemArea = styled.div`
-  width: 1444px;
+  width: 1360px;
   height: 100%;
   display: flex;
   align-items: center;
