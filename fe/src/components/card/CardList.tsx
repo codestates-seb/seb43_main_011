@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
-import Card from "../card/Card";
-import { useLocation } from "react-router-dom";
+import Card from "./Card";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -68,7 +67,6 @@ interface ListProps {
 }
 
 export default function CardList({ list, category }: ListProps) {
-  const pathName = useLocation().pathname;
   const [cardsPageNum, setCardsPageNum] = useState(1);
 
   const categoryText =
