@@ -2,11 +2,18 @@ import styled from "styled-components";
 import logo from "../../images/logo.png";
 import { FiMenu } from "react-icons/fi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import { useAppDispatch } from "../../redux/hooks";
+import { isOpen } from "../../redux/slices/SideView";
 
 const Container = styled.header`
   height: 85px;
   background-color: #ffff;
   box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 `;
 
 const ItemArea = styled.div`
@@ -65,6 +72,7 @@ const MenuItem = styled.a`
 `;
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   return (
     <Container>
       <ItemArea>
@@ -82,7 +90,7 @@ const Header = () => {
           <MenuItem>로그인</MenuItem>
           <MenuItem>회원가입</MenuItem>
         </Menu>
-        <FiMenu size="45" color="#96A5FF" />
+        <FiMenu size="45" color="#96A5FF" onClick={() => dispatch(isOpen())} />
       </ItemArea>
     </Container>
   );

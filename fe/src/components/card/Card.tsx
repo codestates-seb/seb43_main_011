@@ -22,7 +22,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
-  margin: 30px; // 구분선임 추후 삭제
 `;
 
 const Image = styled.div`
