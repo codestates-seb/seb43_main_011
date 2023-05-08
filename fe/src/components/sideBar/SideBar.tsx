@@ -91,7 +91,7 @@ const Items = styled.li`
   }
 `;
 
-const StypedNavLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
   margin-left: 30px;
@@ -124,19 +124,19 @@ export default function SideBar() {
         <IconContext.Provider value={{ size: "2rem" }}>
           <Items>
             <FaGlassWhiskey />
-            <StypedNavLink to={"/"}>도수별 레시피</StypedNavLink>
+            <StyledNavLink to={"/"}>도수별 레시피</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <StypedNavLink to={"/custom"}>커스텀 레시피</StypedNavLink>
+            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <StypedNavLink to={"/don'tknow"}>레시피 추천</StypedNavLink>
+            <StyledNavLink to={"/don'tknow"}>레시피 추천</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <StypedNavLink to={"/upload"}>레시피 등록하기</StypedNavLink>
+            <StyledNavLink to={"/upload"}>레시피 등록하기</StyledNavLink>
           </Items>
         </IconContext.Provider>
       </Main>

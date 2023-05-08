@@ -2,8 +2,7 @@ import styled from "styled-components";
 import Card from "../components/card/Card";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import CardList from "../components/main/CardList";
+import CardList from "../components/card/CardList";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -54,6 +53,7 @@ export default function Main() {
   const pathName = useLocation().pathname;
 
   // 임시 레세피 리스트 데이터
+  // 분활한 레시피 데이터 변수 pathName에 따라 값을 변화시킬 하나의 변수로 병합될 예정
   const customRecipesData = Array(20) // 커스텀 페이지에서 사용할 데이터
     .fill(0)
     .map((_, i) => i + 1);
