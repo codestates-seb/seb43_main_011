@@ -74,6 +74,13 @@ const InputArea = styled.input`
   margin: 10px;
   border-radius: 5px;
   border: 0.5px solid #96a5ff;
+  padding: 5px;
+
+  &:focus {
+    outline: none;
+    border: 1px solid #96a5ff;
+    box-shadow: 0 0 5px 1px #abb7fc;
+  }
 `;
 
 const SignupButton = styled.button`
