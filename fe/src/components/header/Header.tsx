@@ -30,7 +30,7 @@ const ItemArea = styled.div`
   }
 `;
 
-const SerchContainer = styled.div`
+const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -40,14 +40,14 @@ const SerchContainer = styled.div`
   border: 1px solid #d5d4d4;
   border-radius: 10px;
 `;
-const SerchInput = styled.input`
+const SearchInput = styled.input`
   border: none;
   width: 95%;
   outline: none;
   margin-right: 10px;
   font-size: 1.3rem;
 `;
-const SerchIcon = styled(HiMagnifyingGlass)`
+const SearchIcon = styled(HiMagnifyingGlass)`
   font-size: 1.5rem;
   margin: 0 1rem 0 0.2rem;
 `;
@@ -79,12 +79,12 @@ const Header = () => {
         <div className="logo">
           <img src={logo} alt="Logo" />
         </div>
-        <SerchContainer>
+        <SearchContainer>
           <p>
-            <SerchIcon />
+            <SearchIcon />
           </p>
-          <SerchInput type="text" placeholder="오늘의 칵테일은?" />
-        </SerchContainer>
+          <SearchInput type="text" placeholder="오늘의 칵테일은?" />
+        </SearchContainer>
 
         <Menu>
           <MenuItem>로그인</MenuItem>
