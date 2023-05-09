@@ -39,6 +39,9 @@ public class RegularRecipe {
     @Column(nullable = false)
     private String amount;
 
+    @Column(nullable = false)
+    private boolean status;
+
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
 
