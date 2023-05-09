@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import Signup from "./pages/Signup";
 import DetailPage from "./pages/DetailPage";
 import CocktailRegistration from "./pages/CocktailRegistration";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </>
   );
