@@ -4,14 +4,13 @@ import { FaGlassWhiskey } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { isClose } from "../../redux/slices/SideView";
+import { useAppSelector } from "../../redux/hooks";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
   background-color: white;
 
-  transition: 0.8s ease;
+  transition: 0.5s ease;
   z-index: 1;
   top: ${(props) => (props.isNavOpen ? "85px" : "-100%")};
   width: 100%;
@@ -117,7 +116,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 export default function NavBar() {
-  const isNavOpen = useAppSelector((state) => state.sideView.value);
+  const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>

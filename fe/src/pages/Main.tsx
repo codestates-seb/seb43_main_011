@@ -14,7 +14,7 @@ const RecipesContainer = styled.div`
   width: 1360px;
   margin: 85px auto 0;
   position: relative;
-  padding: 20px 0;
+  padding: 60px 0 20px;
 `;
 
 const CustomGuide = styled.div`
