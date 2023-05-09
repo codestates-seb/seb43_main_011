@@ -116,7 +116,7 @@ export default function SideBar() {
           />
         </CloseSideBarButton>
         <RightButtons>
-          <UserLink to={"/user"}>마이페이지</UserLink>
+          <UserLink to={"/"}>마이페이지</UserLink>
           <LogOutButton>로그아웃</LogOutButton>
         </RightButtons>
       </SidebarHeader>
@@ -132,11 +132,11 @@ export default function SideBar() {
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/don'tknow"}>레시피 추천</StyledNavLink>
+            <StyledNavLink to={"/"}>레시피 추천</StyledNavLink>
           </Items>
           <Items>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/upload"}>레시피 등록하기</StyledNavLink>
+            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
           </Items>
         </IconContext.Provider>
       </Main>
