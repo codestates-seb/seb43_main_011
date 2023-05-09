@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,6 +33,9 @@ public class CustomRecipe {
     private String ingredient;
 
     private String amount;
+
+    @Column(nullable = false)
+    private boolean status;
 
 //    @Column(nullable = false)
     private Long memberId;

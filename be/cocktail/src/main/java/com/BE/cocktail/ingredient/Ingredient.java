@@ -26,6 +26,9 @@ public class Ingredient {
     private String category;
 
     @Column(nullable = false)
+    private boolean status;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime modifiedAt;
