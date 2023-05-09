@@ -3,6 +3,7 @@ import loginImg from "../images/login.png";
 import mainLogo from "../images/loginLogo.png";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,10 @@ const ImageWrapper = styled.div`
   flex: 1;
   background-size: cover;
   background-repeat: no-repeat;
+`;
+
+const Kakao = styled(RiKakaoTalkFill)`
+  color: white;
 `;
 
 const LoginWrapper = styled.div`
@@ -88,6 +93,9 @@ const OauthWrapper = styled.div`
 `;
 
 const OauthButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 70px;
   height: 70px;
   font-size: 25px;
@@ -98,8 +106,30 @@ const OauthButton = styled.button`
   margin: 20px;
   &:hover {
     cursor: pointer;
-    background-color: #96a5ff;
-    color: #ffffff;
+    background-color: #f6db42;
+    > .kakao {
+      color: #3e2323;
+    }
+  }
+`;
+
+const GoogleButton = styled(OauthButton)`
+  > .color-google {
+    display: none;
+  }
+  > .white-google {
+    display: block;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    > .white-google {
+      display: none;
+    }
+    > .color-google {
+      display: block;
+    }
   }
 `;
 
@@ -111,11 +141,12 @@ export default function LoginPage() {
         <InputLogo src={mainLogo} alt="Main logo" />
         <LoginForm>
           <OauthWrapper>
+            <GoogleButton>
+              <FaGoogle className="white-google" size="28" />
+              <FcGoogle className="color-google" size="35" />
+            </GoogleButton>
             <OauthButton>
-              <FaGoogle size="28" />
-            </OauthButton>
-            <OauthButton>
-              <RiKakaoTalkFill size="33" />
+              <Kakao className="kakao" size="30" />
             </OauthButton>
           </OauthWrapper>
           <Input type="text" placeholder="이메일" />
