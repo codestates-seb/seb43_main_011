@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
-import { IoIosClose } from "react-icons/io";
+import { MdClose } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -21,22 +21,26 @@ const Container = styled.div<{ isOpen: boolean }>`
 
 const SidebarHeader = styled.div`
   width: 100%;
-  padding: 10px 0;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const CloseSideBarButton = styled.button`
-  border: none;
-  background-color: inherit;
-  border-radius: 10px;
+const CloseSideBar = styled(MdClose)`
+  font-size: 2.5rem;
+  color: #657cff;
+  height: max-content;
+  border-radius: 6px;
+  &:hover {
+    color: white;
+    background-color: #96a5ff;
+  }
 `;
 
 const RightButtons = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 1rem;
 `;
 
 const UserLink = styled(Link)`
@@ -108,13 +112,7 @@ export default function SideBar() {
   return (
     <Container isOpen={isOpen}>
       <SidebarHeader>
-        <CloseSideBarButton>
-          <IoIosClose
-            size={"4rem"}
-            color="#657cff"
-            onClick={() => dispatch(isClose())}
-          />
-        </CloseSideBarButton>
+        <CloseSideBar onClick={() => dispatch(isClose())} />
         <RightButtons>
           <UserLink to={"/"}>마이페이지</UserLink>
           <LogOutButton>로그아웃</LogOutButton>
