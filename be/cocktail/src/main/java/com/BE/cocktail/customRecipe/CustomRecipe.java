@@ -1,5 +1,6 @@
 package com.BE.cocktail.customRecipe;
 
+import com.BE.cocktail.customRecipe.dto.CustomRecipePostDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,27 +21,21 @@ public class CustomRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Lob
     @Column(nullable = false)
     private String imageUrl;
 
-    @Size(max = 255)
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Lob
     private String description;
 
-    @Lob
     private String recipe;
 
-    @Size(max = 255)
     private String ingredient;
 
-    @Size(max = 255)
     private String amount;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Long memberId;
 
     @Column(nullable = false)
@@ -50,4 +45,17 @@ public class CustomRecipe {
 
     private LocalDateTime deletedAt;
 
+
+    public static CustomRecipe of(CustomRecipePostDto customRecipePostDto) {
+        CustomRecipe customRecipe = new CustomRecipe();
+
+        customRecipe.setName(customRecipePostDto.getName());
+        customRecipe.setDescription(customRecipePostDto.getDescription());
+        customRecipe.setRecipe(customRecipePostDto.getRecipe());
+        customRecipe.setIngredient(customRecipePostDto.getIngredient());
+        customRecipe.setAmount(customRecipePostDto.getAmount());
+        customRecipe.setImageUrl(customRecipePostDto.getImageUrl());
+
+        return customRecipe;
+    }
 }

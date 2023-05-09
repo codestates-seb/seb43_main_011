@@ -18,12 +18,17 @@ public class Ingredient {
     @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String category;
+
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
     private LocalDateTime modifiedAt;
+
     private LocalDateTime deletedAt;
 }

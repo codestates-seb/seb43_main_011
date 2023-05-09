@@ -19,7 +19,6 @@ public class RegularRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Lob
     @Column(nullable = false)
     private String imageUrl;
 
