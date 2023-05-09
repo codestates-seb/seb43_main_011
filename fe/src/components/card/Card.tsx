@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import cocktail from "../../images/cocktail.png";
+import { useNavigate } from "react-router-dom";
 interface CardProps {
   title: string;
   image: string;
@@ -7,8 +8,9 @@ interface CardProps {
 }
 const Card = ({ title, image, description }: CardProps) => {
   const descriptions = description.split("\n").reverse();
+  const navigate = useNavigate();
   return (
-    <Container>
+    <Container onClick={() => navigate("/detail")}>
       <Image>
         {descriptions.map((e, i) => (
           <HiddenText
