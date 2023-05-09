@@ -7,27 +7,34 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isClose } from "../../redux/slices/SideView";
 
-const Container = styled.div<{ isOpen: boolean }>`
+const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
   background-color: white;
-  opacity: ${(props) => (props.isOpen ? 1 : 0)};
-  transition: 0.5s ease-in;
-  z-index: 2;
-  right: ${(props) => (props.isOpen ? 0 : "-25%")};
-  width: 25%;
-  box-shadow: -3px 0 10px 1px #bebebee8;
-  height: 100%;
+
+  transition: 0.8s ease;
+  z-index: 1;
+  top: ${(props) => (props.isNavOpen ? "85px" : "-100%")};
+  width: 100%;
+  box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
 `;
 
-const SidebarHeader = styled.div`
-  width: 100%;
+const NavLinkList = styled.div`
+  width: 1360px;
+  height: 85px;
+  margin: 0 auto;
+  display: flex;
+  align-items: end;
+  list-style: none;
+`;
+
+const NavbarHeader = styled.div`
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const CloseSideBar = styled(MdClose)`
+const CloseNavBar = styled(MdClose)`
   font-size: 2.5rem;
   color: #657cff;
   height: max-content;
@@ -80,18 +87,21 @@ const LogOutButton = styled.div`
 
 const Main = styled.ul`
   width: 100%;
-  list-style: none;
+  display: flex;
   padding: 0;
+  list-style: none;
   line-height: 5rem;
 `;
 
-const Items = styled.li`
+const NavListItems = styled.li`
+  flex-grow: 1;
   display: flex;
   align-items: center;
+  height: 100%;
   padding: 10px 0 10px 50px;
   &:hover {
     background-color: #eef1ff;
-    border-left: 8px solid #657bf8;
+    border-bottom: 5px solid #657bf8;
   }
 `;
 
@@ -106,38 +116,30 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-export default function SideBar() {
-  const isOpen = useAppSelector((state) => state.sideView.value);
-  const dispatch = useAppDispatch();
+export default function NavBar() {
+  const isNavOpen = useAppSelector((state) => state.sideView.value);
   return (
-    <Container isOpen={isOpen}>
-      <SidebarHeader>
-        <CloseSideBar onClick={() => dispatch(isClose())} />
-        <RightButtons>
-          <UserLink to={"/"}>마이페이지</UserLink>
-          <LogOutButton>로그아웃</LogOutButton>
-        </RightButtons>
-      </SidebarHeader>
-      <Main>
+    <NavContainer isNavOpen={isNavOpen}>
+      <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
-          <Items>
+          <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"}>도수별 레시피</StyledNavLink>
-          </Items>
-          <Items>
+            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
+          </NavListItems>
+          <NavListItems>
             <FaGlassWhiskey />
             <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
-          </Items>
-          <Items>
+          </NavListItems>
+          <NavListItems>
             <FaGlassWhiskey />
             <StyledNavLink to={"/"}>레시피 추천</StyledNavLink>
-          </Items>
-          <Items>
+          </NavListItems>
+          <NavListItems>
             <FaGlassWhiskey />
             <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
-          </Items>
+          </NavListItems>
         </IconContext.Provider>
-      </Main>
-    </Container>
+      </NavLinkList>
+    </NavContainer>
   );
 }
