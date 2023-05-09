@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import cocktail from "../../images/cocktail.png";
-import { recipeCard } from "../../redux/slices/RecipeSlice";
 interface CardProps {
-  list: recipeCard;
+  title: string;
+  image: string;
+  description: string;
 }
-const Card = ({ title, image, description }: recipeCard) => {
+const Card = ({ title, image, description }: CardProps) => {
   const descriptions = description.split("\n").reverse();
   return (
     <Container>

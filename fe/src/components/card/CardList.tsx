@@ -69,7 +69,7 @@ interface ListProps {
 
 export default function CardList({ list, category }: ListProps) {
   const [cardsPageNum, setCardsPageNum] = useState(1);
-  console.log(list);
+
   const categoryText =
     category.length === 1
       ? `Level ${category}`
