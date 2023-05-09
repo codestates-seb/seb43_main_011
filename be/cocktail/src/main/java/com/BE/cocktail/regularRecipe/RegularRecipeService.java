@@ -33,11 +33,14 @@ public class RegularRecipeService {
     @Transactional
     public RegularRecipeCreateResponseDto saveRegularRecipe(RegularRecipeCreateDto createdto) {
 
-        RegularRecipe regularRecipe = RegularRecipe.of(createdto);
+        List<RegularRecipe> regularRecipeList = RegularRecipe.listOf(createdto);
 
-        regularRecipeRepository.save(regularRecipe);
+        for (RegularRecipe regularRecipe:regularRecipeList) {
+            regularRecipeRepository.save(regularRecipe);
+        }
 
-        return RegularRecipeCreateResponseDto.of(regularRecipe);
+        return RegularRecipeCreateResponseDto.of(regularRecipeList);
+
     }
 
 }
