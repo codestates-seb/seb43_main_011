@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +22,7 @@ public class RegularRecipe {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     private String description;
@@ -71,17 +73,34 @@ public class RegularRecipe {
         this.amount = amount;
     }
 
-    public static RegularRecipe of(RegularRecipeCreateDto createdto) {
-        RegularRecipe regularRecipe = new RegularRecipe(
-                createdto.getImageUrl(),
-                createdto.getName(),
-                createdto.getDescription(),
-                createdto.getRecipe(),
-                createdto.getAlcVol(),
-                createdto.getBaseAlc(),
-                createdto.getIngredient(),
-                createdto.getAmount()
-        );
+    public static List<RegularRecipe> listOf(RegularRecipeCreateDto createdto) {
+
+        List<RegularRecipe> regularRecipeList = new ArrayList<>();
+
+
+        createdto.getIngredientList().stream()
+                .forEach(ingredient -> {
+                                RegularRecipe regularRecipe = new RegularRecipe(
+                                        createdto.getImageUrl(),
+                                        createdto.getName(),
+                                        createdto.getDescription(),
+                                        createdto.getRecipe(),
+                                        createdto.getAlcVol(),
+                                        createdto.getBaseAlc(),
+                                        ingredient.getName(),
+                                        ingredient.getAmount() );
+
+                                regularRecipeList.add(regularRecipe);
+        });
+
+        return regularRecipeList;
+    }
+
+
+    //test용 정적 팩토리 메서드
+    public static RegularRecipe of(String imageUrl, String name, String description, String recipe, Integer alcVol, String baseAlc, String ingredient, String amount) {
+
+        RegularRecipe regularRecipe = new RegularRecipe(imageUrl, name, description, recipe, alcVol, baseAlc, ingredient, amount);
 
         return regularRecipe;
     }
