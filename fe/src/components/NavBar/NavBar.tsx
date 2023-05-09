@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
@@ -24,72 +22,6 @@ const NavLinkList = styled.div`
   display: flex;
   align-items: end;
   list-style: none;
-`;
-
-const NavbarHeader = styled.div`
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const CloseNavBar = styled(MdClose)`
-  font-size: 2.5rem;
-  color: #657cff;
-  height: max-content;
-  border-radius: 6px;
-  &:hover {
-    color: white;
-    background-color: #96a5ff;
-  }
-`;
-
-const RightButtons = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UserLink = styled(Link)`
-  text-decoration-line: none;
-  color: #5a5a5a;
-  background-color: #ffff;
-  width: max-content;
-  font-weight: bold;
-  padding: 0.6rem;
-  border-radius: 5px;
-  font-size: 1.2rem;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #96a5ff;
-    color: #ffff;
-  }
-`;
-
-const LogOutButton = styled.div`
-  font-size: 1.2rem;
-  border: none;
-  color: #5a5a5a;
-  background-color: #ffff;
-  width: max-content;
-  font-weight: bold;
-  padding: 0.5rem;
-  border-radius: 5px;
-  font-weight: bold;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #96a5ff;
-    color: #ffff;
-  }
-`;
-
-const Main = styled.ul`
-  width: 100%;
-  display: flex;
-  padding: 0;
-  list-style: none;
-  line-height: 5rem;
 `;
 
 const NavListItems = styled.li`
