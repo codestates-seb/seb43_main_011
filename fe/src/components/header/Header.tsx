@@ -4,6 +4,7 @@ import { FiMenu } from "react-icons/fi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppDispatch } from "../../redux/hooks";
 import { isOpen } from "../../redux/slices/SideView";
+import { Link } from "react-router-dom";
 
 const Container = styled.header`
   height: 85px;
@@ -56,7 +57,7 @@ const Menu = styled.nav`
   gap: 20px;
   margin: 22px;
 `;
-const MenuItem = styled.a`
+const MenuItem = styled(Link)`
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
@@ -64,10 +65,23 @@ const MenuItem = styled.a`
   padding: 1rem;
   border-radius: 10px;
   margin-right: 10px;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
     background-color: #96a5ff;
     color: #ffff;
+  }
+`;
+
+const SideBarButton = styled(FiMenu)`
+  font-size: 4.5rem;
+  color: #657cff;
+  height: max-content;
+  padding: 3px 5px;
+  border-radius: 6px;
+  &:hover {
+    color: white;
+    background-color: #96a5ff;
   }
 `;
 
@@ -76,9 +90,11 @@ const Header = () => {
   return (
     <Container>
       <ItemArea>
-        <div className="logo">
-          <img src={logo} alt="Logo" />
-        </div>
+        <Link to={"/"}>
+          <div className="logo">
+            <img src={logo} alt="Logo" />
+          </div>
+        </Link>
         <SearchContainer>
           <p>
             <SearchIcon />
@@ -87,10 +103,10 @@ const Header = () => {
         </SearchContainer>
 
         <Menu>
-          <MenuItem>로그인</MenuItem>
-          <MenuItem>회원가입</MenuItem>
+          <MenuItem to={"/login"}>로그인</MenuItem>
+          <MenuItem to={"/signup"}>회원가입</MenuItem>
         </Menu>
-        <FiMenu size="45" color="#96A5FF" onClick={() => dispatch(isOpen())} />
+        <SideBarButton onClick={() => dispatch(isOpen())} />
       </ItemArea>
     </Container>
   );
