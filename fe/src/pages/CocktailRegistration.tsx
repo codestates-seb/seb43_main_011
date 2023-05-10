@@ -2,11 +2,27 @@ import styled from "styled-components";
 import exImage from "../images/ex3.jpeg";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai"; // AiFillPlusCircle;
 import { TiDelete } from "react-icons/ti";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const CocktailRegistration = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [recipe, setRecipe] = useState("");
 
+  // 이미지 업로드/미리보기 변수/함수들
+  const imageRef = useRef<HTMLInputElement>(null); // post시 사용될 image files[0]
+  const [imageUrl, setImageUrl] = useState(exImage); // 미리보기를 위한 url
+
+  const onImgChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const imageUrl = URL.createObjectURL(files[0]);
+      setImageUrl(imageUrl);
+    }
+  };
+
+  //
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -27,16 +43,41 @@ const CocktailRegistration = () => {
     setSelectLines(newSelectLines);
   };
 
+  // const submitHandle = () => {
+  //   if (!name || !description || !recipe) {
+  //     window.alert("작성되지 않은 내용이 있습니다");
+  //   } else {
+  //     // axios
+  //   }
+  // };
+
   return (
     <Container>
       <EditForm>
         <TopInfo>
-          <TopCocktailImage />
+          <UploadImgInput
+            type="file"
+            accept="image/*"
+            ref={imageRef}
+            onChange={onImgChangeHandle}
+          />
+          <TopCocktailImage
+            src={imageUrl}
+            onClick={() => imageRef.current && imageRef.current.click()}
+          />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
-            <InputName placeholder=" 롱 아일랜드 아이스티" />
+            <InputName
+              placeholder=" 롱 아일랜드 아이스티"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <LabelSummary>이 칵테일을 한줄로 표현해주세요</LabelSummary>
-            <InputSummary placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!" />
+            <InputSummary
+              placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </TopCocktailSummary>
         </TopInfo>
 
@@ -89,6 +130,8 @@ const CocktailRegistration = () => {
 2.얼음을 채운 셰이커에 데킬라 블랑코 50ml, 쿠앵트로(혹은 트리플 섹) 20ml을 붓는다.
 3.라임 주스 15ml를 넣는다.
 4.잘 흔들어 마가리타 잔에 따른다."
+            value={recipe}
+            onChange={(e) => setRecipe(e.target.value)}
           />
         </BottomInfo>
         <SubmitButton>SUBMIT</SubmitButton>
@@ -157,11 +200,17 @@ const TopCocktailSummary = styled.div`
   margin-left: 1rem;
 `;
 
-const TopCocktailImage = styled.div`
+// 이미지 file input
+const UploadImgInput = styled.input`
+  display: none;
+`;
+
+const TopCocktailImage = styled.img`
   margin-right: 1rem;
   margin-top: 5rem;
   width: 16rem;
   height: 16rem;
+  border: none;
   background-image: url(${exImage});
   background-size: cover;
   background-position: center;
