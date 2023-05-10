@@ -2,7 +2,7 @@ import styled from "styled-components";
 import exImage from "../images/ex3.jpeg";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai"; // AiFillPlusCircle;
 import { TiDelete } from "react-icons/ti";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const CocktailRegistration = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,6 +14,19 @@ const CocktailRegistration = () => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
+
+  const [selectLines, setSelectLines] = useState([{ id: 0 }]);
+  const handleAddSelectLine = () => {
+    const newId = selectLines.length;
+    const newSelectLines = [...selectLines, { id: newId }];
+    setSelectLines(newSelectLines);
+  };
+
+  const handleDeleteSelectLine = (id: number) => {
+    const newSelectLines = selectLines.filter((line) => line.id !== id);
+    setSelectLines(newSelectLines);
+  };
+
   return (
     <Container>
       <EditForm>
@@ -29,33 +42,41 @@ const CocktailRegistration = () => {
 
         <BottomInfo>
           <IngredientLabel>재료 목록</IngredientLabel>
-          <SelectList>
-            <SelectLine>
-              <ListType>종류 :</ListType>
-              <InputType placeholder=" 종류를 선택해주세요"></InputType>
-              <DeleteButton />
-            </SelectLine>
-            <SelectLine>
-              <ListAmount>수량 :</ListAmount>
-              <InputAmount placeholder=" 수량을 입력해주세요"></InputAmount>
-              <UnitSelector>
-                <option value="ml">ml</option>
-                <option value="개">개</option>
-                <option value="spoon">spoon</option>
-                <option value="drops">drops</option>
-                <option value="slice">slice</option>
-                <option value="leaves">leaves</option>
-                <option value="peel">peel</option>
-                <option value="dash">dash</option>
-                <option value="gram">gram</option>
-              </UnitSelector>
-            </SelectLine>
-          </SelectList>
+
+          {selectLines.map((line) => (
+            <React.Fragment key={line.id}>
+              <SelectList>
+                <SelectLine>
+                  <ListType>종류 :</ListType>
+                  <InputType placeholder=" 종류를 선택해주세요" />
+                  <DeleteButton
+                    onClick={() => handleDeleteSelectLine(line.id)}
+                  />
+                </SelectLine>
+                <SelectLine>
+                  <ListAmount>수량 :</ListAmount>
+                  <InputAmount placeholder=" 수량을 입력해주세요" />
+                  <UnitSelector>
+                    <option value="ml">ml</option>
+                    <option value="개">개</option>
+                    <option value="spoon">spoon</option>
+                    <option value="drops">drops</option>
+                    <option value="slice">slice</option>
+                    <option value="leaves">leaves</option>
+                    <option value="peel">peel</option>
+                    <option value="dash">dash</option>
+                    <option value="gram">gram</option>
+                  </UnitSelector>
+                </SelectLine>
+              </SelectList>
+            </React.Fragment>
+          ))}
 
           <DivisionLine>
             <IconContainer
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
+              onClick={handleAddSelectLine}
             >
               {isHovered ? <FillIcon /> : <OutIcon />}
             </IconContainer>
