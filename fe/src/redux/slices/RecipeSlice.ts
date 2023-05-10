@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Recipes {
-  recipes: { [key: string]: recipeCard[] };
+  recipes: { [key: string]: RecipeCard[] };
 }
-export interface recipeCard {
+export interface RecipeCard {
   title: string;
   image: string;
   description: string;
@@ -27,11 +27,11 @@ const recipeListSlice = createSlice({
   name: "recipes",
   initialState: initialState,
   reducers: {
-    upDate: (state, action) => {
+    update: (state, action) => {
       state.recipes = action.payload;
     },
   },
 });
 
 export default recipeListSlice.reducer;
-export const { upDate } = recipeListSlice.actions;
+export const { update } = recipeListSlice.actions;
