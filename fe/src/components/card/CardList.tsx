@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
+import type { recipeCard } from "../../redux/slices/RecipeSlice";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -62,7 +63,7 @@ const CardsPageNationButton = styled.button`
 `;
 
 interface ListProps {
-  list: number[];
+  list: recipeCard[];
   category: string;
 }
 
@@ -96,11 +97,18 @@ export default function CardList({ list, category }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={Number(category) < 2 ? false : true}>
-        {showList.map((i) => {
-          return <Card key={i} />;
+        {showList.map((recipe, i) => {
+          return (
+            <Card
+              title={recipe.title}
+              image={recipe.image}
+              description={recipe.description}
+              key={i}
+            />
+          );
         })}
       </CardsRow>
-      {list.length !== showCardLength && (
+      {list.length >= showCardLength && (
         <CardsPageNationContainer>
           <CardsPageNationButton>
             <GrPrevious onClick={onPrevClick} size={"1.1rem"} />

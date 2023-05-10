@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Footer from "../components/footer/Footer";
 import Header from "../components/header/Header";
-import SideBar from "../components/sideBar/SideBar";
+import NavBar from "../components/NavBar/NavBar";
 import { Outlet } from "react-router-dom";
 
 const TopContainer = styled.div`
@@ -15,8 +15,8 @@ const TopContainer = styled.div`
 export default function Layout() {
   return (
     <TopContainer>
-      <SideBar />
       <Header />
+      <NavBar />
       <Outlet />
       <Footer />
     </TopContainer>

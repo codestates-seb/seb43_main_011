@@ -1,19 +1,23 @@
 import styled from "styled-components";
 import logo from "../../images/logo.png";
-import { FiMenu } from "react-icons/fi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
-import { useAppDispatch } from "../../redux/hooks";
-import { isOpen } from "../../redux/slices/SideView";
+import { useAppSelector } from "../../redux/hooks";
+import { Link } from "react-router-dom";
+import NavController from "./NavController";
 
-const Container = styled.header`
+const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
   background-color: #ffff;
-  box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
+  transition: all 0.45s ease-out;
+  ${(props) =>
+    props.isNavOpen
+      ? ""
+      : "box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);"}
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const ItemArea = styled.div`
@@ -56,7 +60,7 @@ const Menu = styled.nav`
   gap: 20px;
   margin: 22px;
 `;
-const MenuItem = styled.a`
+const MenuItem = styled(Link)`
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
@@ -64,6 +68,7 @@ const MenuItem = styled.a`
   padding: 1rem;
   border-radius: 10px;
   margin-right: 10px;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
     background-color: #96a5ff;
@@ -72,13 +77,15 @@ const MenuItem = styled.a`
 `;
 
 const Header = () => {
-  const dispatch = useAppDispatch();
+  const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
   return (
-    <Container>
+    <Container isNavOpen={isNavOpen}>
       <ItemArea>
-        <div className="logo">
-          <img src={logo} alt="Logo" />
-        </div>
+        <Link to={"/"}>
+          <div className="logo">
+            <img src={logo} alt="Logo" />
+          </div>
+        </Link>
         <SearchContainer>
           <p>
             <SearchIcon />
@@ -87,10 +94,10 @@ const Header = () => {
         </SearchContainer>
 
         <Menu>
-          <MenuItem>로그인</MenuItem>
-          <MenuItem>회원가입</MenuItem>
+          <MenuItem to={"/login"}>로그인</MenuItem>
+          <MenuItem to={"/signup"}>회원가입</MenuItem>
         </Menu>
-        <FiMenu size="45" color="#96A5FF" onClick={() => dispatch(isOpen())} />
+        <NavController />
       </ItemArea>
     </Container>
   );
