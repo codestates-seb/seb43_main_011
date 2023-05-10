@@ -121,12 +121,14 @@ export default function Main() {
           <>
             {Object.keys(recipeList).map((key: string, i) => {
               return (
-                <CardList
-                  list={recipeList[key]}
-                  category={key}
-                  key={i}
-                  isSearch={pathName === "/search"}
-                />
+                recipeList[key].length !== 0 && (
+                  <CardList
+                    list={recipeList[key]}
+                    category={key}
+                    key={i}
+                    isSearch={pathName === "/search"}
+                  />
+                )
               );
             })}
           </>
