@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import isNavOpen from "./slices/isNavOpenSlice";
 import RecipeList from "./slices/RecipeSlice";
 
