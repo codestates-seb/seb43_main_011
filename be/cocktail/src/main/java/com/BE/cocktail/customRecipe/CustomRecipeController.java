@@ -1,5 +1,6 @@
 package com.BE.cocktail.customRecipe;
 
+import com.BE.cocktail.customRecipe.dto.CustomPatchDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipePostDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipeResponseDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipeResponseDtoList;
@@ -29,6 +30,24 @@ public class CustomRecipeController {
         CustomRecipeResponseDtoList customRecipeResponseDtoList = customRecipeService.findCustomRecipeList();
 
         return ResponseEntity.ok(customRecipeResponseDtoList);
+    }
+
+
+    @PatchMapping("/update/{recipe_name}")
+    public ResponseEntity<CustomRecipeResponseDto> updateCustomRecipe(@PathVariable("recipe_name") String name,
+                                                                      @RequestBody CustomPatchDto customPatchDto) {
+
+        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.updateCustomRecipe(name, customPatchDto);
+
+        return ResponseEntity.ok(customRecipeResponseDto);
+    }
+
+    @DeleteMapping("/delete/{recipe_name}")
+    public ResponseEntity<Void> deleteCustomRecipe(@PathVariable("recipe_name") String name) {
+
+        customRecipeService.deleteCustomRecipe(name);
+
+        return ResponseEntity.noContent().build();
     }
 
 

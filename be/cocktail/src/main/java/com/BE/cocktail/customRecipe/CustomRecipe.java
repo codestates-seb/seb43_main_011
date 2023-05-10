@@ -1,10 +1,15 @@
 package com.BE.cocktail.customRecipe;
 
+import com.BE.cocktail.customRecipe.dto.CustomPatchDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipePostDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,7 +40,7 @@ public class CustomRecipe {
     private String amount;
 
     @Column(nullable = false)
-    private boolean status;
+    private boolean status = true;
 
 //    @Column(nullable = false)
     private Long memberId;
@@ -43,6 +48,7 @@ public class CustomRecipe {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "LAST_MODIFIED_AT")
     private LocalDateTime modifiedAt;
 
     private LocalDateTime deletedAt;
@@ -60,4 +66,5 @@ public class CustomRecipe {
 
         return customRecipe;
     }
+
 }
