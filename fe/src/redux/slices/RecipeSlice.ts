@@ -7,6 +7,7 @@ export interface recipeCard {
   title: string;
   image: string;
   description: string;
+  ingredient: string[];
 }
 
 const initialState: Recipes = {
@@ -16,6 +17,7 @@ const initialState: Recipes = {
         title: "미도리 샤워",
         image: "../../images/cocktail.png",
         description: "미도리가 샤워하면\n미도리 샤워",
+        ingredient: ["미도리", "스윗 앤 샤워믹스"],
       },
     ],
   },
