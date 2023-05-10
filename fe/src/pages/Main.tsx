@@ -120,7 +120,14 @@ export default function Main() {
         ) : pathName === "/search" ? (
           <>
             {Object.keys(recipeList).map((key: string, i) => {
-              return <CardList list={recipeList[key]} category={key} key={i} />;
+              return (
+                <CardList
+                  list={recipeList[key]}
+                  category={key}
+                  key={i}
+                  isSearch={pathName === "/search"}
+                />
+              );
             })}
           </>
         ) : (
