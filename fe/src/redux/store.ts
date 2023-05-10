@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import SideView from "./slices/SideView";
-import userReducer from "./slices/UserSlice";
-import detailReducer from "./detailSlice";
+
+import isNavOpen from "./slices/isNavOpenSlice";
+import RecipeList from "./slices/RecipeSlice";
 
 const store = configureStore({
   reducer: {
-    sideView: SideView,
-    user: userReducer,
-    deltail: detailReducer,
+    isNavOpen: isNavOpen,
+    recipeList: RecipeList,
   },
 });
 

@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import exImage from "../images/ex3.jpeg";
-import { AiFillPlusCircle } from "react-icons/ai";
+import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai"; // AiFillPlusCircle;
+import { TiDelete } from "react-icons/ti";
+import { useState } from "react";
 
 const CocktailRegistration = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
   return (
     <Container>
       <EditForm>
@@ -22,6 +33,7 @@ const CocktailRegistration = () => {
             <SelectLine>
               <ListType>종류 :</ListType>
               <InputType placeholder=" 종류를 선택해주세요"></InputType>
+              <DeleteButton />
             </SelectLine>
             <SelectLine>
               <ListAmount>수량 :</ListAmount>
@@ -41,7 +53,12 @@ const CocktailRegistration = () => {
           </SelectList>
 
           <DivisionLine>
-            <PlusIcon />
+            <IconContainer
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              {isHovered ? <FillIcon /> : <OutIcon />}
+            </IconContainer>
           </DivisionLine>
 
           <RecipeLabel>레시피를 단계별로 설명해 주세요</RecipeLabel>
@@ -61,9 +78,13 @@ const CocktailRegistration = () => {
 
 export default CocktailRegistration;
 
+const IconContainer = styled.div`
+  display: inline-block;
+`;
+
 const UnitSelector = styled.select`
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 5px;
   width: 5rem;
   height: 1.5rem;
   border: 0.5px solid gray;
@@ -140,7 +161,8 @@ const InputName = styled.input`
 const InputType = styled.input`
   margin: 0;
   padding: 5px;
-  width: 40rem;
+  width: 39.5rem;
+  margin-right: 1rem;
   height: 1.5rem;
   border: 0.5px solid gray;
   border-radius: 5px;
@@ -152,7 +174,7 @@ const InputType = styled.input`
 const InputAmount = styled.input`
   margin-right: 1rem;
   padding: 5px;
-  width: 34rem;
+  width: 33.5rem;
   height: 1.5rem;
   border: 0.5px solid gray;
   border-radius: 5px;
@@ -212,7 +234,7 @@ const ListAmount = styled.label`
 const EditForm = styled.div`
   margin-top: 60px;
   width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능
-  height: 100%;
+  min-height: 100%;
   border-right: 1px solid lightgray;
   border-left: 1px solid lightgray;
   box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2); /* 그림자 속성 추가 */
@@ -227,19 +249,9 @@ const BottomInfo = styled.div`
   width: 50rem;
 `;
 
-const SelectList = styled.div`
-  height: 6rem;
-  margin-bottom: 20px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-`;
-
 const SelectLine = styled.div`
   margin: 5px;
+  margin-left: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -265,10 +277,46 @@ const SubmitButton = styled.button`
   }
 `;
 
-const PlusIcon = styled(AiFillPlusCircle)`
+const DeleteButton = styled(TiDelete)`
+  font-size: 1.5rem;
+  color: red;
+  display: none;
+  &:hover {
+    cursor: pointer;
+    color: #5d5d5d;
+  }
+`;
+
+const SelectList = styled.div`
+  height: 6rem;
+  margin-bottom: 20px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    ${DeleteButton} {
+      display: block;
+    }
+  }
+`;
+
+const OutIcon = styled(AiOutlinePlus)`
   font-size: 2rem;
   color: #96a5ff;
-  /* display: block; */
+  &:hover {
+    cursor: pointer;
+    color: #5d5d5d;
+  }
+`;
+
+const FillIcon = styled(AiFillPlusCircle)`
+  font-size: 2rem;
+  color: #96a5ff;
   &:hover {
     cursor: pointer;
     color: #5d5d5d;

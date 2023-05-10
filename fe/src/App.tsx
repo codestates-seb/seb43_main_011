@@ -2,10 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import GlobalStyle from "./components/style/GlobalStyles";
 import Main from "./pages/Main";
 import Layout from "./pages/Layout";
-import DetailPage from "./pages/DetailPage";
 import LoginPage from "./pages/LoginPage";
 import Signup from "./pages/Signup";
+import DetailPage from "./pages/DetailPage";
 import CocktailRegistration from "./pages/CocktailRegistration";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </>
   );

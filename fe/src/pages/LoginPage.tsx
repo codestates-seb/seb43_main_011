@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/UserSlice";
 import axios from "axios";
 
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -16,12 +17,17 @@ const Container = styled.div`
   background-image: url(${loginImg});
   background-size: contain;
   background-position: left;
+  background-repeat: no-repeat;
 `;
 
 const ImageWrapper = styled.div`
   flex: 1;
   background-size: cover;
   background-repeat: no-repeat;
+`;
+
+const Kakao = styled(RiKakaoTalkFill)`
+  color: white;
 `;
 
 const LoginWrapper = styled.div`
