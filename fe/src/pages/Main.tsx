@@ -77,30 +77,20 @@ export default function Main() {
       const data =
         path === "searched"
           ? {
-              regular: res.data.regular.filter((e: recipeCard) =>
-                e.ingredient.includes(searchValue),
+              regular: res.data.regular.filter(
+                (e: recipeCard) =>
+                  e.ingredient.includes(searchValue) ||
+                  e.title.includes(searchValue),
               ),
-              custom: res.data.custom.filter((e: recipeCard) =>
-                e.ingredient.includes(searchValue),
+              custom: res.data.custom.filter(
+                (e: recipeCard) =>
+                  e.ingredient.includes(searchValue) ||
+                  e.title.includes(searchValue),
               ),
             }
           : res.data;
       dispatch(upDate(data));
     });
-    // } else if (path === "search") {
-    //   const [searchParams, setSearchParams] = useSearchParams();
-    //   const value = searchParams.get("value");
-    //   const params = { ingredient: [value] };
-    //   axios
-    //     .get(`http://localhost:4000/searched`, {
-    //       params,
-    //     })
-    //     .then((res) => {
-    //       const data = res.data;
-    //       console.log(data);
-    //       dispatch(upDate(data));
-    //     });
-    // }
   }, [pathName, searchValue]);
   return (
     <>
