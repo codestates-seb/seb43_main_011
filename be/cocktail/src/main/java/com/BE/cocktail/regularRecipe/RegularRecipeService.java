@@ -32,12 +32,9 @@ public class RegularRecipeService {
 
         List<RegularRecipe> regularRecipeList = RegularRecipe.listOf(createdto);
 
-        for (RegularRecipe regularRecipe:regularRecipeList) {
-            regularRecipeRepository.save(regularRecipe);
-        }
+        regularRecipeRepository.saveAll(regularRecipeList);
 
         return RegularRecipeCreateResponseDto.of(regularRecipeList);
-
     }
     @Transactional(readOnly = true)
     public RegularRecipeMultiResponseDto findAllRecipes() {
