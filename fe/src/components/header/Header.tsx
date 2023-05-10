@@ -2,8 +2,9 @@ import styled from "styled-components";
 import logo from "../../images/logo.png";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavController from "./NavController";
+import { useState } from "react";
 
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
@@ -77,7 +78,17 @@ const MenuItem = styled(Link)`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
   const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
+  const [searchText, setSearchText] = useState("");
+  const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchText(e.target.value);
+
+  const searchOnSumbitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchText !== "") {
+      navigate(`/search?value=${searchText}`);
+    }
+  };
   return (
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
@@ -90,7 +101,13 @@ const Header = () => {
           <p>
             <SearchIcon />
           </p>
-          <SearchInput type="text" placeholder="오늘의 칵테일은?" />
+          <SearchInput
+            type="text"
+            placeholder="오늘의 칵테일은?"
+            onChange={searchOnChangeHandle}
+            onKeyUp={searchOnSumbitHandle}
+            value={searchText}
+          />
         </SearchContainer>
 
         <Menu>

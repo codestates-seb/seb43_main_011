@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import Card from "../components/card/Card";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import CardList from "../components/card/CardList";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect } from "react";
 import axios from "axios";
 import { upDate } from "../redux/slices/RecipeSlice";
+import type { recipeCard } from "../redux/slices/RecipeSlice";
 
 const RecipesContainer = styled.div`
   min-height: 100vh;
@@ -53,17 +54,19 @@ const CardsRow = styled.div`
 
 export default function Main() {
   const pathName = useLocation().pathname;
+  console.log(pathName);
 
   const dispatch = useAppDispatch();
   const recipeList = useAppSelector((state) => state.recipeList.recipes);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchValue = searchParams.get("value") ?? "";
   useEffect(() => {
     let path: string;
     switch (pathName) {
       case "/custom":
         path = "custom";
         break;
-      case "/searched":
+      case "/search":
         path = "searched";
         break;
       default:
@@ -71,10 +74,34 @@ export default function Main() {
         break;
     }
     axios.get(`http://localhost:4000/${path}`).then((res) => {
-      const data = res.data;
+      const data =
+        path === "searched"
+          ? {
+              regular: res.data.regular.filter((e: recipeCard) =>
+                e.ingredient.includes(searchValue),
+              ),
+              custom: res.data.custom.filter((e: recipeCard) =>
+                e.ingredient.includes(searchValue),
+              ),
+            }
+          : res.data;
       dispatch(upDate(data));
     });
-  }, [pathName]);
+    // } else if (path === "search") {
+    //   const [searchParams, setSearchParams] = useSearchParams();
+    //   const value = searchParams.get("value");
+    //   const params = { ingredient: [value] };
+    //   axios
+    //     .get(`http://localhost:4000/searched`, {
+    //       params,
+    //     })
+    //     .then((res) => {
+    //       const data = res.data;
+    //       console.log(data);
+    //       dispatch(upDate(data));
+    //     });
+    // }
+  }, [pathName, searchValue]);
   return (
     <>
       <RecipesContainer>
@@ -100,7 +127,7 @@ export default function Main() {
                 })}
             </CardsRow>
           </>
-        ) : pathName === "/searched" ? (
+        ) : pathName === "/search" ? (
           <>
             {Object.keys(recipeList).map((key: string, i) => {
               return <CardList list={recipeList[key]} category={key} key={i} />;
