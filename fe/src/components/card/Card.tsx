@@ -80,6 +80,7 @@ const HiddenText = styled.p`
   position: absolute;
   bottom: ${(props: LineNumber) => props.line * 2.5 + 1}rem;
   right: -300%;
+  text-align: end;
   transition: right 0.35s
     ${(props: LineNumber) => Math.abs(props.line - props.leng) * 0.2}s;
 `;

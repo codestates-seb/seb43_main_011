@@ -34,14 +34,21 @@ const CategoryBox = styled.div`
     margin-bottom: 4px;
   }
 `;
-interface isTwo {
+interface RowInterface {
   isTwo: boolean;
+  isSearch?: boolean;
 }
-const CardsRow = styled.div`
+const CardsRow = styled.div<RowInterface>`
   margin: 20px 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(${(props: isTwo) => (props.isTwo ? 2 : 1)}, 1fr);
+  ${(props) =>
+    props.isSearch
+      ? ""
+      : ` grid-template-rows: repeat(
+    ${(props: RowInterface) => (props.isTwo ? 2 : 1)},
+    1fr
+  )`};
   grid-gap: 30px;
   place-items: center;
 `;
@@ -65,9 +72,10 @@ const CardsPageNationButton = styled.button`
 interface ListProps {
   list: recipeCard[];
   category: string;
+  isSearch?: boolean;
 }
 
-export default function CardList({ list, category }: ListProps) {
+export default function CardList({ list, category, isSearch }: ListProps) {
   const [cardsPageNum, setCardsPageNum] = useState(1);
 
   const categoryText =
@@ -96,7 +104,7 @@ export default function CardList({ list, category }: ListProps) {
         <div className="center"></div>
         <div className="divider"></div>
       </CategoryBox>
-      <CardsRow isTwo={Number(category) < 2 ? false : true}>
+      <CardsRow isTwo={Number(category) < 2 ? false : true} isSearch={isSearch}>
         {showList.map((recipe, i) => {
           return (
             <Card
