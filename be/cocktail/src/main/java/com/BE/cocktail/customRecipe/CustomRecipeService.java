@@ -71,7 +71,7 @@ public class CustomRecipeService {
 
     public void deleteCustomRecipe(Long id) {
         CustomRecipe existingRecipe = customRecipeRepository.findById(id)
-                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR400));
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR403));
 
         if (existingRecipe.isDeleted()) {
             throw new CocktailException(CocktailRtnConsts.ERR404);
