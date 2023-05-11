@@ -10,7 +10,9 @@ public enum CocktailRtnConsts {
     //NomalResponseMode
     NRM000(CocktailRtnGrp.Success, 201, "응답성공"),
 
-    NRM001(CocktailRtnGrp.Success, 200, "레시피가 성공적으로 삭제되었습니다."),
+    SCC202(CocktailRtnGrp.Success, 202, "레시피가 성공적으로 삭제되었습니다."),
+
+    SCC203(CocktailRtnGrp.Success, 203, "레시피 등록이 성공적으로 완료되었습니다."),
 
     ERR400(CocktailRtnGrp.Validation, 400, "없는 레시피 이름입니다"),
 
