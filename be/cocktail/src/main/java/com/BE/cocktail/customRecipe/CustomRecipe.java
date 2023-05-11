@@ -25,44 +25,43 @@ public class CustomRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
+//    @Column(nullable = false)
+    private Long memberId;
+
     @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private String recipe;
 
+    @Column(nullable = false)
     private String ingredient;
 
-    private String amount;
-
     @Column(nullable = false)
-    private boolean status = true;
-
-//    @Column(nullable = false)
-    private Long memberId;
+    private boolean deleted;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "LAST_MODIFIED_AT")
-    private LocalDateTime modifiedAt;
+    @Column(nullable = false, name = "LAST_MODIFIED_AT")
+    private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    private LocalDateTime deletedAt;
 
 
     public static CustomRecipe of(CustomRecipePostDto customRecipePostDto) {
         CustomRecipe customRecipe = new CustomRecipe();
 
+        customRecipe.setImageUrl(customRecipePostDto.getImageUrl());
         customRecipe.setName(customRecipePostDto.getName());
         customRecipe.setDescription(customRecipePostDto.getDescription());
         customRecipe.setRecipe(customRecipePostDto.getRecipe());
         customRecipe.setIngredient(customRecipePostDto.getIngredient());
-        customRecipe.setAmount(customRecipePostDto.getAmount());
-        customRecipe.setImageUrl(customRecipePostDto.getImageUrl());
 
         return customRecipe;
     }

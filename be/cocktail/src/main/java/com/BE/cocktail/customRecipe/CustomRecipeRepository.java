@@ -5,7 +5,6 @@ import java.util.List;
 
 public interface CustomRecipeRepository extends JpaRepository<CustomRecipe, Long> {
 
-    CustomRecipe findByName(String name);
-    List<CustomRecipe> findByStatusTrue();
-
+//    CustomRecipe findByName(String name);
+    List<CustomRecipe> findByDeletedFalse();
 }
