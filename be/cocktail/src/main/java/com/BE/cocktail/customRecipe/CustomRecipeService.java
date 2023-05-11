@@ -1,9 +1,11 @@
 package com.BE.cocktail.customRecipe;
 
+import com.BE.cocktail.apiResponse.CocktailRtnConsts;
 import com.BE.cocktail.customRecipe.dto.CustomPatchDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipePostDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipeResponseDto;
 import com.BE.cocktail.customRecipe.dto.CustomRecipeResponseDtoList;
+import com.BE.cocktail.exception.CocktailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -61,10 +63,27 @@ public class CustomRecipeService {
     }
 
 
+//    public void deleteCustomRecipe(Long id) {
+//        CustomRecipe existingRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+//        existingRecipe.setDeleted(true);
+//        customRecipeRepository.save(existingRecipe);
+//    }
+
     public void deleteCustomRecipe(Long id) {
-        CustomRecipe existingRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        CustomRecipe existingRecipe = customRecipeRepository.findById(id)
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR400));
+
+        if (existingRecipe.isDeleted()) {
+            throw new CocktailException(CocktailRtnConsts.ERR404);
+        }
+
         existingRecipe.setDeleted(true);
+        existingRecipe.setModifiedAt(LocalDateTime.now());
         customRecipeRepository.save(existingRecipe);
+
+        // 삭제가 성공적으로 이루어졌을 때는 성공 메시지를 반환
+        throw new CocktailException(CocktailRtnConsts.NRM001);
     }
+
 
 }
