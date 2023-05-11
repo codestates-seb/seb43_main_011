@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { RecipesContainer } from "./Main";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { update } from "../redux/slices/RecipeSlice";
-import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import Card from "../components/card/Card";
-import axios from "axios";
+import { useQuery } from "react-query";
+import { getCards, Recipes } from "../utils/query";
+
 const CustomGuide = styled.div`
   display: flex;
 `;
@@ -41,13 +40,9 @@ const CardsRow = styled.div`
 `;
 
 export default function CustomRecipes() {
-  const recipeCards = useAppSelector((state) => state.recipeList.recipes);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    axios.get(`http://localhost:4000/custom`).then((res) => {
-      dispatch(update(res.data));
-    });
-  }, []);
+  const path = "/custom";
+  const { data } = useQuery<Recipes>(["cards", path], () => getCards(path));
+
   return (
     <RecipesContainer>
       <CustomGuide>
@@ -55,8 +50,8 @@ export default function CustomRecipes() {
         <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
       </CustomGuide>
       <CardsRow>
-        {recipeCards.list &&
-          recipeCards.list.map((recipe, i) => {
+        {data?.list &&
+          data.list.map((recipe, i) => {
             return (
               <Card
                 key={i}

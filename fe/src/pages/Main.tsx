@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useEffect } from "react";
-import axios from "axios";
-import { update } from "../redux/slices/RecipeSlice";
+import { useQuery } from "react-query";
+import { Recipes, getCards } from "../utils/query";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;
@@ -22,23 +20,18 @@ const GuideText = styled.div`
 `;
 
 export default function Main() {
-  const dispatch = useAppDispatch();
-  const recipeList = useAppSelector((state) => state.recipeList.recipes);
-
-  useEffect(() => {
-    axios.get(`http://localhost:4000/regular`).then((res) => {
-      dispatch(update(res.data));
-    });
-  }, []);
+  const path = "/regular";
+  const { data } = useQuery<Recipes>(["cards", path], () => getCards(path));
   return (
     <>
       <RecipesContainer>
         <GuideText>정규 레시피</GuideText>
-        {Object.keys(recipeList).map((key: string, i) => {
-          return (
-            <CardList list={recipeList[key]} category={key.slice(-1)} key={i} />
-          );
-        })}
+        {data &&
+          Object.keys(data).map((key: string, i) => {
+            return (
+              <CardList list={data[key]} category={key.slice(-1)} key={i} />
+            );
+          })}
       </RecipesContainer>
     </>
   );

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
-import { RecipeCard } from "../../redux/slices/RecipeSlice";
+import { RecipeCard } from "../../utils/query";
 
 const CardsContainer = styled.div`
   width: 100%;

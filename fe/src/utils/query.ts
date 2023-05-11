@@ -8,10 +8,24 @@ export interface RecipeCard {
   description: string;
   ingredient: string[];
 }
-export const getCards = async (path: string) => {
+export const getCards = async (path: string, searchValue?: string) => {
   const response: AxiosResponse<Recipes> = await axios.get(
     `http://localhost:4000${path}`,
   );
-  console.log(response);
-  return response.data;
+  const data =
+    path === "/searched" && searchValue
+      ? {
+          regular: response.data.regular.filter(
+            (card: RecipeCard) =>
+              card.ingredient.includes(searchValue) ||
+              card.title.includes(searchValue),
+          ),
+          custom: response.data.custom.filter(
+            (card: RecipeCard) =>
+              card.ingredient.includes(searchValue) ||
+              card.title.includes(searchValue),
+          ),
+        }
+      : response.data;
+  return data;
 };
