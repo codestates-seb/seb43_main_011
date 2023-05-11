@@ -1,8 +1,10 @@
 package com.BE.cocktail.customRecipe.dto;
 
+import com.BE.cocktail.ingredient.IngredientRequest;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Getter
 public class CustomRecipePostDto {
@@ -21,10 +23,4 @@ public class CustomRecipePostDto {
 
     @NotBlank
     private String ingredient;
-
-    @NotBlank
-    private String amount;
-
-
-
 }

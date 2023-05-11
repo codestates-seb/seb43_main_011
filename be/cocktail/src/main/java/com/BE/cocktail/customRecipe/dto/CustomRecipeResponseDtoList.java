@@ -19,7 +19,7 @@ public class CustomRecipeResponseDtoList {
 
 
     public static CustomRecipeResponseDtoList of(List<CustomRecipe> all) {
-        CustomRecipeResponseDtoList customRecipeResponseDtoList = new CustomRecipeResponseDtoList();
+        CustomRecipeResponseDtoList customRecipeList = new CustomRecipeResponseDtoList();
         List<CustomRecipeResponseDto> customRecipeResponseDtos = new ArrayList<>();
 
         for (int i = 0; i < all.size(); i++) {
@@ -27,8 +27,8 @@ public class CustomRecipeResponseDtoList {
             customRecipeResponseDtos.add(customRecipeResponseDto);
         }
 
-        customRecipeResponseDtoList.setCustomRecipeResponseDtoList(customRecipeResponseDtos);
+        customRecipeList.setCustomRecipeResponseDtoList(customRecipeResponseDtos);
 
-        return customRecipeResponseDtoList;
+        return customRecipeList;
     }
 }

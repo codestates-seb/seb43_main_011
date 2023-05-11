@@ -33,19 +33,19 @@ public class CustomRecipeController {
     }
 
 
-    @PatchMapping("/update/{recipe_name}")
-    public ResponseEntity<CustomRecipeResponseDto> updateCustomRecipe(@PathVariable("recipe_name") String name,
+    @PatchMapping("/update/{recipe_id}")
+    public ResponseEntity<CustomRecipeResponseDto> updateCustomRecipe(@PathVariable("recipe_id") Long id,
                                                                       @RequestBody CustomPatchDto customPatchDto) {
 
-        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.updateCustomRecipe(name, customPatchDto);
+        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.updateCustomRecipe(id, customPatchDto);
 
         return ResponseEntity.ok(customRecipeResponseDto);
     }
 
-    @DeleteMapping("/delete/{recipe_name}")
-    public ResponseEntity<Void> deleteCustomRecipe(@PathVariable("recipe_name") String name) {
+    @DeleteMapping("/delete/{recipe_id}")
+    public ResponseEntity<Void> deleteCustomRecipe(@PathVariable("recipe_id") Long id) {
 
-        customRecipeService.deleteCustomRecipe(name);
+        customRecipeService.deleteCustomRecipe(id);
 
         return ResponseEntity.noContent().build();
     }

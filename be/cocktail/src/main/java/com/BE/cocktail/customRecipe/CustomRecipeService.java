@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +27,15 @@ public class CustomRecipeService {
 
 
     public CustomRecipeResponseDtoList findCustomRecipeList() {
-        List<CustomRecipe> customRecipeList = customRecipeRepository.findByStatusTrue();
+        List<CustomRecipe> customRecipeList = customRecipeRepository.findByDeletedFalse();
         return CustomRecipeResponseDtoList.of(customRecipeList);
     }
 
 
-    public CustomRecipeResponseDto updateCustomRecipe(String name, CustomPatchDto customPatchDto) {
+    public CustomRecipeResponseDto updateCustomRecipe(Long id, CustomPatchDto customPatchDto) {
 
-        CustomRecipe updateCustomRecipe = customRecipeRepository.findByName(name);
+        CustomRecipe updateCustomRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+
 
         if (customPatchDto.getImageUrl() != null) {
             updateCustomRecipe.setImageUrl(customPatchDto.getImageUrl());
@@ -50,9 +52,6 @@ public class CustomRecipeService {
         if (customPatchDto.getIngredient() != null) {
             updateCustomRecipe.setIngredient(customPatchDto.getIngredient());
         }
-        if (customPatchDto.getAmount() != null) {
-            updateCustomRecipe.setAmount(customPatchDto.getAmount());
-        }
 
         updateCustomRecipe.setModifiedAt(LocalDateTime.now());
 
@@ -62,10 +61,9 @@ public class CustomRecipeService {
     }
 
 
-    public void deleteCustomRecipe(String name) {
-        CustomRecipe existingRecipe = customRecipeRepository.findByName(name);
-        existingRecipe.setDeletedAt(LocalDateTime.now());
-        existingRecipe.setStatus(false);
+    public void deleteCustomRecipe(Long id) {
+        CustomRecipe existingRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        existingRecipe.setDeleted(true);
         customRecipeRepository.save(existingRecipe);
     }
 
