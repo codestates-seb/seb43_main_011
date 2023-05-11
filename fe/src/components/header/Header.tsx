@@ -79,7 +79,7 @@ const MenuItem = styled(Link)`
 
 const Header = () => {
   const navigate = useNavigate();
-  const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
+  const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);

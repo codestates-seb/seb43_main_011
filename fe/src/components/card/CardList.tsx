@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
-import type { recipeCard } from "../../redux/slices/RecipeSlice";
+import { RecipeCard } from "../../utils/query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -70,7 +70,7 @@ const CardsPageNationButton = styled.button`
 `;
 
 interface ListProps {
-  list: recipeCard[];
+  list: RecipeCard[];
   category: string;
   isSearch?: boolean;
 }

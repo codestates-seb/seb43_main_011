@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import isNavOpen from "./slices/isNavOpenSlice";
-import RecipeList from "./slices/RecipeSlice";
+import NavOpen from "./slices/NavSlice";
 
 const store = configureStore({
   reducer: {
-    isNavOpen: isNavOpen,
-    recipeList: RecipeList,
+    NavOpen: NavOpen,
   },
 });
 

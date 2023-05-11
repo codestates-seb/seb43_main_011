@@ -48,7 +48,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 export default function NavBar() {
-  const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
+  const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
