@@ -1,4 +1,4 @@
-package com.BE.cocktail.dto.utils;
+package com.BE.cocktail.dto.regularRecipe;
 
 import com.BE.cocktail.persistence.domain.regularRecipe.RegularRecipe;
 import lombok.Getter;

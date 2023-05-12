@@ -14,5 +14,5 @@ public interface CustomRecipeRepository extends JpaRepository<CustomRecipe, Long
     List<CustomRecipe> findByDeletedFalse();
 
     @Query("SELECT c FROM CustomRecipe c WHERE (c.name LIKE %:keyword% OR c.ingredient LIKE %:keyword%)")
-    Page<CustomRecipe> findAllbyKeyword(String keyword, PageRequest id);
+    Page<CustomRecipe> findAllByKeyword(String keyword, PageRequest pageRequest);
 }
