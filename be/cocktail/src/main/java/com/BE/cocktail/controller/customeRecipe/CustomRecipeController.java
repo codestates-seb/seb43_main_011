@@ -1,6 +1,7 @@
 package com.BE.cocktail.controller.customeRecipe;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
+import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.service.customRecipe.CustomRecipeService;
 import com.BE.cocktail.dto.customRecipe.CustomPatchDto;
 import com.BE.cocktail.dto.customRecipe.CustomRecipePostDto;
@@ -32,6 +33,14 @@ public class CustomRecipeController {
         CustomRecipeResponseDtoList customRecipeResponseDtoList = customRecipeService.findCustomRecipeList();
 
         return ApiResponse.ok(customRecipeResponseDtoList);
+    }
+
+    @GetMapping("/find")
+    public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> getCustomRecipePaging(@RequestParam int page, @RequestParam int size) {
+
+        MultiResponseDto<CustomRecipeResponseDto> responseDto = customRecipeService.paging(page - 1, size);
+
+        return ApiResponse.ok(responseDto);
     }
 
 
