@@ -14,7 +14,7 @@ public class RegularRecipeMultiResponseDto {
     private Map<String, List<MultiResponse>> response;
 
     public RegularRecipeMultiResponseDto() {
-        this.response = new LinkedHashMap<>();
+        this.response = new TreeMap<>();
     }
 
     public static RegularRecipeMultiResponseDto of(List<RegularRecipe> regularRecipes) {
