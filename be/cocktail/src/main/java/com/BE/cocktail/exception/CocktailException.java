@@ -1,7 +1,6 @@
 package com.BE.cocktail.exception;
 
-import com.BE.cocktail.apiResponse.CocktailRtnConsts;
-import com.BE.cocktail.apiResponse.CocktailRtnGrp;
+import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
 import lombok.Getter;
 
 @Getter
