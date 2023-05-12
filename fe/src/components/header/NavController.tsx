@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { toogle } from "../../redux/slices/isNavOpenSlice";
+import { toogle } from "../../redux/slices/NavSlice";
 
 const ControllButton = styled.button<{ isNavOpen: boolean }>`
   width: 70px;
@@ -45,7 +45,7 @@ const MovementStick = styled.span`
 `;
 
 export default function NavController() {
-  const isNavOpen = useAppSelector((state) => state.isNavOpen.value);
+  const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const dispatch = useAppDispatch();
   return (
     <ControllButton isNavOpen={isNavOpen} onClick={() => dispatch(toogle())}>

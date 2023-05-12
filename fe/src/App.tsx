@@ -7,6 +7,8 @@ import Signup from "./pages/Signup";
 import DetailPage from "./pages/DetailPage";
 import CocktailRegistration from "./pages/CocktailRegistration";
 import Error from "./pages/Error";
+import CustomRecipes from "./pages/CustomRecipes";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
@@ -15,8 +17,8 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Main />} />
-          <Route path="/custom" element={<Main />} />
-          <Route path="/search" element={<Main />} />
+          <Route path="/custom" element={<CustomRecipes />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path="/registration" element={<CocktailRegistration />} />
         </Route>
