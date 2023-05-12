@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import exImage from "../images/ex3.jpeg";
-import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai"; // AiFillPlusCircle;
+import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import React, { useRef, useState } from "react";
+import axios from "axios";
 
 const CocktailRegistration = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [recipe, setRecipe] = useState("");
+  const [recipeStep, setRecipeStep] = useState("");
 
   // 이미지 업로드/미리보기 변수/함수들
-  const imageRef = useRef<HTMLInputElement>(null); // post시 사용될 image files[0]
+  const imageRef = useRef<HTMLInputElement | null>(null); // post시 사용될 image files[0]
   const [imageUrl, setImageUrl] = useState(exImage); // 미리보기를 위한 url
 
   const onImgChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,35 +22,58 @@ const CocktailRegistration = () => {
       setImageUrl(imageUrl);
     }
   };
+  //FOAM데이터? 공부를 해봐야겠네요
 
-  //
+  // 버튼효과
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
-
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
 
-  const [selectLines, setSelectLines] = useState([{ id: 0 }]);
+  const [selectLines, setSelectLines] = useState([
+    { id: 0, stuff: "", amount: "", selectOption: "ml" },
+  ]);
+
+  // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
     const newId = selectLines.length;
-    const newSelectLines = [...selectLines, { id: newId }];
+    const newSelectLines = [
+      ...selectLines,
+      { id: newId, stuff: "", amount: "", selectOption: "" },
+    ];
     setSelectLines(newSelectLines);
   };
 
+  // X버튼을 누르면 재료등록리스트 삭제
   const handleDeleteSelectLine = (id: number) => {
     const newSelectLines = selectLines.filter((line) => line.id !== id);
     setSelectLines(newSelectLines);
   };
 
-  // const submitHandle = () => {
-  //   if (!name || !description || !recipe) {
-  //     window.alert("작성되지 않은 내용이 있습니다");
-  //   } else {
-  //     // axios
-  //   }
-  // };
+  const handleSubmitData = async () => {
+    let totalData = "";
+    selectLines.forEach((line) => {
+      // console.log("Stuff:", line.stuff);
+      // console.log("Amount:", line.amount);
+      // console.log("Select Option:", line.selectOption);
+      totalData += line.stuff + line.amount + line.selectOption + "\n";
+    });
+    const data = {
+      image: imageUrl,
+      name: name,
+      description: description,
+      stuff: totalData,
+      recipeStep: recipeStep,
+    };
+    try {
+      const response = await axios.post("http://localhost:4000/recipe", data);
+      console.log(response.data); // POST 요청에 대한 응답 데이터
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Container>
@@ -89,15 +113,47 @@ const CocktailRegistration = () => {
               <SelectList>
                 <SelectLine>
                   <ListType>종류 :</ListType>
-                  <InputType placeholder=" 종류를 선택해주세요" />
+                  <InputType
+                    placeholder=" 종류를 선택해주세요"
+                    value={line.stuff}
+                    onChange={(e) => {
+                      const newSelectLines = selectLines.map((item) =>
+                        item.id === line.id
+                          ? { ...item, stuff: e.target.value }
+                          : item,
+                      );
+                      setSelectLines(newSelectLines);
+                    }}
+                  />
                   <DeleteButton
                     onClick={() => handleDeleteSelectLine(line.id)}
                   />
                 </SelectLine>
                 <SelectLine>
                   <ListAmount>수량 :</ListAmount>
-                  <InputAmount placeholder=" 수량을 입력해주세요" />
-                  <UnitSelector>
+                  <InputAmount
+                    placeholder=" 수량을 입력해주세요"
+                    value={line.amount}
+                    onChange={(e) => {
+                      const newSelectLines = selectLines.map((item) =>
+                        item.id === line.id
+                          ? { ...item, amount: e.target.value }
+                          : item,
+                      );
+                      setSelectLines(newSelectLines);
+                    }}
+                  />
+                  <UnitSelector
+                    value={line.selectOption}
+                    onChange={(e) => {
+                      const newSelectLines = selectLines.map((item) =>
+                        item.id === line.id
+                          ? { ...item, selectOption: e.target.value }
+                          : item,
+                      );
+                      setSelectLines(newSelectLines);
+                    }}
+                  >
                     <option value="ml">ml</option>
                     <option value="개">개</option>
                     <option value="spoon">spoon</option>
@@ -130,17 +186,24 @@ const CocktailRegistration = () => {
 2.얼음을 채운 셰이커에 데킬라 블랑코 50ml, 쿠앵트로(혹은 트리플 섹) 20ml을 붓는다.
 3.라임 주스 15ml를 넣는다.
 4.잘 흔들어 마가리타 잔에 따른다."
-            value={recipe}
-            onChange={(e) => setRecipe(e.target.value)}
+            value={recipeStep}
+            onChange={(e) => setRecipeStep(e.target.value)}
           />
         </BottomInfo>
-        <SubmitButton>SUBMIT</SubmitButton>
+        <SubmitButton type="submit" onClick={handleSubmitData}>
+          SUBMIT
+        </SubmitButton>
       </EditForm>
     </Container>
   );
 };
 
 export default CocktailRegistration;
+
+const BottomInfo = styled.div`
+  text-align: center;
+  width: 50rem;
+`;
 
 const IconContainer = styled.div`
   display: inline-block;
@@ -229,6 +292,7 @@ const InputName = styled.input`
 `;
 
 const InputType = styled.input`
+  /* display: flex; */
   margin: 0;
   padding: 5px;
   width: 39.5rem;
@@ -314,17 +378,13 @@ const EditForm = styled.div`
   flex-direction: column;
 `;
 
-const BottomInfo = styled.div`
-  text-align: center;
-  width: 50rem;
-`;
-
 const SelectLine = styled.div`
   margin: 5px;
   margin-left: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative; /* 수정: 추가 */
 `;
 
 const SubmitButton = styled.button`
@@ -349,6 +409,8 @@ const SubmitButton = styled.button`
 
 const DeleteButton = styled(TiDelete)`
   font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
   color: red;
   display: none;
   &:hover {
@@ -367,7 +429,7 @@ const SelectList = styled.div`
   justify-content: center;
   align-items: flex-start;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-
+  position: relative; /* 수정: 추가 */
   &:hover {
     ${DeleteButton} {
       display: block;
