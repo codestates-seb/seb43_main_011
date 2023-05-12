@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -99,7 +98,7 @@ public class CustomRecipeService {
     }
 
     public MultiResponseDto<CustomSearchResponseDto> searchPaging(String keyword, int page, int size) {
-        Page<CustomRecipe> pages = customRecipeRepository.findAllbyKeyword(keyword, PageRequest.of(page, size, Sort.by("id").descending()));
+        Page<CustomRecipe> pages = customRecipeRepository.findAllByKeyword(keyword, PageRequest.of(page, size, Sort.by("id").descending()));
         List<CustomRecipe> customRecipes = pages.getContent();
 
         return MultiResponseDto.of(CustomSearchResponseDto.listOf(customRecipes), PageInfo.of(pages));
