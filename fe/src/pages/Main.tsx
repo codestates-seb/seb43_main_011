@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
-import { useQuery } from "react-query";
-import { RecipeCard, getCards } from "../utils/query";
 import { useMemo } from "react";
-import Card from "../components/card/Card";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;

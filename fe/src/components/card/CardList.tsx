@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
-import { RecipeCard, getCards } from "../../utils/query";
+import { getCards } from "../../utils/query";
 import { useQuery } from "react-query";
 
 const CardsContainer = styled.div`

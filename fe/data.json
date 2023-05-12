@@ -333,8 +333,7 @@
 			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
 		}
 	],
-	"searched": {
-		"regular": [
+	"resultreg": [
 			{
 			"title": "미도리 샤워",
 			"image": "../../images/cocktail.png",
@@ -385,7 +384,7 @@
 			"ingredient" : ["진", "토닉워터", "얼음", "레몬"]
 			}
 	],
-		"custom": [
+	"resultcus": [
 			{
 			"title": "솔티도그",
 			"image": "../../images/cocktail.png",
@@ -422,6 +421,5 @@
 			"description": "새콤달콤함\n저녁 노을보며 먹기 좋음",
 			"ingredient" : ["진", "레몬주스", "설탕", "탄산수", "체리 플레이버드 브랜디"]
 			}
-		]
-	}
+	]
 }
