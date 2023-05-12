@@ -1,14 +1,11 @@
 package com.BE.cocktail.service.customRecipe;
 
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
+import com.BE.cocktail.dto.customRecipe.*;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
 import com.BE.cocktail.persistence.repository.customRecipe.CustomRecipeRepository;
-import com.BE.cocktail.dto.customRecipe.CustomPatchDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipePostDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDtoList;
 import com.BE.cocktail.exception.CocktailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -99,5 +96,12 @@ public class CustomRecipeService {
         List<CustomRecipe> customRecipes = pages.getContent();
 
         return MultiResponseDto.of(CustomRecipeResponseDtoList.of(customRecipes).getCustomRecipeResponseDtoList(), PageInfo.of(pages));
+    }
+
+    public MultiResponseDto<CustomSearchResponseDto> searchPaging(String keyword, int page, int size) {
+        Page<CustomRecipe> pages = customRecipeRepository.findAllbyKeyword(keyword, PageRequest.of(page, size, Sort.by("id").descending()));
+        List<CustomRecipe> customRecipes = pages.getContent();
+
+        return MultiResponseDto.of(CustomSearchResponseDto.listOf(customRecipes), PageInfo.of(pages));
     }
 }
