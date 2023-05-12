@@ -7,13 +7,12 @@ import com.BE.cocktail.dto.customRecipe.CustomPatchDto;
 import com.BE.cocktail.dto.customRecipe.CustomRecipePostDto;
 import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDto;
 import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDtoList;
-import com.BE.cocktail.exception.CocktailException;
+import com.BE.cocktail.dto.regularRecipe.exception.CocktailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

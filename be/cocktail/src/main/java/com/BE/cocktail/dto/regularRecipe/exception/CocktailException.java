@@ -1,4 +1,4 @@
-package com.BE.cocktail.exception;
+package com.BE.cocktail.dto.regularRecipe.exception;
 
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
 import lombok.Getter;

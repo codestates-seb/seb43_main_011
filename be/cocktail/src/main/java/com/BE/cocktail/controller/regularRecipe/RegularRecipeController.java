@@ -23,8 +23,8 @@ public class RegularRecipeController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping(value = "/regular/findAll")
-    public ApiResponse<RegularRecipeResponses> findRecipes() {
+    @GetMapping(value = "/regular/finAll/{alc_vol}")
+    public ApiResponse<RegularRecipeResponses> findRecipes(@PathVariable("alc_vol") Integer alcVol) {
 
         RegularRecipeResponses responseDto = regularRecipeService.findAll();
 
