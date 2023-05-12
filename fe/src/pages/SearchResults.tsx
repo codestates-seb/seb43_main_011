@@ -1,31 +1,50 @@
 import { RecipesContainer } from "./Main";
-import CardList from "../components/card/CardList";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Recipes, getCards } from "../utils/query";
+import { Recipes, getSearchResults } from "../utils/query";
+import Card from "../components/card/Card";
+import SearchResultTab from "../components/card/SearchResultsTab";
+import styled from "styled-components";
+import { useMemo, useState } from "react";
+import SearchedRecipe from "../components/card/SearchedRecipe";
+import exImage from "./../images/error.jpg";
+
+const CardListArea = styled.div`
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+  place-items: center;
+`;
 
 export default function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchValue = searchParams.get("value") ?? "";
-  const path = "/searched";
-  const { data } = useQuery<Recipes>(["cards", path, searchValue], () =>
-    getCards(path, searchValue),
-  );
+  const searchValue = searchParams.get("value") ?? ""; // ?value=얼음
+
+  const category = useMemo(() => ["resultreg", "resultcus"], []);
+  const [path, setPath] = useState(category[0]);
+  const { data } = useQuery([path], () => getSearchResults(path, searchValue));
+  console.log(data);
   return (
     <RecipesContainer>
-      {data &&
-        Object.keys(data).map((key: string, i) => {
+      <SearchResultTab tabs={category} path={path} setPath={setPath} />
+      <CardListArea>
+        {data?.map((card, i) => {
           return (
-            data[key].length !== 0 && (
-              <CardList
-                list={data[key]}
-                category={key}
-                key={i}
-                isSearch={true}
-              />
-            )
+            <SearchedRecipe
+              key={i}
+              name={card.title}
+              image={card.image}
+              ingredient={card.ingredient}
+            />
           );
         })}
+        <SearchedRecipe
+          name={"어쩌구 칵테일"}
+          image={exImage}
+          ingredient={"재료1\n재료2\n재료3"}
+        />
+      </CardListArea>
     </RecipesContainer>
   );
 }

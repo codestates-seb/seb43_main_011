@@ -3,7 +3,7 @@ import { RecipesContainer } from "./Main";
 import { Link } from "react-router-dom";
 import Card from "../components/card/Card";
 import { useQuery } from "react-query";
-import { getCards, Recipes } from "../utils/query";
+import { getCards, Recipes, RecipeCard } from "../utils/query";
 
 const CustomGuide = styled.div`
   display: flex;
@@ -40,8 +40,8 @@ const CardsRow = styled.div`
 `;
 
 export default function CustomRecipes() {
-  const path = "/custom";
-  const { data } = useQuery<Recipes>(["cards", path], () => getCards(path));
+  const path = "custom";
+  const { data } = useQuery(["custom", path], () => getCards(path));
 
   return (
     <RecipesContainer>
@@ -50,17 +50,16 @@ export default function CustomRecipes() {
         <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
       </CustomGuide>
       <CardsRow>
-        {data?.list &&
-          data.list.map((recipe, i) => {
-            return (
-              <Card
-                key={i}
-                title={recipe.title}
-                image={recipe.image}
-                description={recipe.description}
-              />
-            );
-          })}
+        {data?.map((recipe, i) => {
+          return (
+            <Card
+              key={i}
+              title={recipe.title}
+              image={recipe.image}
+              description={recipe.description}
+            />
+          );
+        })}
       </CardsRow>
     </RecipesContainer>
   );
