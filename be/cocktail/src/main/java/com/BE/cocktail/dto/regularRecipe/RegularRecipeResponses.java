@@ -1,7 +1,6 @@
 package com.BE.cocktail.dto.regularRecipe;
 
 import com.BE.cocktail.persistence.domain.regularRecipe.RegularRecipe;
-import com.BE.cocktail.dto.utils.MultiResponse;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,35 +8,35 @@ import java.util.*;
 
 @Setter
 @Getter
-public class RegularRecipeMultiResponseDto {
+public class RegularRecipeResponses {
 
-    private Map<String, List<MultiResponse>> response;
+    private Map<String, List<RegularRecipeResponse>> response;
 
-    public RegularRecipeMultiResponseDto() {
+    public RegularRecipeResponses() {
         this.response = new TreeMap<>();
     }
 
-    public static RegularRecipeMultiResponseDto of(List<RegularRecipe> regularRecipes) {
-        RegularRecipeMultiResponseDto responseDto = new RegularRecipeMultiResponseDto();
+    public static RegularRecipeResponses of(List<RegularRecipe> regularRecipes) {
+        RegularRecipeResponses response = new RegularRecipeResponses();
 
         // 알콜 도수별 그룹화 및 중복된 이름 필터링
         for (RegularRecipe regularRecipe : regularRecipes) {
             String name = regularRecipe.getName();
             String alcoholRange = getAlcoholRange(regularRecipe.getAlcVol());
-            MultiResponse regularRecipeDto = MultiResponse.of(regularRecipe);
+            RegularRecipeResponse regularRecipeDto = RegularRecipeResponse.of(regularRecipe);
 
-            if (!responseDto.getResponse().containsKey(alcoholRange)) {
-                responseDto.getResponse().put(alcoholRange, new ArrayList<>());
+            if (!response.getResponse().containsKey(alcoholRange)) {
+                response.getResponse().put(alcoholRange, new ArrayList<>());
             }
-            List<MultiResponse> existingResponses = responseDto.getResponse().get(alcoholRange);
+            List<RegularRecipeResponse> existingResponses = response.getResponse().get(alcoholRange);
             boolean nameAlreadyExists = existingResponses.stream()
-                    .anyMatch(response -> response.getName().equals(name));
+                    .anyMatch(responseDto -> responseDto.getName().equals(name));
 
             if (!nameAlreadyExists) {
                 existingResponses.add(regularRecipeDto);
             }
         }
-        return responseDto;
+        return response;
     }
     // 도수별로 지정해주는 메서드
     private static String getAlcoholRange(Integer alcoholContent) {
