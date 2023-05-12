@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { BsBookmarkStar } from "react-icons/bs";
+import axios from "axios";
+import { useState, useEffect } from "react";
 //BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
@@ -13,9 +15,9 @@ const Container = styled.div`
 
 const PhotoArea = styled.div`
   display: flex;
-  width: 433px;
-  height: 580px;
-  background-color: #96a5ff;
+  width: 20rem;
+  height: 20rem;
+  /* background-color: #96a5ff; */
   border-radius: 10px;
 `;
 
@@ -103,35 +105,65 @@ const Button = styled.button`
 `;
 
 export default function DetailPage() {
+  const [recipeData, setRecipeData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/recipe");
+        setRecipeData(response.data[0]);
+      } catch (error) {
+        // console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(recipeData);
   return (
     <Container>
-      <PhotoArea>사진</PhotoArea>
+      {recipeData && (
+        <PhotoArea>
+          {" "}
+          <img src={recipeData["image"]} alt="Recipe" />
+        </PhotoArea>
+      )}
+
+      {/* <PhotoArea>사진</PhotoArea> */}
       <DetailArea>
         <TitleArea>
-          <Title>롱 아일랜드 아이스티</Title>
+          {recipeData && <Title>{recipeData["name"]}</Title>}
+          {/* <Title>롱 아일랜드 아이스티</Title> */}
           <Bookmarker>
             <BsBookmarkStar size="30" color="#96A5FF" />
           </Bookmarker>
         </TitleArea>
         <TitleExplanation>
-          술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛
+          술기운이 오래가는 콜라, 레몬이 섞인 묘한
+          {recipeData && recipeData["description"]}
         </TitleExplanation>
         <Title>재료</Title>
+        {/* 각각줄바꿈일어나야함. */}
         <Ingredient>
-          <IngredientItems>보드카 15ml</IngredientItems>
+          {recipeData && (
+            <IngredientItems>{recipeData["stuff"]}</IngredientItems>
+          )}
+          {/* <IngredientItems>보드카 15ml</IngredientItems>
           <IngredientItems>데킬라 15ml</IngredientItems>
           <IngredientItems>레몬 주스 30ml</IngredientItems>
-          <IngredientItems>콜라 Full up</IngredientItems>
+          <IngredientItems>콜라 Full up</IngredientItems> */}
         </Ingredient>
         <Title>RECIPE</Title>
         <Recipe>
-          <RecipeItems>450ml 잔에 얼음을 가득 채워주세요.</RecipeItems>
+          {/* 개행문자마다 줄바꿈 */}
+          {recipeData && <RecipeItems>{recipeData["recipeStep"]}</RecipeItems>}
+          {/* <RecipeItems>450ml 잔에 얼음을 가득 채워주세요.</RecipeItems>
           <RecipeItems>
             얼음이 들어있는 잔에 데킬라, 보드카를 15ml씩 넣어주세요.
           </RecipeItems>
           <RecipeItems>술이 부어진 잔에 레몬 주스 30ml 넣어주세요.</RecipeItems>
           <RecipeItems>마지막으로 잔에 콜라를 가득 부어주세요.</RecipeItems>
-          <RecipeItems>살짝 섞어주면 완성입니다!</RecipeItems>
+          <RecipeItems>살짝 섞어주면 완성입니다!</RecipeItems> */}
         </Recipe>
       </DetailArea>
       <WriterButtons>
