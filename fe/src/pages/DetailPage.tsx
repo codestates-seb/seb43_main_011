@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { BsBookmarkStar } from "react-icons/bs";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import axios, { AxiosResponse } from "axios";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 //BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
@@ -104,50 +105,62 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+interface RecipeData {
+  image: string;
+  name: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
+
+const fetchRecipe = async () => {
+  const response: AxiosResponse<RecipeData[]> = await axios.get(
+    "http://localhost:4000/recipe",
+  );
+  return response.data[0];
+};
+
 export default function DetailPage() {
-  const [recipeData, setRecipeData] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/recipe");
-        setRecipeData(response.data[0]);
-      } catch (error) {
-        // console.error(error);
-      }
-    };
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useQuery<RecipeData>(
+    ["recipe"],
+    fetchRecipe,
+  );
 
-    fetchData();
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) {
+    console.error(error);
+    navigate("/Error");
+  }
 
-  console.log(recipeData);
+  console.log(data);
+
   return (
     <Container>
-      {recipeData && (
+      {data && (
         <PhotoArea>
           {" "}
-          <img src={recipeData["image"]} alt="Recipe" />
+          <img src={data["image"]} alt="Recipe" />
         </PhotoArea>
       )}
 
       {/* <PhotoArea>사진</PhotoArea> */}
       <DetailArea>
         <TitleArea>
-          {recipeData && <Title>{recipeData["name"]}</Title>}
+          {data && <Title>{data["name"]}</Title>}
           {/* <Title>롱 아일랜드 아이스티</Title> */}
           <Bookmarker>
             <BsBookmarkStar size="30" color="#96A5FF" />
           </Bookmarker>
         </TitleArea>
         <TitleExplanation>
-          술기운이 오래가는 콜라, 레몬이 섞인 묘한
-          {recipeData && recipeData["description"]}
+          {/* 술기운이 오래가는 콜라, 레몬이 섞인 묘한 */}
+          {data && data["description"]}
         </TitleExplanation>
         <Title>재료</Title>
         {/* 각각줄바꿈일어나야함. */}
         <Ingredient>
-          {recipeData && (
-            <IngredientItems>{recipeData["stuff"]}</IngredientItems>
-          )}
+          {data && <IngredientItems>{data["stuff"]}</IngredientItems>}
           {/* <IngredientItems>보드카 15ml</IngredientItems>
           <IngredientItems>데킬라 15ml</IngredientItems>
           <IngredientItems>레몬 주스 30ml</IngredientItems>
@@ -156,7 +169,7 @@ export default function DetailPage() {
         <Title>RECIPE</Title>
         <Recipe>
           {/* 개행문자마다 줄바꿈 */}
-          {recipeData && <RecipeItems>{recipeData["recipeStep"]}</RecipeItems>}
+          {data && <RecipeItems>{data["recipeStep"]}</RecipeItems>}
           {/* <RecipeItems>450ml 잔에 얼음을 가득 채워주세요.</RecipeItems>
           <RecipeItems>
             얼음이 들어있는 잔에 데킬라, 보드카를 15ml씩 넣어주세요.
