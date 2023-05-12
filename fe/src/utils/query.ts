@@ -6,24 +6,16 @@ export interface RecipeCard {
   title: string;
   image: string;
   description: string;
-  ingredient: string[];
+  ingredient: string;
 }
-export const getSearchResults = async (searchValue: string) => {
-  const response: AxiosResponse<Recipes> = await axios.get(
-    `http://localhost:4000/searched`,
+export const getSearchResults = async (path: string, searchValue: string) => {
+  const response: AxiosResponse<RecipeCard[]> = await axios.get(
+    `http://localhost:4000/${path}`,
   );
-  const data = {
-    regular: response.data.regular.filter(
-      (card: RecipeCard) =>
-        card.ingredient.includes(searchValue) ||
-        card.title.includes(searchValue),
-    ),
-    custom: response.data.custom.filter(
-      (card: RecipeCard) =>
-        card.ingredient.includes(searchValue) ||
-        card.title.includes(searchValue),
-    ),
-  };
+  const data = response.data.filter(
+    (card: RecipeCard) =>
+      card.ingredient.includes(searchValue) || card.title.includes(searchValue),
+  );
   return data;
 };
 
