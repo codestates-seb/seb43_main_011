@@ -1,12 +1,9 @@
 package com.BE.cocktail.controller.customeRecipe;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
+import com.BE.cocktail.dto.customRecipe.*;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.service.customRecipe.CustomRecipeService;
-import com.BE.cocktail.dto.customRecipe.CustomPatchDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipePostDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDto;
-import com.BE.cocktail.dto.customRecipe.CustomRecipeResponseDtoList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +32,15 @@ public class CustomRecipeController {
         return ApiResponse.ok(customRecipeResponseDtoList);
     }
 
+    @GetMapping("/search/{keyword}")
+    public ApiResponse<MultiResponseDto<CustomSearchResponseDto>> getSearchPaging(@PathVariable("keyword") String keyword,
+                                                                                  @RequestParam int page,
+                                                                                  @RequestParam int size) {
+
+        MultiResponseDto<CustomSearchResponseDto> responseDto = customRecipeService.searchPaging(keyword, page - 1, size);
+
+        return ApiResponse.ok(responseDto);
+    }
     @GetMapping("/find")
     public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> getCustomRecipePaging(@RequestParam int page, @RequestParam int size) {
 
