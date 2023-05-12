@@ -20,9 +20,6 @@ public class CustomRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
-//    @Column(nullable = false)
-    private Long memberId;
-
     @Column(nullable = false)
     private String imageUrl;
 
@@ -39,13 +36,16 @@ public class CustomRecipe {
     private String ingredient;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private Long memberId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(nullable = false, name = "LAST_MODIFIED_AT")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt = LocalDateTime.now();
+
+    @Column(nullable = false)
+    private boolean deleted;
 
 
 

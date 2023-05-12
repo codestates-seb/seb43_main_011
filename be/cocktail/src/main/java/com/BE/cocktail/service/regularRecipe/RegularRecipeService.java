@@ -1,9 +1,7 @@
 package com.BE.cocktail.service.regularRecipe;
 
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeCreateDto;
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeCreateResponseDto;
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeMultiResponseDto;
+import com.BE.cocktail.dto.regularRecipe.RegularRecipeGetResponseDto;
 
 import com.BE.cocktail.exception.CocktailException;
 import com.BE.cocktail.persistence.domain.regularRecipe.RegularRecipe;
@@ -20,31 +18,12 @@ public class RegularRecipeService {
 
     private final RegularRecipeRepository regularRecipeRepository;
 
-//    @Transactional(readOnly = true)
-//    public RegularRecipeSingleResponseDto findRecipe(String name) {
-//
-//        List<RegularRecipe> regularRecipes = regularRecipeRepository.findAllByName(name);
-//
-//        if(regularRecipes.isEmpty()) {
-//                throw new CocktailException(CocktailRtnConsts.ERR400);
-//        }
-//
-//        return RegularRecipeSingleResponseDto.of(regularRecipes);
-//    }
+    public RegularRecipeGetResponseDto find(Long id) {
 
-//    @Transactional
-//    public RegularRecipeCreateResponseDto saveRegularRecipe(RegularRecipeCreateDto createdto) {
-//
-//        List<RegularRecipe> regularRecipeList = RegularRecipe.listOf(createdto);
-//
-//        regularRecipeRepository.saveAll(regularRecipeList);
-//
-//        return RegularRecipeCreateResponseDto.of(regularRecipeList);
-//    }
+        RegularRecipe regularRecipe = regularRecipeRepository.findById(id)
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR400));
 
-    @Transactional(readOnly = true)
-    public RegularRecipeMultiResponseDto findAllRecipes() {
-        List<RegularRecipe> regularRecipes = regularRecipeRepository.findAll();
-        return RegularRecipeMultiResponseDto.of(regularRecipes);
+        return RegularRecipeGetResponseDto.of(regularRecipe);
     }
+
 }

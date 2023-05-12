@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum CocktailRtnConsts {
 
     //NomalResponseMode
-    NRM000(CocktailRtnGrp.Success, 201, "응답성공"),
+    NRM000(CocktailRtnGrp.Success, 200, "응답성공"),
+
+    NRM001(CocktailRtnGrp.Success, 201, "성공적으로 생성되었습니다."),
 
     SCC202(CocktailRtnGrp.Success, 202, "레시피가 성공적으로 삭제되었습니다."),
 
