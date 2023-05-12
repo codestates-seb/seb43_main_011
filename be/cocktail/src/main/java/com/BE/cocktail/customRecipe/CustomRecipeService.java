@@ -82,7 +82,7 @@ public class CustomRecipeService {
         customRecipeRepository.save(existingRecipe);
 
         // 삭제가 성공적으로 이루어졌을 때는 성공 메시지를 반환
-        throw new CocktailException(CocktailRtnConsts.NRM001);
+        throw new CocktailException(CocktailRtnConsts.SCC203);
     }
 
 
