@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
-import { RecipeCard } from "../../utils/query";
+import { RecipeCard, getCards } from "../../utils/query";
+import { useQuery } from "react-query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -70,42 +71,35 @@ const CardsPageNationButton = styled.button`
 `;
 
 interface ListProps {
-  list: RecipeCard[];
-  category: string;
-  isSearch?: boolean;
+  path: string;
 }
 
-export default function CardList({ list, category, isSearch }: ListProps) {
+export default function CardList({ path }: ListProps) {
   const [cardsPageNum, setCardsPageNum] = useState(1);
+  const { data } = useQuery([path], () => getCards(path));
+  const category = `Level ${path[path.length - 1]}`;
 
-  const categoryText =
-    category.length === 1
-      ? `Level ${category}`
-      : category === "regular"
-      ? "정규 레시피"
-      : "커스텀 레시피";
-
-  const showCardLength = Number(category) < 2 ? 5 : 10; // cartegory가 "0", "1"일때만 5 그 외에 string일 경우 10
+  const showCardLength = path === "lev0" || path === "lev1" ? 5 : 10; // cartegory가 "0", "1"일때만 5 그 외에 string일 경우 10
   const listStart = (cardsPageNum - 1) * showCardLength;
   const listEnd = listStart + showCardLength;
-  const showList = list.slice(listStart, listEnd);
-
+  const showList = data?.slice(listStart, listEnd);
+  const cardLeng = data?.length;
   const onPrevClick = () => {
     if (cardsPageNum > 1) setCardsPageNum((cardsPageNum) => cardsPageNum - 1);
   };
   const onNextClick = () => {
-    if (cardsPageNum < Math.ceil(list.length / showCardLength))
+    if (cardLeng && cardsPageNum < Math.ceil(cardLeng / showCardLength))
       setCardsPageNum((cardsPageNum) => cardsPageNum + 1);
   };
   return (
     <CardsContainer>
       <CategoryBox>
-        <div className="category">{categoryText}</div>
+        <div className="category">{category}</div>
         <div className="center"></div>
         <div className="divider"></div>
       </CategoryBox>
-      <CardsRow isTwo={Number(category) < 2 ? false : true} isSearch={isSearch}>
-        {showList.map((recipe, i) => {
+      <CardsRow isTwo={showCardLength === 5 ? false : true}>
+        {showList?.map((recipe, i) => {
           return (
             <Card
               title={recipe.title}
@@ -116,13 +110,13 @@ export default function CardList({ list, category, isSearch }: ListProps) {
           );
         })}
       </CardsRow>
-      {list.length >= showCardLength && (
+      {cardLeng && cardLeng >= showCardLength && (
         <CardsPageNationContainer>
           <CardsPageNationButton>
             <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
           </CardsPageNationButton>
           <CardsPageNationDisplay>{`${cardsPageNum} / ${Math.ceil(
-            list.length / showCardLength,
+            cardLeng / showCardLength,
           )}`}</CardsPageNationDisplay>
           <CardsPageNationButton>
             <GrNext onClick={onNextClick} size={"1.1rem"} />

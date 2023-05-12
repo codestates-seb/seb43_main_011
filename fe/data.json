@@ -1,196 +1,193 @@
 {
-  "regular": {
-    "lev 0": [
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워\n깔깔깔깔",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워\n깔깔깔깔\n껄껄껄껄껄",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			}
-		], 
-    "lev 1": [
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면? 여기서 미도리란 미씨 성을 지닌 도리란 사람이다\n정답은 미도리 샤워 하하하",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			}
-		], 
-    "lev 2": [
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			}
-		], 
-    "lev 3": [
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			},
-			{
-				"title": "미도리 샤워",
-				"image": "../../images/cocktail.png",
-				"description": "미도리가 샤워하면\n미도리 샤워",
-				"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
-			}
-		]
-},
-	"custom": {
-		"list": [
+  "lev0": [
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워\n깔깔깔깔",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워\n깔깔깔깔\n껄껄껄껄껄",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		}
+	], 
+  "lev1": [
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면? 여기서 미도리란 미씨 성을 지닌 도리란 사람이다\n정답은 미도리 샤워 하하하",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		}
+	], 
+  "lev2": [
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		}
+	], 
+  "lev3": [
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		},
+		{
+			"title": "미도리 샤워",
+			"image": "../../images/cocktail.png",
+			"description": "미도리가 샤워하면\n미도리 샤워",
+			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
+		}
+	],
+	"custom": [
 		{
 			"title": "미도리 샤워",
 			"image": "../../images/cocktail.png",
@@ -335,7 +332,7 @@
 			"description": "미도리가 샤워하면\n미도리 샤워",
 			"ingredient" : ["미도리", "스윗 앤 샤워믹스"]
 		}
-	]},
+	],
 	"searched": {
 		"regular": [
 			{

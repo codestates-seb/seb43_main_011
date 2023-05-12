@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
 import { useQuery } from "react-query";
-import { Recipes, getCards } from "../utils/query";
+import { RecipeCard, getCards } from "../utils/query";
+import { useMemo } from "react";
+import Card from "../components/card/Card";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;
@@ -20,18 +22,16 @@ const GuideText = styled.div`
 `;
 
 export default function Main() {
-  const path = "/regular";
-  const { data } = useQuery<Recipes>(["cards", path], () => getCards(path));
+  const alclholLevel = useMemo(() => {
+    return ["lev0", "lev1", "lev2", "lev3"];
+  }, []);
   return (
     <>
       <RecipesContainer>
         <GuideText>정규 레시피</GuideText>
-        {data &&
-          Object.keys(data).map((key: string, i) => {
-            return (
-              <CardList list={data[key]} category={key.slice(-1)} key={i} />
-            );
-          })}
+        {alclholLevel.map((alcohol, i) => (
+          <CardList path={alcohol} key={i} />
+        ))}
       </RecipesContainer>
     </>
   );
