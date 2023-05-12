@@ -15,6 +15,14 @@
       "stuff": "소금1ml\n카레2spoon\n고기3slice\n",
       "recipeStep": "1. 한번에섞는다\n2. 먹는다",
       "id": 4
+    },
+    {
+      "image": "/static/media/ex3.ad328ab9aa83ff906303.jpeg",
+      "name": "된장맛칵테일",
+      "description": "매우맛이군",
+      "stuff": "된장10ml\n그릇1개\n소금20spoon\n",
+      "recipeStep": "1.다떄려박는다\n2.먹는다",
+      "id": 5
     }
   ]
 }

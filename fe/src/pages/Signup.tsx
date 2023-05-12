@@ -72,7 +72,11 @@ const Signup = () => {
         </EmailForm>
         <PasswordForm>
           <Label>Password</Label>
-          <InputArea value={password} onChange={handlePassword}></InputArea>
+          <InputArea
+            type="password"
+            value={password}
+            onChange={handlePassword}
+          ></InputArea>
           {showPasswordError && (
             <ErrorMessage>
               최소 1개 이상의 숫자와 특수문자가 포함되어어 합니다.

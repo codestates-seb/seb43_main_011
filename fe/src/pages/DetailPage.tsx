@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { BsBookmarkStar } from "react-icons/bs";
 import axios from "axios";
 import { useState, useEffect } from "react";
-//BsBookmarkStarFill (색상 채운 버젼)
+import { BsBookmarkStar } from "react-icons/bs";
+// import { BsFillBookmarkStarFill } from "react-icons/bs";
+// BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
   display: flex;
@@ -104,8 +105,16 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+interface Data {
+  image: string;
+  name: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
+
 export default function DetailPage() {
-  const [recipeData, setRecipeData] = useState(null);
+  const [recipeData, setRecipeData] = useState<Data>();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -119,7 +128,8 @@ export default function DetailPage() {
     fetchData();
   }, []);
 
-  console.log(recipeData);
+  recipeData && console.log(recipeData.image);
+
   return (
     <Container>
       {recipeData && (
