@@ -3,6 +3,7 @@ package com.BE.cocktail.controller.regularRecipe;
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
 import com.BE.cocktail.dto.regularRecipe.RegularRecipeGetResponseDto;
 
+import com.BE.cocktail.dto.regularRecipe.RegularRecipeMultiResponseDto;
 import com.BE.cocktail.service.regularRecipe.RegularRecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,14 @@ public class RegularRecipeController {
 
         return ApiResponse.ok(response);
     }
+
+    @GetMapping(value = "/regular/findAll")
+    public ApiResponse<RegularRecipeMultiResponseDto> findAllRegularRecipes() {
+
+        RegularRecipeMultiResponseDto responseDto = regularRecipeService.findAllRecipes();
+
+        return ApiResponse.ok(responseDto);
+    }
+
 
 }
