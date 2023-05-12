@@ -5,27 +5,17 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RegularRecipeCreateResponseDto {
-
+public class RegularRecipeGetResponseDto {
     private String name;
-
-    private String description;
-
-    private String recipe;
-
-    private Integer alcVol;
-
-    private String baseAlc;
 
     private String ingredient;
 
-    private String imageUrl;
+    private String recipe;
 
-    private LocalDateTime createdAt;
+    public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe) {
 
+        return new RegularRecipeGetResponseDto(regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe());
+    }
 }

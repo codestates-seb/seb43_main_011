@@ -18,6 +18,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @Column(nullable = false, unique = true, length = 30)
     private String nickname;
 
@@ -29,12 +32,12 @@ public class Member {
 
     private String statusMessage;
 
-    private String imageUrl;
-
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime modifiedAt;
 
-    private LocalDateTime deletedAt;
+    @Column(nullable = false)
+    private boolean deleted;
 }

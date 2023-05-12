@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum CocktailRtnGrp {
 
-    Success(201),
+    Success(200),
 
     Validation(400);
 
