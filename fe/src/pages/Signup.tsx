@@ -1,22 +1,14 @@
 import styled from "styled-components";
-import signup from "../images/signupImage3.jpg";
+import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
-// import axios from "axios";
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
 
 const Signup = () => {
-  //이름 유효성검사
-  const [nickname, setNickname] = useState("");
-  const [showErrorMessage, setShowErrorMessage] = useState(false); //특수문자오류
-  const [showLengthError, setShowLengthError] = useState(false); //길이오류
-  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(e.target.value);
-    const lengthMatch = e.target.value.length < 2;
-
-    setShowErrorMessage(hasSpecialChars); ///정규식에 일치하지않으면 출력.
-    setShowLengthError(lengthMatch);
-  };
   //이메일(아이디) 유효성검사
   const [email, setEmail] = useState("");
   const [showEmailError, setShowEmailError] = useState(false);
@@ -38,34 +30,44 @@ const Signup = () => {
     setShowPasswordError(!passwordRegex);
   };
 
-  //눌렀을때 서버로 전송?
+  //눌렀을때 서버로 전송하는 함수
   const handleSubmit = (/*보내는데이터 타입*/) => {
     //post 요청으로 데이터보내기 axios
     //인풋값 초기화
-    setNickname("");
+    // setNickname("");
     setEmail("");
     setPassword("");
+  };
+
+  const responseGoogle = (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline,
+  ) => {
+    if ("profileObj" in response) {
+      // 성공적으로 로그인한 경우
+      console.log("로그인 성공");
+      console.log(response.profileObj);
+      // 성공했을 때 수행할 작업을 여기에 추가하세요.
+    } else {
+      // 로그인 실패한 경우
+      console.log("로그인 실패");
+      console.log(response);
+      // 실패했을 때 수행할 작업을 여기에 추가하세요.
+    }
   };
 
   return (
     <Container>
       {/* <BlankFrom></BlankFrom> */}
-      {/* 오른쪽으로 입력폼이 오려면 위의 주석 해제 */}
+      {/* 오른쪽으로 입력폼을 위치하려면 위의 주석 해제 */}
       <SignupForm>
         <Logo src={logo} alt="logo"></Logo>
-        <NicknameForm>
-          <Label>Nickname</Label>
-          <InputArea value={nickname} onChange={handleNickname}></InputArea>
-          {showErrorMessage && (
-            <ErrorMessage>닉네임에 특수문자는 사용할 수 없습니다.</ErrorMessage>
-          )}
-          {showLengthError && (
-            <ErrorMessage>닉네임은 2자 이상만 가능합니다.</ErrorMessage>
-          )}
-        </NicknameForm>
         <EmailForm>
           <Label>E-mail</Label>
-          <InputArea value={email} onChange={handleEmail}></InputArea>
+          <InputArea
+            value={email}
+            onChange={handleEmail}
+            placeholder="아이디"
+          ></InputArea>
           {showEmailError && (
             <ErrorMessage>올바른 이메일 형식을 입력해주세요.</ErrorMessage>
           )}
@@ -74,6 +76,7 @@ const Signup = () => {
           <Label>Password</Label>
           <InputArea
             type="password"
+            placeholder="비밀번호"
             value={password}
             onChange={handlePassword}
           ></InputArea>
@@ -84,17 +87,37 @@ const Signup = () => {
           )}
         </PasswordForm>
 
-        <SignupButton onClick={handleSubmit}>가입하기</SignupButton>
+        <Login
+          clientId="YOUR_GOOGLE_CLIENT_ID"
+          buttonText="구글로 로그인"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
+
+        <SignupButton onClick={handleSubmit}>로그인</SignupButton>
       </SignupForm>
     </Container>
   );
 };
 
+const Login = styled(GoogleLogin)`
+  width: 16rem;
+  height: 2.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  margin: 5px;
+  font-weight: bold;
+`;
+
 const InputArea = styled.input`
   width: 16rem;
-  height: 2rem;
-  padding: 5px;
-  margin-top: 7px;
+  height: 2.4rem;
+  padding: 7px;
+  margin-top: 5px;
   border-radius: 5px;
   border: 0.5px solid #96a5ff;
   &:focus {
@@ -102,14 +125,6 @@ const InputArea = styled.input`
     border: 1px solid #96a5ff;
     box-shadow: 0 0 5px 1px #abb7fc;
   }
-`;
-
-const NicknameForm = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 `;
 
 const EmailForm = styled.div`
@@ -168,14 +183,6 @@ const SignupForm = styled.div`
   flex-direction: column;
 `;
 
-// const BlankFrom = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 36rem;
-//   width: 21rem;
-// `;
-
 const Label = styled.label`
   width: 16rem;
   color: #96a5ff;
@@ -185,13 +192,14 @@ const Label = styled.label`
 
 const SignupButton = styled.button`
   width: 16rem;
-  height: 2.5rem;
+  height: 2.6rem;
   margin: 10px;
-  border-radius: 5px;
+  border-radius: 2px;
+  box-shadow: 1px 2px 2px 1px lightgray;
   border-style: none;
   background-color: #96a5ff;
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   &:hover {
     cursor: pointer;
@@ -199,5 +207,13 @@ const SignupButton = styled.button`
     color: #ffff;
   }
 `;
+
+// const BlankFrom = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 36rem;
+//   width: 21rem;
+// `;
 
 export default Signup;
