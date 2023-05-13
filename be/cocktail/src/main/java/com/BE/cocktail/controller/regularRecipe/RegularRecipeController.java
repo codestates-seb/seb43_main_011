@@ -1,15 +1,13 @@
 package com.BE.cocktail.controller.regularRecipe;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
-import com.BE.cocktail.dto.customRecipe.CustomSearchResponseDto;
 import com.BE.cocktail.dto.regularRecipe.RegularRecipeGetResponseDto;
 
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeMultiResponseDto;
+import com.BE.cocktail.dto.regularRecipe.RegularRecipeResponse;
 import com.BE.cocktail.dto.regularRecipe.RegularSearchResponseDto;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.service.regularRecipe.RegularRecipeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,13 +26,13 @@ public class RegularRecipeController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping(value = "/findAll")
-    public ApiResponse<RegularRecipeMultiResponseDto> findAllRegularRecipes() {
-
-        RegularRecipeMultiResponseDto responseDto = regularRecipeService.findAllRecipes();
-
-        return ApiResponse.ok(responseDto);
-    }
+//    @GetMapping(value = "/findAll")
+//    public ApiResponse<RegularRecipeResponse> findAllRegularRecipes() {
+//
+//        RegularRecipeMultiResponseDto responseDto = regularRecipeService.findAllRecipes();
+//
+//        return ApiResponse.ok(responseDto);
+//    }
 
     @GetMapping("/search/{keyword}")
     public ApiResponse<MultiResponseDto<RegularSearchResponseDto>> getSearchPaging(@PathVariable("keyword") String keyword,
@@ -46,5 +44,12 @@ public class RegularRecipeController {
         return ApiResponse.ok(responseDto);
     }
 
+    @GetMapping("/findAll/{alc_vol}")
+    public ApiResponse<MultiResponseDto<RegularRecipeResponse>> findRecipes(@PathVariable("alc_vol") Integer alcVolRange,
+                                                                            @RequestParam int page,
+                                                                            @RequestParam int size) {
+        MultiResponseDto<RegularRecipeResponse> responseDto = regularRecipeService.findAlcVolRange(alcVolRange, page - 1, size);
+        return ApiResponse.ok(responseDto);
+    }
 
 }
