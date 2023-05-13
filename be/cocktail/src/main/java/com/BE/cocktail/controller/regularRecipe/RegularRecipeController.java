@@ -1,10 +1,11 @@
 package com.BE.cocktail.controller.regularRecipe;
 
-import com.BE.cocktail.dto.apiResponse.ApiResponse;
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeGetResponseDto;
+import com.BE.cocktail.persistence.service.dto.apiResponse.ApiResponse;
+import com.BE.cocktail.persistence.service.dto.regularRecipe.RegularRecipeGetResponseDto;
 
-import com.BE.cocktail.dto.regularRecipe.RegularRecipeResponses;
-import com.BE.cocktail.service.regularRecipe.RegularRecipeService;
+import com.BE.cocktail.persistence.service.dto.regularRecipe.RegularRecipeResponse;
+import com.BE.cocktail.persistence.service.dto.utils.MultiResponseDto;
+import com.BE.cocktail.persistence.service.regularRecipe.RegularRecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +24,13 @@ public class RegularRecipeController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping(value = "/regular/finAll/{alc_vol}")
-    public ApiResponse<RegularRecipeResponses> findRecipes(@PathVariable("alc_vol") Integer alcVol) {
 
-        RegularRecipeResponses responseDto = regularRecipeService.findAll();
-
+    @GetMapping("/regular/findAll/{alc_vol}")
+    public ApiResponse<MultiResponseDto<RegularRecipeResponse>> findRecipes(@PathVariable("alc_vol") Integer alcVolRange,
+                                                                            @RequestParam int page,
+                                                                            @RequestParam int size) {
+        MultiResponseDto<RegularRecipeResponse> responseDto = regularRecipeService.findAlcVolRange(alcVolRange, page - 1, size);
         return ApiResponse.ok(responseDto);
     }
-
 
 }
