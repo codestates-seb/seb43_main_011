@@ -2,11 +2,7 @@ import styled from "styled-components";
 import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
-import {
-  GoogleLogin,
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from "react-google-login";
+import GooogleSignupButton from "../components/loginbutton/GoogleSignup";
 
 const Signup = () => {
   //이메일(아이디) 유효성검사
@@ -31,28 +27,10 @@ const Signup = () => {
   };
 
   //눌렀을때 서버로 전송하는 함수
-  const handleSubmit = (/*보내는데이터 타입*/) => {
+  const handlelogin = (/*보내는데이터 타입*/) => {
     //post 요청으로 데이터보내기 axios
-    //인풋값 초기화
-    // setNickname("");
     setEmail("");
     setPassword("");
-  };
-
-  const responseGoogle = (
-    response: GoogleLoginResponse | GoogleLoginResponseOffline,
-  ) => {
-    if ("profileObj" in response) {
-      // 성공적으로 로그인한 경우
-      console.log("로그인 성공");
-      console.log(response.profileObj);
-      // 성공했을 때 수행할 작업을 여기에 추가하세요.
-    } else {
-      // 로그인 실패한 경우
-      console.log("로그인 실패");
-      console.log(response);
-      // 실패했을 때 수행할 작업을 여기에 추가하세요.
-    }
   };
 
   return (
@@ -86,32 +64,14 @@ const Signup = () => {
             </ErrorMessage>
           )}
         </PasswordForm>
-
-        <Login
-          clientId="YOUR_GOOGLE_CLIENT_ID"
-          buttonText="구글로 로그인"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
-
-        <SignupButton onClick={handleSubmit}>로그인</SignupButton>
+        <GooogleSignupButton />
+        <SignupButton onClick={handlelogin}>로그인</SignupButton>
       </SignupForm>
     </Container>
   );
 };
 
-const Login = styled(GoogleLogin)`
-  width: 16rem;
-  height: 2.7rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 50%;
-  margin: 5px;
-  font-weight: bold;
-`;
+export default Signup;
 
 const InputArea = styled.input`
   width: 16rem;
@@ -215,5 +175,3 @@ const SignupButton = styled.button`
 //   height: 36rem;
 //   width: 21rem;
 // `;
-
-export default Signup;
