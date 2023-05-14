@@ -9,12 +9,12 @@ export interface RecipeCard {
   ingredient: string;
 }
 export const getSearchResults = async (path: string, searchValue: string) => {
-  const response: AxiosResponse<RecipeCard[]> = await axios.get(
+  const response: AxiosResponse<RecipeData[]> = await axios.get(
     `http://localhost:4000/${path}`,
   );
   const data = response.data.filter(
-    (card: RecipeCard) =>
-      card.ingredient.includes(searchValue) || card.title.includes(searchValue),
+    (card: RecipeData) =>
+      card.stuff.includes(searchValue) || card.name.includes(searchValue),
   );
   return data;
 };
@@ -25,9 +25,18 @@ interface RecipeCardResponse {
   previousPage: number | null;
 }
 
+export interface RecipeData {
+  image: string;
+  name: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+  id: number;
+}
+
 export const getCards = async (path: string) => {
   // const size = path === "lev0" || path === "lev1" ? 5 : 10;
-  const response: AxiosResponse<RecipeCard[]> = await axios.get(
+  const response: AxiosResponse<RecipeData[]> = await axios.get(
     `http://localhost:4000/${path}`,
   );
   return response.data;

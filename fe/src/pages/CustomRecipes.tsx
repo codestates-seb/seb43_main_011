@@ -3,7 +3,7 @@ import { RecipesContainer } from "./Main";
 import { Link } from "react-router-dom";
 import Card from "../components/card/Card";
 import { useQuery } from "react-query";
-import { getCards, Recipes, RecipeCard } from "../utils/query";
+import { getCards } from "../utils/query";
 
 const CustomGuide = styled.div`
   display: flex;
@@ -50,13 +50,14 @@ export default function CustomRecipes() {
         <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
       </CustomGuide>
       <CardsRow>
-        {data?.map((recipe, i) => {
+        {data?.map((recipe) => {
           return (
             <Card
-              key={i}
-              title={recipe.title}
+              key={recipe.id}
+              title={recipe.name}
               image={recipe.image}
               description={recipe.description}
+              id={recipe.id}
             />
           );
         })}

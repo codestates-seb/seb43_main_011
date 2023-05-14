@@ -1,13 +1,11 @@
 import { RecipesContainer } from "./Main";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Recipes, getSearchResults } from "../utils/query";
-import Card from "../components/card/Card";
+import { getSearchResults } from "../utils/query";
 import SearchResultTab from "../components/card/SearchResultsTab";
 import styled from "styled-components";
 import { useMemo, useState } from "react";
 import SearchedRecipe from "../components/card/SearchedRecipe";
-import exImage from "./../images/error.jpg";
 
 const CardListArea = styled.div`
   margin-top: 30px;
@@ -21,7 +19,7 @@ export default function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("value") ?? ""; // ?value=얼음
 
-  const category = useMemo(() => ["resultreg", "resultcus"], []);
+  const category = useMemo(() => ["regular", "costim"], []);
   const [path, setPath] = useState(category[0]);
   const { data } = useQuery([path], () => getSearchResults(path, searchValue));
   console.log(data);
@@ -33,17 +31,13 @@ export default function SearchResults() {
           return (
             <SearchedRecipe
               key={i}
-              name={card.title}
+              name={card.name}
               image={card.image}
-              ingredient={card.ingredient}
+              stuff={card.stuff}
+              id={card.id}
             />
           );
         })}
-        <SearchedRecipe
-          name={"어쩌구 칵테일"}
-          image={exImage}
-          ingredient={"재료1\n재료2\n재료3"}
-        />
       </CardListArea>
     </RecipesContainer>
   );

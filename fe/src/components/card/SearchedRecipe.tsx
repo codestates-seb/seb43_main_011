@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const RecipeContainer = styled.div`
@@ -29,19 +30,22 @@ const Ingredient = styled.ul`
 
 interface SearchedRecipe {
   name: string;
-  ingredient: string;
+  stuff: string;
   image: string;
+  id: number;
 }
 
 export default function SearchedRecipe({
   name,
-  ingredient,
+  stuff,
   image,
+  id,
 }: SearchedRecipe) {
-  const ingredientList = ingredient?.split("\n");
+  const ingredientList = stuff?.split("\n");
+  const navigate = useNavigate();
 
   return (
-    <RecipeContainer>
+    <RecipeContainer onClick={() => navigate(`/detail/${id}`)}>
       <RecipeImg src={image} />
       <TextBox>
         <h2>{name}</h2>
