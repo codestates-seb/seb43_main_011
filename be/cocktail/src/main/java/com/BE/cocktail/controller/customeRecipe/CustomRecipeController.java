@@ -41,6 +41,7 @@ public class CustomRecipeController {
 
         return ApiResponse.ok(responseDto);
     }
+
     @GetMapping("/find")
     public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> getCustomRecipePaging(@RequestParam int page, @RequestParam int size) {
 
@@ -65,6 +66,12 @@ public class CustomRecipeController {
         customRecipeService.deleteCustomRecipe(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/find/{recipe_id}")
+    public ApiResponse<CustomRecipeGetResponseDto> findDetailInfo(@PathVariable("recipe_id") Long id) {
+        CustomRecipeGetResponseDto response = customRecipeService.find(id);
+        return ApiResponse.ok(response);
     }
 
 
