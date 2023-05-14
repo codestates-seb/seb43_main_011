@@ -1,10 +1,21 @@
-import React from "react";
+import styled from "styled-components";
 import MenuBar from "../components/myPage/MenuBar";
+import MyInfo from "../components/myPage/MyInfo";
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 1360px;
+`;
 
 export default function Mypage() {
   return (
-    <div>
-      <MenuBar></MenuBar>
-    </div>
+    <Container>
+      <MenuBar />
+      <MyInfo />
+    </Container>
   );
 }
