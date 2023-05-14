@@ -2,7 +2,7 @@ import styled from "styled-components";
 import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
-import GooogleSignupButton from "../components/loginbutton/GoogleSignup";
+import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
 
 const Signup = () => {
   //이메일(아이디) 유효성검사
@@ -64,7 +64,7 @@ const Signup = () => {
             </ErrorMessage>
           )}
         </PasswordForm>
-        <GooogleSignupButton />
+        <GooogleSignInButton />
         <SignupButton onClick={handlelogin}>로그인</SignupButton>
       </SignupForm>
     </Container>

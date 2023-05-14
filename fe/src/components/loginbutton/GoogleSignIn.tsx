@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FcGoogle } from "react-icons/fc";
 
-const GoogleSignup = () => {
+const GoogleSignIn = () => {
   const handleGoogleLogin = () => {
     console.log("구글로그인 버튼클릭");
     //oauth구글로그인 처리
@@ -17,7 +17,7 @@ const GoogleSignup = () => {
   );
 };
 
-export default GoogleSignup;
+export default GoogleSignIn;
 
 const GoogleSignupButton = styled.button`
   display: flex;
