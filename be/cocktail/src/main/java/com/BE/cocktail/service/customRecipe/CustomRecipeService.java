@@ -103,4 +103,12 @@ public class CustomRecipeService {
 
         return MultiResponseDto.of(CustomSearchResponseDto.listOf(customRecipes), PageInfo.of(pages));
     }
+
+    public CustomRecipeGetResponseDto find(Long id) {
+        CustomRecipe customRecipe = customRecipeRepository.findById(id)
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR405));
+
+        return CustomRecipeGetResponseDto.of(customRecipe);
+
+    }
 }
