@@ -43,13 +43,10 @@ const CardsRow = styled.div<RowInterface>`
   margin: 20px 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  ${(props) =>
-    props.isSearch
-      ? ""
-      : ` grid-template-rows: repeat(
+  grid-template-rows: repeat(
     ${(props: RowInterface) => (props.isTwo ? 2 : 1)},
     1fr
-  )`};
+  );
   grid-gap: 30px;
   place-items: center;
 `;
@@ -99,13 +96,14 @@ export default function CardList({ path }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {showList?.map((recipe, i) => {
+        {showList?.map((recipe) => {
           return (
             <Card
-              title={recipe.title}
+              title={recipe.name}
               image={recipe.image}
               description={recipe.description}
-              key={i}
+              id={recipe.id}
+              key={recipe.id}
             />
           );
         })}
