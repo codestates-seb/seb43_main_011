@@ -22,7 +22,6 @@ const CocktailRegistration = () => {
       setImageUrl(imageUrl);
     }
   };
-  //FOAM데이터? 공부를 해봐야겠네요
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -68,7 +67,7 @@ const CocktailRegistration = () => {
       recipeStep: recipeStep,
     };
     try {
-      const response = await axios.post("http://localhost:4000/recipe", data);
+      const response = await axios.post("http://localhost:4000/custom", data);
       console.log(response.data); // POST 요청에 대한 응답 데이터
     } catch (error) {
       console.error(error);
