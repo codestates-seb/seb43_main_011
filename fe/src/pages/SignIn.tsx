@@ -3,6 +3,7 @@ import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
 import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   //이메일(아이디) 유효성검사
@@ -66,12 +67,20 @@ const Signup = () => {
         </PasswordForm>
         <GooogleSignInButton />
         <SignupButton onClick={handlelogin}>로그인</SignupButton>
+        <NavSignup to={"/signup"}>회원가입</NavSignup>
       </SignupForm>
     </Container>
   );
 };
 
 export default Signup;
+
+const NavSignup = styled(Link)`
+  font-size: 14px;
+  margin-top: 10px;
+  align-self: center;
+  text-underline-offset: 3px;
+`;
 
 const InputArea = styled.input`
   width: 16rem;
