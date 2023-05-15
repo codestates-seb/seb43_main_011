@@ -19,7 +19,7 @@ export default function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("value") ?? ""; // ?value=얼음
 
-  const category = useMemo(() => ["regular", "costim"], []);
+  const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
   const { data } = useQuery([path], () => getSearchResults(path, searchValue));
   console.log(data);
@@ -33,7 +33,7 @@ export default function SearchResults() {
               key={i}
               name={card.name}
               image={card.image}
-              stuff={card.stuff}
+              stuff={card.stuff.split("\n")}
               id={card.id}
             />
           );
