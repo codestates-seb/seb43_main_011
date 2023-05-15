@@ -9,6 +9,7 @@ import Error from "./pages/Error";
 import CustomRecipes from "./pages/CustomRecipes";
 import SearchResults from "./pages/SearchResults";
 import SignUp from "./pages/SignUp";
+import Mypage from "./pages/Mypage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/registration" element={<CocktailRegistration />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
