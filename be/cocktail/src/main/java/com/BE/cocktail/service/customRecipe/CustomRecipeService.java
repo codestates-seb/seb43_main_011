@@ -7,6 +7,7 @@ import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
 import com.BE.cocktail.persistence.repository.customRecipe.CustomRecipeRepository;
 import com.BE.cocktail.exception.CocktailException;
+import com.BE.cocktail.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,9 +23,12 @@ public class CustomRecipeService {
 
     private final CustomRecipeRepository customRecipeRepository;
 
+    private final MemberService memberService;
 
     public CustomRecipeResponseDto saveCustomRecipe(CustomRecipePostDto customRecipePostDto) {
-        CustomRecipe customRecipe = CustomRecipe.of(customRecipePostDto);
+
+        Long memberId = memberService.getLoginMember().getId();
+        CustomRecipe customRecipe = CustomRecipe.of(customRecipePostDto, memberId);
         customRecipeRepository.save(customRecipe);
 
         return CustomRecipeResponseDto.of(customRecipe);
@@ -39,8 +43,13 @@ public class CustomRecipeService {
 
     public CustomRecipeResponseDto updateCustomRecipe(Long id, CustomPatchDto customPatchDto) {
 
+
         CustomRecipe updateCustomRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
 
+        //게시글을 올린 본인이 맞는지 검사
+        if(memberService.getLoginMember().getId() != updateCustomRecipe.getMemberId()) {
+            throw new CocktailException(CocktailRtnConsts.ERR401);
+        }
 
         if (customPatchDto.getImageUrl() != null) {
             updateCustomRecipe.setImageUrl(customPatchDto.getImageUrl());
