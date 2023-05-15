@@ -30,7 +30,7 @@ const Ingredient = styled.ul`
 
 interface SearchedRecipe {
   name: string;
-  stuff: string;
+  stuff: string[];
   image: string;
   id: number;
 }
@@ -41,7 +41,6 @@ export default function SearchedRecipe({
   image,
   id,
 }: SearchedRecipe) {
-  const ingredientList = stuff?.split("\n");
   const navigate = useNavigate();
 
   return (
@@ -50,7 +49,7 @@ export default function SearchedRecipe({
       <TextBox>
         <h2>{name}</h2>
         <Ingredient>
-          {ingredientList?.map((item, i) => {
+          {stuff?.map((item, i) => {
             return <li key={i}>{item}</li>;
           })}
         </Ingredient>

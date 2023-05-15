@@ -29,12 +29,16 @@ const CustomTab = styled(RegularTab)`
   border-left: none;
 `;
 
-interface TabsProps {
+interface SearchResultTabProps {
   tabs: string[];
   path: string;
   setPath: React.Dispatch<React.SetStateAction<string>>;
 }
-export default function SearchResultTab({ tabs, path, setPath }: TabsProps) {
+export default function SearchResultTab({
+  tabs,
+  path,
+  setPath,
+}: SearchResultTabProps) {
   return (
     <TabContainer>
       <LeftMargin />
