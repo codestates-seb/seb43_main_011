@@ -3,7 +3,7 @@ import GlobalStyle from "./components/style/GlobalStyles";
 import Main from "./pages/Main";
 import Layout from "./pages/Layout";
 import LoginPage from "./pages/LoginPage";
-import Signup from "./pages/Signup";
+import SignIn from "./pages/SignIn";
 import DetailPage from "./pages/DetailPage";
 import CocktailRegistration from "./pages/CocktailRegistration";
 import Error from "./pages/Error";
@@ -23,7 +23,7 @@ function App() {
           <Route path="/registration" element={<CocktailRegistration />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </>

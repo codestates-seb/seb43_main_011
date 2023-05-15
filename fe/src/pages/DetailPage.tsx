@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BsBookmarkStar, BsBookmarkStarFill } from "react-icons/bs";
+import { BsBookmarkStar } from "react-icons/bs";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";

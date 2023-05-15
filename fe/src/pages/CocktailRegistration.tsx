@@ -22,7 +22,6 @@ const CocktailRegistration = () => {
       setImageUrl(imageUrl);
     }
   };
-  //FOAM데이터? 공부를 해봐야겠네요
 
   // 버튼효과
   const handleMouseEnter = () => {
