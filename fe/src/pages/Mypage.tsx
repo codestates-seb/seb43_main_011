@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-  width: 1360px;
+  width: 100%;
 `;
 
 export default function Mypage() {

@@ -1,15 +1,16 @@
 import styled from "styled-components";
+import { RxDividerVertical } from "react-icons/rx";
 
 const Menu = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
   box-sizing: border-box;
   border-radius: 5px;
-  margin: 30px;
+  margin: 40px;
   background-color: #ffffff;
-  height: 43px;
+  height: 45px;
   width: 500px;
 
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -28,11 +29,18 @@ const MenuItem = styled.button`
   }
 `;
 
+const VerticalBar = styled(RxDividerVertical)`
+  font-size: 25px;
+  color: #909090;
+`;
+
 export default function MenuBar() {
   return (
     <Menu>
       <MenuItem>내 정보</MenuItem>
+      <VerticalBar />
       <MenuItem>찜 목록</MenuItem>
+      <VerticalBar />
       <MenuItem>나의 레시피</MenuItem>
     </Menu>
   );
