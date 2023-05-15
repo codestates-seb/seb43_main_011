@@ -25,6 +25,7 @@ public enum CocktailRtnConsts {
     ERR403(CocktailRtnGrp.Validation, 403, "삭제에 실패했습니다."),
 
     ERR404(CocktailRtnGrp.Validation, 404, "이미 삭제된 레시피입니다."),
+
     ERR405(CocktailRtnGrp.Validation, 405, "가져올 상세 페이지가 없습니다.");
 
 

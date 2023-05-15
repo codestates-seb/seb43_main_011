@@ -1,7 +1,6 @@
 package com.BE.cocktail.dto.regularRecipe;
 
 import com.BE.cocktail.persistence.domain.regularRecipe.RegularRecipe;
-import com.BE.cocktail.dto.utils.MultiResponse;
 import lombok.Getter;
 import lombok.Setter;
 
