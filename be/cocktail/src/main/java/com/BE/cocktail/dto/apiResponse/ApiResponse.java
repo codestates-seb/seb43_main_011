@@ -27,6 +27,15 @@ public class ApiResponse<T> {
         );
     }
 
+    public static <T> ApiResponse<T> ok() {
+        return new ApiResponse<>(
+                CocktailRtnConsts.NRM000,
+                CocktailRtnConsts.NRM000.getDescription(),
+                CocktailRtnConsts.NRM000.getCode(),
+                null
+        );
+    }
+
     public static <T> ApiResponse<T> notContent(CocktailRtnConsts status, String message) {
 
         return new ApiResponse<>(
