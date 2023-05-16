@@ -405,11 +405,10 @@
       "id": 45
     },
     {
-      "image": "blob:http://localhost:3000/df16a79b-07ba-40d4-9f06-7bd6983a4473",
-      "name": "깔루아밀크",
-      "description": "dsfkjghse",
-      "stuff": "깔루아1개\n우유1개\n",
-      "recipeStep": "ㄹㅇㅁㅇㄹ\nㄹㅁㅈㄷㄹ\nㅁㅈㄷㄹ\nㅁㅈㄷㄹ\nㅁㅈ\nㄷㄹ",
+      "name": "오렌지푸딩",
+      "description": "오렌지푸딩맛",
+      "stuff": "잔1개\n오렌지 푸딩1spoon\n",
+      "recipeStep": "1.컵을준비한다\n2.오렌지푸딩을깐다\n3.퍼먹는다",
       "id": 46
     }
   ]
