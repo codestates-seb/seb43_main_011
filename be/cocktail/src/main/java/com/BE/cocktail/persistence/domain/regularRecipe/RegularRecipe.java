@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-//@Setter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegularRecipe {
 
