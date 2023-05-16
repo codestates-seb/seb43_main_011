@@ -18,8 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
@@ -37,7 +35,8 @@ public class SecurityConfig {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .cors(withDefaults())
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // (1) 추가
                 .and()
                 .formLogin().disable()
@@ -61,6 +60,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -69,26 +69,18 @@ public class SecurityConfig {
     }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
-//        @Override
-//        public void configure(HttpSecurity builder) throws Exception {
-//            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-//
-//            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
-//            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
-//
-//            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
-//
-//            builder.addFilter(jwtAuthenticationFilter)
-//                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
-//        }
         @Override
         public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(builder.getSharedObject(AuthenticationManager.class), jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+
             builder.addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(new JwtVerificationFilter(jwtTokenizer, authorityUtils), JwtAuthenticationFilter.class);
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
+
     }
 }
