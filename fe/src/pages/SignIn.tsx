@@ -39,7 +39,9 @@ const Signup = () => {
       {/* <BlankFrom></BlankFrom> */}
       {/* 오른쪽으로 입력폼을 위치하려면 위의 주석 해제 */}
       <SignupForm>
-        <Logo src={logo} alt="logo"></Logo>
+        <Link to="/">
+          <Logo src={logo} alt="logo"></Logo>
+        </Link>
         <EmailForm>
           <Label>E-mail</Label>
           <InputArea

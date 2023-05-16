@@ -31,7 +31,7 @@ const DetailArea = styled.div`
   width: 535px;
   min-height: 665px;
   margin-left: 50px;
-  padding: 0 50px 50px 50px;
+  padding: 0 50px;
 `;
 
 const TitleArea = styled.div`
