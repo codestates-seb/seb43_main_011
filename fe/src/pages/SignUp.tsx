@@ -2,6 +2,7 @@ import styled from "styled-components";
 import signup from "../images/enter1.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   //이름 유효성검사
@@ -49,7 +50,9 @@ const Signup = () => {
       {/* <BlankFrom></BlankFrom> */}
       {/* 오른쪽으로 입력폼이 오려면 위의 주석 해제 */}
       <SignupForm>
-        <Logo src={logo} alt="logo"></Logo>
+        <Link to="/">
+          <Logo src={logo} alt="logo"></Logo>
+        </Link>
         <NicknameForm>
           <Label>Nickname</Label>
           <InputArea value={nickname} onChange={handleNickname}></InputArea>
