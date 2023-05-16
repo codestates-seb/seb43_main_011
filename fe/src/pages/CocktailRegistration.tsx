@@ -52,38 +52,31 @@ const CocktailRegistration = () => {
   //업로드할 이미지 변경
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; // 선택한 이미지 파일
-
     if (file) {
-      const reader = new FileReader(); // FileReader 객체 생성
-
-      reader.onloadend = (e) => {
-        const result = e.target?.result as string;
-        setPreviewImage(result); // 미리보기 이미지 URL 설정
-      };
-
-      reader.readAsDataURL(file); // 선택한 파일을 읽어서 Data URL로 변환하는코드
-
-      // 파일 업로드 등 추가적인 작업 수행
+      setPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
     }
   };
 
   const handleSubmitData = async () => {
     let totalData = "";
     selectLines.forEach((line) => {
-      // console.log("Stuff:", line.stuff);
-      // console.log("Amount:", line.amount);
-      // console.log("Select Option:", line.selectOption);
       totalData += line.stuff + line.amount + line.selectOption + "\n";
     });
-    const data = {
-      image: previewImage,
-      name: name,
-      description: description,
-      stuff: totalData,
-      recipeStep: recipeStep,
-    };
+    const formData = new FormData();
+    if (inputFileRef.current?.files?.[0] !== undefined) {
+      formData.append("image", inputFileRef.current?.files?.[0]);
+    }
+
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("stuff", totalData);
+    formData.append("recipeStep", recipeStep);
+
     try {
-      const response = await axios.post("http://localhost:4000/custom", data);
+      const response = await axios.post(
+        "http://localhost:4000/custom",
+        formData,
+      );
       console.log(response.data);
     } catch (error) {
       console.error(error);
