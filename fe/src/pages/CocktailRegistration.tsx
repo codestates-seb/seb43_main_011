@@ -11,6 +11,10 @@ const CocktailRegistration = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [recipeStep, setRecipeStep] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectLines, setSelectLines] = useState([
+    { id: 0, stuff: "", amount: "", selectOption: "ml" },
+  ]);
 
   interface Data {
     // imageUrl: string;
@@ -31,7 +35,6 @@ const CocktailRegistration = () => {
           },
         },
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -61,10 +64,6 @@ const CocktailRegistration = () => {
     setIsHovered(false);
   };
 
-  const [selectLines, setSelectLines] = useState([
-    { id: 0, stuff: "", amount: "", selectOption: "ml" },
-  ]);
-
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
     const newId = selectLines.length;
@@ -93,16 +92,11 @@ const CocktailRegistration = () => {
       recipe: recipeStep,
       ingredient: totalData,
     };
-    console.log(selectedImage);
-
     mutation.mutate(data);
   };
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
-    console.log(selectedImage);
   };
 
   return (
