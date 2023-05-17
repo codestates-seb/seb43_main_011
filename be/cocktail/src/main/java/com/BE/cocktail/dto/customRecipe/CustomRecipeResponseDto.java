@@ -27,7 +27,7 @@ public class CustomRecipeResponseDto {
         customRecipeResponseDto.setId(customRecipe.getId());
         customRecipeResponseDto.setName(customRecipe.getName());
         customRecipeResponseDto.setImageUrl(customRecipe.getImageUrl());
-        customRecipeResponseDto.setDescription(customRecipeResponseDto.getDescription());
+        customRecipeResponseDto.setDescription(customRecipe.getDescription());
 
         return customRecipeResponseDto;
     }

@@ -5,8 +5,12 @@ import com.BE.cocktail.dto.customRecipe.*;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.service.customRecipe.CustomRecipeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,10 +19,10 @@ public class CustomRecipeController {
 
     private final CustomRecipeService customRecipeService;
 
-    @PostMapping("/submit")
-    public ApiResponse<CustomRecipeResponseDto> postCustomRecipe(@RequestBody CustomRecipePostDto customRecipePostDto) {
+    @PostMapping(value="/submit", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<CustomRecipeResponseDto> postCustomRecipe(@RequestPart(value="image") MultipartFile image, @RequestPart CustomRecipePostDto customRecipePostDto) throws IOException {
 
-        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.saveCustomRecipe(customRecipePostDto);
+        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.saveCustomRecipe(image, customRecipePostDto);
 
         return ApiResponse.ok(customRecipeResponseDto);
     }

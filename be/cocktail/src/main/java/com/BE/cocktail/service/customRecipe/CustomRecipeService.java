@@ -7,13 +7,16 @@ import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
 import com.BE.cocktail.persistence.repository.customRecipe.CustomRecipeRepository;
 import com.BE.cocktail.exception.CocktailException;
+import com.BE.cocktail.s3.service.S3Uploader;
 import com.BE.cocktail.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,12 +26,16 @@ public class CustomRecipeService {
 
     private final CustomRecipeRepository customRecipeRepository;
 
+    private final S3Uploader s3Uploader;
+
     private final MemberService memberService;
 
-    public CustomRecipeResponseDto saveCustomRecipe(CustomRecipePostDto customRecipePostDto) {
+    public CustomRecipeResponseDto saveCustomRecipe(MultipartFile image, CustomRecipePostDto customRecipePostDto) throws IOException {
 
         Long memberId = memberService.getLoginMember().getId();
-        CustomRecipe customRecipe = CustomRecipe.of(customRecipePostDto, memberId);
+        String storedFileName = s3Uploader.upload(image,"images");
+        CustomRecipe customRecipe = CustomRecipe.of(customRecipePostDto, memberId, storedFileName);
+
         customRecipeRepository.save(customRecipe);
 
         return CustomRecipeResponseDto.of(customRecipe);
