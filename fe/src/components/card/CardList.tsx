@@ -4,6 +4,7 @@ import Card from "./Card";
 import { getCards, RegularResponseData } from "../../utils/query";
 import { useQuery, useQueryClient } from "react-query";
 import RecipePagination from "./RecipePagination";
+import LoadingImage from "./../../images/loading.gif";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -35,6 +36,20 @@ const CategoryBox = styled.div`
     margin-bottom: 4px;
   }
 `;
+
+const LoadingContainer = styled.div`
+  width: 1360px;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const LoadingImg = styled.img`
+  width: 30%;
+  height: 100%;
+  margin: auto;
+`;
+
 interface RowInterface {
   isTwo: boolean;
   isSearch?: boolean;
@@ -73,14 +88,15 @@ export default function CardList({ path }: ListProps) {
     }
   }, [path]);
 
-  const { data, status, isPreviousData } = useQuery<RegularResponseData>(
-    [`${path}`, size],
-    () => getCards(path, size),
-    {
-      staleTime: 2000,
-      keepPreviousData: true,
-    },
-  );
+  const { data, error, isLoading, isFetching, isPreviousData } =
+    useQuery<RegularResponseData>(
+      [`${path}`, size],
+      () => getCards(path, size),
+      {
+        staleTime: 2000,
+        keepPreviousData: true,
+      },
+    );
 
   const maxPage = data?.pageInfo.totalPage;
   const hasMore = maxPage && maxPage > page;
@@ -101,7 +117,7 @@ export default function CardList({ path }: ListProps) {
     setPage((page) => (!!hasMore ? page + 1 : page));
   };
 
-  if (status === "error") {
+  if (error) {
     return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
   }
 
@@ -113,6 +129,11 @@ export default function CardList({ path }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
+        {isLoading && (
+          <LoadingContainer>
+            <LoadingImg src={LoadingImage} />
+          </LoadingContainer>
+        )}
         {data?.data?.[0] &&
           data?.data.map((recipe, i) => {
             return (
@@ -125,7 +146,9 @@ export default function CardList({ path }: ListProps) {
               />
             );
           })}
-        {data?.data?.[0] === undefined && <div>레시피가 존재하지 않습니다</div>}
+        {!isFetching && data?.data?.[0] === undefined && (
+          <div>레시피가 존재하지 않습니다</div>
+        )}
       </CardsRow>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
         <RecipePagination

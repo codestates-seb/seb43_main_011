@@ -24,7 +24,7 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 const LoadingImage = styled.img`
-  width: 30%;
+  width: 35%;
   height: 50%;
   margin: auto;
 `;
