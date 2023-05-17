@@ -49,10 +49,10 @@ public class CustomRecipe {
 
 
 
-    public static CustomRecipe of(CustomRecipePostDto customRecipePostDto, Long memberId) {
+    public static CustomRecipe of(CustomRecipePostDto customRecipePostDto, Long memberId, String imageUrl) {
         CustomRecipe customRecipe = new CustomRecipe();
 
-        customRecipe.setImageUrl(customRecipePostDto.getImageUrl());
+        customRecipe.setImageUrl(imageUrl);
         customRecipe.setName(customRecipePostDto.getName());
         customRecipe.setDescription(customRecipePostDto.getDescription());
         customRecipe.setRecipe(customRecipePostDto.getRecipe());
