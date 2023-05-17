@@ -1,14 +1,60 @@
 import styled from "styled-components";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { useMutation } from "react-query";
+import ImageUpload from "../components/imageupload/ImageUpload";
 
 const CocktailRegistration = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [recipeStep, setRecipeStep] = useState("");
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [recipeStep, setRecipeStep] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectLines, setSelectLines] = useState([
+    { id: 0, stuff: "", amount: "", selectOption: "ml" },
+  ]);
+
+  interface Data {
+    // imageUrl: string;
+    name: string; // 이름
+    description: string; // 설명
+    recipe: string; // 단계
+    ingredient: string; //재료
+  }
+
+  const fetchRecipe = async (data: Data) => {
+    try {
+      const response = await axios.post(
+        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/submit",
+        data,
+        {
+          headers: {
+            Authorization: "Authorization Key",
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const mutation = useMutation(fetchRecipe, {
+    onMutate: (variable) => {
+      console.log("onMutate", variable);
+    },
+    onError: (error, variable, context) => {
+      console.log(error, variable, context);
+    },
+    onSuccess: (data, variables, context) => {
+      console.log("success", data, variables, context);
+    },
+    onSettled: () => {
+      console.log("end");
+    },
+  });
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -18,16 +64,12 @@ const CocktailRegistration = () => {
     setIsHovered(false);
   };
 
-  const [selectLines, setSelectLines] = useState([
-    { id: 0, stuff: "", amount: "", selectOption: "ml" },
-  ]);
-
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
     const newId = selectLines.length;
     const newSelectLines = [
       ...selectLines,
-      { id: newId, stuff: "", amount: "", selectOption: "" },
+      { id: newId, stuff: "", amount: "", selectOption: "ml" },
     ];
     setSelectLines(newSelectLines);
   };
@@ -38,67 +80,30 @@ const CocktailRegistration = () => {
     setSelectLines(newSelectLines);
   };
 
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
-
-  const handleUploadImage = () => {
-    // 파일 선택(input) 요소를 클릭하여 이미지 선택 다이얼로그 표시
-    if (inputFileRef.current !== undefined) {
-      inputFileRef.current?.click();
-    }
-  };
-
-  //업로드할 이미지 변경
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // 선택한 이미지 파일
-    if (file) {
-      setPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
-    }
-  };
-
-  const handleSubmitData = async () => {
+  const handleSubmitData = () => {
     let totalData = "";
     selectLines.forEach((line) => {
       totalData += line.stuff + line.amount + line.selectOption + "\n";
     });
-    const formData = new FormData();
-    if (inputFileRef.current?.files?.[0] !== undefined) {
-      formData.append("image", inputFileRef.current?.files?.[0]);
-    }
+    const data = {
+      image: selectedImage,
+      name: name,
+      description: description,
+      recipe: recipeStep,
+      ingredient: totalData,
+    };
+    mutation.mutate(data);
+  };
 
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("stuff", totalData);
-    formData.append("recipeStep", recipeStep);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/custom",
-        formData,
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleImageUpload = (image: File) => {
+    setSelectedImage(image);
   };
 
   return (
     <Container>
       <EditForm>
         <TopInfo>
-          <UploadImgButton onClick={handleUploadImage}>
-            {previewImage ? (
-              <PreviewImg src={previewImage} alt="Preview" />
-            ) : (
-              <UploadImgIcon />
-            )}
-          </UploadImgButton>
-          <UploadImgInput
-            type="file"
-            ref={inputFileRef}
-            onChange={handleImageChange}
-          />
+          <ImageUpload onImageUpload={handleImageUpload} />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
             <InputName
@@ -210,36 +215,6 @@ const CocktailRegistration = () => {
 
 export default CocktailRegistration;
 
-const UploadImgButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-  margin-top: 5rem;
-  width: 16rem;
-  height: 16rem;
-  border: none;
-  background: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
-const PreviewImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
-`;
-
-const UploadImgIcon = styled(AiOutlinePlus)`
-  font-size: 3rem;
-  color: #96a5ff;
-`;
-
-const UploadImgInput = styled.input`
-  display: none;
-`;
-
 const BottomInfo = styled.div`
   text-align: center;
   width: 50rem;
@@ -303,21 +278,10 @@ const TopCocktailSummary = styled.div`
   margin-left: 1rem;
 `;
 
-// const TopCocktailImage = styled.img`
-//   margin-right: 1rem;
-//   margin-top: 5rem;
-//   width: 16rem;
-//   height: 16rem;
-//   border: none;
-//   background-image: url(${exImage});
-//   background-size: cover;
-//   background-position: center;
-//   border-radius: 5px;
-// `;
-
 const InputName = styled.input`
   width: 32rem;
   height: 2rem;
+  padding: 5px;
   border-radius: 5px;
   border: 0.5px solid gray;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
@@ -327,7 +291,6 @@ const InputName = styled.input`
 `;
 
 const InputType = styled.input`
-  /* display: flex; */
   margin: 0;
   padding: 5px;
   width: 39.5rem;
@@ -355,6 +318,7 @@ const InputAmount = styled.input`
 const InputSummary = styled.input`
   width: 32rem;
   height: 8rem;
+  padding: 5px;
   border-radius: 5px;
   border: 0.5px solid gray;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
@@ -402,11 +366,11 @@ const ListAmount = styled.label`
 
 const EditForm = styled.div`
   margin-top: 60px;
-  width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능
+  width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능아래 box-shadow 주석확인
   min-height: 100%;
   border-right: 1px solid lightgray;
   border-left: 1px solid lightgray;
-  box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2); /* 그림자 속성 추가 */
+  /* box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);  */
   display: flex;
   justify-content: flex-start;
   align-items: center;

@@ -121,6 +121,19 @@ const RecipeItems = styled.li`
   margin-left: 12px;
   font-size: 17px;
 `;
+interface DetailRecipe {
+  name: string;
+  imageUrl: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
+const fetchRecipe = async (params: string | undefined) => {
+  const response: AxiosResponse<DetailRecipe> = await axios.get(
+    `http://localhost:4000/custom/${params}`,
+  );
+  return response.data;
+};
 
 export default function DetailPage() {
   const navigate = useNavigate();
@@ -137,7 +150,7 @@ export default function DetailPage() {
   return (
     <Container>
       <InfoWrapper>
-        <PhotoArea src={data?.image} alt="Recipe" />
+        <PhotoArea src={data?.imageUrl} alt="Recipe" />
         <DetailArea>
           <TitleArea>
             <Title>{data?.name}</Title>

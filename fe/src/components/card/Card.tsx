@@ -1,21 +1,20 @@
 import styled from "styled-components";
-import cocktail from "../../images/cocktail.png";
 import { useNavigate } from "react-router-dom";
 interface CardProps {
-  title: string;
+  name: string;
   image: string;
   description: string;
   id: number;
 }
-const Card = ({ title, image, description, id }: CardProps) => {
+const Card = ({ name, image, description, id }: CardProps) => {
   const navigate = useNavigate();
+  // console.log(name, image);
   return (
     <Container onClick={() => navigate(`/detail/${id}`)}>
-      <Image>
+      <Image url={image}>
         <HiddenText className="hidden-text">{description}</HiddenText>
       </Image>
-      {/*url={image}*/}
-      <Menuname>{title}</Menuname>
+      <Menuname>{name}</Menuname>
     </Container>
   );
 };
@@ -33,14 +32,16 @@ const Container = styled.div`
   flex-direction: column;
   box-sizing: border-box;
 `;
-
-const Image = styled.div`
+interface ImageProps {
+  url: string;
+}
+const Image = styled.div<ImageProps>`
   flex: 5;
   width: 13rem;
   display: flex;
   align-items: end;
   justify-content: center;
-  background: url(${cocktail});
+  background: url(${(props) => props.url});
   background-size: cover;
   background-position: center;
   border-radius: 15px 15px 0 0;
@@ -48,7 +49,7 @@ const Image = styled.div`
   overflow: hidden;
   &:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      url(${cocktail});
+      url(${(props) => props.url});
     > .hidden-text {
       opacity: 1;
     }
