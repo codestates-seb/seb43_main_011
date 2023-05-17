@@ -12,6 +12,7 @@ const CocktailRegistration = () => {
   const [description, setDescription] = useState<string>("");
   const [recipeStep, setRecipeStep] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectLineId, setSelectLineId] = useState<number>(-1);
   const [selectLines, setSelectLines] = useState([
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
@@ -31,7 +32,8 @@ const CocktailRegistration = () => {
         data,
         {
           headers: {
-            Authorization: "Authorization Key",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYXNkZkBhZGRkZGQuY29tIiwic3ViIjoiYXNkZkBhZGRkZGQuY29tIiwiaWF0IjoxNjg0MzMyMzMwLCJleHAiOjE2ODQzNTc1MzB9.Hm3iApNiC6wtpVaiAFzsG9aaJHD-efzU4ytUo8O67VPKsEljqfOkhMxAfFBWa5lJzUz1zhLhP26jqX556qT9yA",
           },
         },
       );
@@ -45,9 +47,9 @@ const CocktailRegistration = () => {
     onMutate: (variable) => {
       console.log("onMutate", variable);
     },
-    onError: (error, variable, context) => {
-      console.log(error, variable, context);
-    },
+    onError: (error) => {
+      console.log("에러발생", error);
+    }, //variable, context
     onSuccess: (data, variables, context) => {
       console.log("success", data, variables, context);
     },
@@ -66,7 +68,9 @@ const CocktailRegistration = () => {
 
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
-    const newId = selectLines.length;
+    const lastSelectLine = selectLines[selectLines.length - 1];
+    const newId = lastSelectLine.id + 1;
+
     const newSelectLines = [
       ...selectLines,
       { id: newId, stuff: "", amount: "", selectOption: "ml" },
@@ -76,21 +80,28 @@ const CocktailRegistration = () => {
 
   // X버튼을 누르면 재료등록리스트 삭제
   const handleDeleteSelectLine = (id: number) => {
+    const isCurrentSelection = id === selectLineId; // 현재 선택된 항목인지 확인
+
     const newSelectLines = selectLines.filter((line) => line.id !== id);
     setSelectLines(newSelectLines);
+
+    if (isCurrentSelection) {
+      setSelectLineId(-1);
+    }
   };
 
   const handleSubmitData = () => {
-    let totalData = "";
-    selectLines.forEach((line) => {
-      totalData += line.stuff + line.amount + line.selectOption + "\n";
-    });
+    const totalData = selectLines
+      .map((line) => {
+        return line.stuff + line.amount + line.selectOption;
+      })
+      .join("\n");
     const data = {
-      image: selectedImage,
+      // imageUrl: selectedImage,
       name: name,
       description: description,
-      recipe: recipeStep,
       ingredient: totalData,
+      recipe: recipeStep,
     };
     mutation.mutate(data);
   };
