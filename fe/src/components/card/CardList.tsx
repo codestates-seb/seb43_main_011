@@ -93,6 +93,7 @@ export default function CardList({ path }: ListProps) {
       [`${path}`, size],
       () => getCards(path, size),
       {
+        retry: 2,
         staleTime: 2000,
         keepPreviousData: true,
       },
@@ -143,6 +144,7 @@ export default function CardList({ path }: ListProps) {
                 description={recipe.description}
                 id={recipe.id}
                 key={i}
+                category="regular"
               />
             );
           })}

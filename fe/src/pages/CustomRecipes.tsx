@@ -62,6 +62,7 @@ export default function CustomRecipes() {
               image={recipe.imageUrl}
               description={recipe.description}
               id={recipe.id}
+              category="custom"
             />
           );
         })}
