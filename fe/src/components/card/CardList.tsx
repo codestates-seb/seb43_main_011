@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
-import { getCards } from "../../utils/query";
-import { useQuery } from "react-query";
+import { getCards, RegularResponseData } from "../../utils/query";
+import { useQuery, useQueryClient } from "react-query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -72,22 +72,49 @@ interface ListProps {
 }
 
 export default function CardList({ path }: ListProps) {
-  const [cardsPageNum, setCardsPageNum] = useState(1);
-  const { data } = useQuery([path], () => getCards(path));
-  const category = `Level ${path[path.length - 1]}`;
+  const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const size = useMemo(() => {
+    switch (path) {
+      case "10":
+        return 5;
+      case "20":
+        return 10;
+      case "30":
+        return 10;
+      case "40":
+        return 10;
+      default:
+        return 5;
+    }
+  }, [path]);
 
-  const showCardLength = path === "lev0" || path === "lev1" ? 5 : 10; // cartegory가 "0", "1"일때만 5 그 외에 string일 경우 10
-  const listStart = (cardsPageNum - 1) * showCardLength;
-  const listEnd = listStart + showCardLength;
-  const showList = data?.slice(listStart, listEnd);
-  const cardLeng = data?.length;
-  const onPrevClick = () => {
-    if (cardsPageNum > 1) setCardsPageNum((cardsPageNum) => cardsPageNum - 1);
-  };
-  const onNextClick = () => {
-    if (cardLeng && cardsPageNum < Math.ceil(cardLeng / showCardLength))
-      setCardsPageNum((cardsPageNum) => cardsPageNum + 1);
-  };
+  const { data, status, isPreviousData } = useQuery<RegularResponseData>(
+    [`${path}`, page, size],
+    () => getCards(path, size, page),
+    {
+      staleTime: 2000,
+      keepPreviousData: true,
+    },
+  );
+
+  const maxPage = data?.pageInfo && data?.pageInfo.totalPage;
+  const hasMore = maxPage && maxPage > page;
+  useEffect(() => {
+    if (!isPreviousData && !!hasMore) {
+      queryClient.prefetchQuery({
+        queryKey: [`${path}`, page + 1, size],
+        queryFn: () => getCards(path, page + 1, size),
+      });
+    }
+  }, [page, isPreviousData, queryClient, data]);
+  const category = `Level ${path}`;
+
+  const showCardLength = data?.pageInfo?.size;
+
+  if (status === "error") {
+    return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
+  }
   return (
     <CardsContainer>
       <CategoryBox>
@@ -96,31 +123,37 @@ export default function CardList({ path }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {showList?.map((recipe) => {
-          return (
-            <Card
-              title={recipe.name}
-              image={recipe.image}
-              description={recipe.description}
-              id={recipe.id}
-              key={recipe.id}
-            />
-          );
-        })}
+        {data?.data?.[0] &&
+          data?.data.map((recipe, i) => {
+            return (
+              <Card
+                name={recipe.name}
+                image={recipe.imageUrl}
+                description={recipe.description}
+                id={recipe.id}
+                key={i}
+              />
+            );
+          })}
+        {data?.data?.[0] === undefined && <div>레시피가 존재하지 않습니다</div>}
       </CardsRow>
-      {cardLeng && cardLeng >= showCardLength && (
+      {
         <CardsPageNationContainer>
-          <CardsPageNationButton>
-            <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
+          <CardsPageNationButton disabled={page === 1}>
+            <GrPrevious
+              onClick={() => setPage((page) => Math.max(page - 1, 1))}
+              size={"1.1rem"}
+            />
           </CardsPageNationButton>
-          <CardsPageNationDisplay>{`${cardsPageNum} / ${Math.ceil(
-            cardLeng / showCardLength,
-          )}`}</CardsPageNationDisplay>
-          <CardsPageNationButton>
-            <GrNext onClick={onNextClick} size={"1.1rem"} />
+          <CardsPageNationDisplay>{`${data?.pageInfo.page} / ${data?.pageInfo.totalPage}`}</CardsPageNationDisplay>
+          <CardsPageNationButton disabled={isPreviousData || !!hasMore}>
+            <GrNext
+              onClick={() => setPage((page) => (hasMore ? page + 1 : page))}
+              size={"1.1rem"}
+            />
           </CardsPageNationButton>
         </CardsPageNationContainer>
-      )}
+      }
     </CardsContainer>
   );
 }

@@ -20,7 +20,7 @@ const GuideText = styled.div`
 
 export default function Main() {
   const alclholLevel = useMemo(() => {
-    return ["lev0", "lev1", "lev2", "lev3"];
+    return ["0", "10", "20", "30", "40"];
   }, []);
   return (
     <>
