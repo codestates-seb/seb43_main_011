@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
-import { FcEditImage } from "react-icons/fc";
 import { TiDelete } from "react-icons/ti";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
+import ImageUpload from "../components/imageupload/ImageUpload";
 
 const CocktailRegistration = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -81,34 +81,11 @@ const CocktailRegistration = () => {
     setSelectLines(newSelectLines);
   };
 
-  const [previewImage, setPreviewImage] = useState<string>("");
-
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
-
-  const handleUploadImage = () => {
-    // 파일 선택(input) 요소를 클릭하여 이미지 선택 다이얼로그 표시
-    if (inputFileRef.current !== undefined) {
-      inputFileRef.current?.click();
-    }
-  };
-
-  //업로드할 이미지 변경
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // 선택한 이미지 파일
-    console.log(file);
-    if (file) {
-      setPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
-    }
-    console.log("이건 파일", file);
-    console.log("이건 프리뷰", previewImage.length);
-  };
-
   const handleSubmitData = () => {
     let totalData = "";
     selectLines.forEach((line) => {
       totalData += line.stuff + line.amount + line.selectOption + "\n";
     });
-    console.log(previewImage.length);
     const data = {
       name: name,
       description: description,
@@ -122,18 +99,7 @@ const CocktailRegistration = () => {
     <Container>
       <EditForm>
         <TopInfo>
-          <UploadImgButton onClick={handleUploadImage}>
-            {previewImage ? (
-              <PreviewImg src={previewImage} alt="Preview" />
-            ) : (
-              <UploadImgIcon />
-            )}
-          </UploadImgButton>
-          <UploadImgInput
-            type="file"
-            ref={inputFileRef}
-            onChange={handleImageChange}
-          />
+          <ImageUpload />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
             <InputName
@@ -244,35 +210,6 @@ const CocktailRegistration = () => {
 };
 
 export default CocktailRegistration;
-
-const UploadImgButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-  margin-top: 5rem;
-  width: 16rem;
-  height: 16rem;
-  border: none;
-  background: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
-const PreviewImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
-`;
-
-const UploadImgIcon = styled(FcEditImage)`
-  font-size: 3rem;
-`;
-
-const UploadImgInput = styled.input`
-  display: none;
-`;
 
 const BottomInfo = styled.div`
   text-align: center;
