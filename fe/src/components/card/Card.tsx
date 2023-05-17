@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import cocktail from "../../images/cocktail.png";
 import { useNavigate } from "react-router-dom";
 interface CardProps {
   name: string;
@@ -50,7 +49,7 @@ const Image = styled.div<ImageProps>`
   overflow: hidden;
   &:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      url(${cocktail});
+      url(${(props) => props.url});
     > .hidden-text {
       opacity: 1;
     }
