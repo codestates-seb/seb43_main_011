@@ -3,7 +3,6 @@ import { BsBookmarkStar } from "react-icons/bs";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecipeData } from "../utils/query";
 
 const Container = styled.div`
   display: flex;
@@ -122,9 +121,15 @@ const RecipeItems = styled.li`
   margin-left: 12px;
   font-size: 17px;
 `;
-
+interface DetailRecipe {
+  name: string;
+  imageUrl: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
 const fetchRecipe = async (params: string | undefined) => {
-  const response: AxiosResponse<RecipeData> = await axios.get(
+  const response: AxiosResponse<DetailRecipe> = await axios.get(
     `http://localhost:4000/custom/${params}`,
   );
   return response.data;
@@ -133,7 +138,7 @@ const fetchRecipe = async (params: string | undefined) => {
 export default function DetailPage() {
   const params = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useQuery<RecipeData>(["recipe"], () =>
+  const { data, isLoading, error } = useQuery<DetailRecipe>(["recipe"], () =>
     fetchRecipe(params.id),
   );
 
@@ -147,7 +152,7 @@ export default function DetailPage() {
   return (
     <Container>
       <InfoWrapper>
-        <PhotoArea src={data?.image} alt="Recipe" />
+        <PhotoArea src={data?.imageUrl} alt="Recipe" />
         <DetailArea>
           <TitleArea>
             <Title>{data?.name}</Title>

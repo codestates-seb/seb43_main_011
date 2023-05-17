@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { GrPrevious, GrNext } from "react-icons/gr";
+import { useState, useMemo, useEffect } from "react";
 import Card from "./Card";
-import { getCards } from "../../utils/query";
-import { useQuery } from "react-query";
+import { getCards, RegularResponseData } from "../../utils/query";
+import { useQuery, useQueryClient } from "react-query";
+import RecipePagination from "./RecipePagination";
+import LoadingImage from "./../../images/loading.gif";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -35,6 +36,20 @@ const CategoryBox = styled.div`
     margin-bottom: 4px;
   }
 `;
+
+const LoadingContainer = styled.div`
+  width: 1360px;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const LoadingImg = styled.img`
+  width: 30%;
+  height: 100%;
+  margin: auto;
+`;
+
 interface RowInterface {
   isTwo: boolean;
   isSearch?: boolean;
@@ -51,43 +66,61 @@ const CardsRow = styled.div<RowInterface>`
   place-items: center;
 `;
 
-const CardsPageNationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CardsPageNationDisplay = styled.div`
-  font-size: 1.1rem;
-`;
-
-const CardsPageNationButton = styled.button`
-  border: none;
-  background-color: white;
-  margin: 0 15px;
-`;
-
 interface ListProps {
   path: string;
 }
 
 export default function CardList({ path }: ListProps) {
-  const [cardsPageNum, setCardsPageNum] = useState(1);
-  const { data } = useQuery([path], () => getCards(path));
-  const category = `Level ${path[path.length - 1]}`;
+  const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const size = useMemo(() => {
+    switch (path) {
+      case "10":
+        return 5;
+      case "20":
+        return 10;
+      case "30":
+        return 10;
+      case "40":
+        return 10;
+      default:
+        return 5;
+    }
+  }, [path]);
 
-  const showCardLength = path === "lev0" || path === "lev1" ? 5 : 10; // cartegory가 "0", "1"일때만 5 그 외에 string일 경우 10
-  const listStart = (cardsPageNum - 1) * showCardLength;
-  const listEnd = listStart + showCardLength;
-  const showList = data?.slice(listStart, listEnd);
-  const cardLeng = data?.length;
-  const onPrevClick = () => {
-    if (cardsPageNum > 1) setCardsPageNum((cardsPageNum) => cardsPageNum - 1);
-  };
+  const { data, error, isLoading, isFetching, isPreviousData } =
+    useQuery<RegularResponseData>(
+      [`${path}`, size],
+      () => getCards(path, size),
+      {
+        staleTime: 2000,
+        keepPreviousData: true,
+      },
+    );
+
+  const maxPage = data?.pageInfo.totalPage;
+  const hasMore = maxPage && maxPage > page;
+  const category = `Level ${path}`;
+  const showCardLength = data?.pageInfo?.size;
+  useEffect(() => {
+    if (!isPreviousData && !!hasMore) {
+      queryClient.prefetchQuery([`${path}`, page + 1, size], () =>
+        getCards(path, page + 1, size),
+      );
+    }
+  }, [page, isPreviousData, queryClient, data]);
+
   const onNextClick = () => {
-    if (cardLeng && cardsPageNum < Math.ceil(cardLeng / showCardLength))
-      setCardsPageNum((cardsPageNum) => cardsPageNum + 1);
+    setPage((page) => Math.max(page - 1, 1));
   };
+  const onPrevClick = () => {
+    setPage((page) => (!!hasMore ? page + 1 : page));
+  };
+
+  if (error) {
+    return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
+  }
+
   return (
     <CardsContainer>
       <CategoryBox>
@@ -96,30 +129,35 @@ export default function CardList({ path }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {showList?.map((recipe) => {
-          return (
-            <Card
-              title={recipe.name}
-              image={recipe.image}
-              description={recipe.description}
-              id={recipe.id}
-              key={recipe.id}
-            />
-          );
-        })}
+        {isLoading && (
+          <LoadingContainer>
+            <LoadingImg src={LoadingImage} />
+          </LoadingContainer>
+        )}
+        {data?.data?.[0] &&
+          data?.data.map((recipe, i) => {
+            return (
+              <Card
+                name={recipe.name}
+                image={recipe.imageUrl}
+                description={recipe.description}
+                id={recipe.id}
+                key={i}
+              />
+            );
+          })}
+        {!isFetching && data?.data?.[0] === undefined && (
+          <div>레시피가 존재하지 않습니다</div>
+        )}
       </CardsRow>
-      {cardLeng && cardLeng >= showCardLength && (
-        <CardsPageNationContainer>
-          <CardsPageNationButton>
-            <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
-          </CardsPageNationButton>
-          <CardsPageNationDisplay>{`${cardsPageNum} / ${Math.ceil(
-            cardLeng / showCardLength,
-          )}`}</CardsPageNationDisplay>
-          <CardsPageNationButton>
-            <GrNext onClick={onNextClick} size={"1.1rem"} />
-          </CardsPageNationButton>
-        </CardsPageNationContainer>
+      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+        <RecipePagination
+          pageInfo={data?.pageInfo}
+          hasMore={!!hasMore}
+          isPreviousData={isPreviousData}
+          onNextClick={onNextClick}
+          onPrevClick={onPrevClick}
+        />
       )}
     </CardsContainer>
   );
