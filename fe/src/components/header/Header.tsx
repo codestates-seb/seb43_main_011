@@ -111,7 +111,7 @@ const Header = () => {
         </SearchContainer>
 
         <Menu>
-          <MenuItem to={"/login"}>로그인</MenuItem>
+          <MenuItem to={"/signin"}>로그인</MenuItem>
           <MenuItem to={"/signup"}>회원가입</MenuItem>
         </Menu>
         <NavController />

@@ -3,7 +3,6 @@ import { BsBookmarkStar } from "react-icons/bs";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-//BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
   display: flex;
@@ -12,21 +11,26 @@ const Container = styled.div`
   flex-wrap: wrap;
   min-height: 100vh;
   position: relative;
+  margin-top: 20px;
 `;
 
-const PhotoArea = styled.div`
+const InfoWrapper = styled.div`
   display: flex;
-  width: 20rem;
-  height: 20rem;
-  /* background-color: #96a5ff; */
+  justify-content: center;
+`;
+
+const PhotoArea = styled.img`
+  width: 30rem;
+  min-height: 615px;
+  height: 100%;
   border-radius: 10px;
 `;
 
 const DetailArea = styled.div`
   width: 535px;
-  height: 665px;
+  min-height: 665px;
   margin-left: 50px;
-  padding: 50px;
+  padding: 0 50px;
 `;
 
 const TitleArea = styled.div`
@@ -55,9 +59,27 @@ const TitleExplanation = styled.div`
 `;
 
 const Ingredient = styled.ul`
-  width: 375px;
+  width: 550px;
   height: 145px;
   margin: 0 0 30px 12px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 `;
 
 const IngredientItems = styled.li`
@@ -72,6 +94,24 @@ const Recipe = styled.ol`
   width: 550px;
   height: 207px;
   margin: 0 0 0 12px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 `;
 
 const RecipeItems = styled.li`
@@ -81,29 +121,6 @@ const RecipeItems = styled.li`
   margin-left: 12px;
   font-size: 17px;
 `;
-
-const WriterButtons = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 338px;
-  margin-left: 30%;
-  bottom: 5%;
-`;
-
-const Button = styled.button`
-  width: 111px;
-  height: 40px;
-  background-color: #96a5ff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  color: #ffff;
-  font-weight: 800;
-  font-size: 24px;
-  border: none;
-  cursor: pointer;
-`;
 interface DetailRecipe {
   name: string;
   imageUrl: string;
@@ -111,7 +128,6 @@ interface DetailRecipe {
   stuff: string;
   recipeStep: string;
 }
-
 const fetchRecipe = async (params: string | undefined) => {
   const response: AxiosResponse<DetailRecipe> = await axios.get(
     `http://localhost:4000/custom/${params}`,
@@ -128,57 +144,37 @@ export default function DetailPage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
+    // errorBoundary로 수정 예정
     console.error(error);
     navigate("/Error");
   }
 
-  console.log(data);
-
   return (
     <Container>
-      <PhotoArea>
-        <img src={data?.imageUrl} alt="Recipe" />
-      </PhotoArea>
-
-      {/* <PhotoArea>사진</PhotoArea> */}
-      <DetailArea>
-        <TitleArea>
-          <Title>{data?.name}</Title>
-          {/* <Title>롱 아일랜드 아이스티</Title> */}
-          <Bookmarker>
-            <BsBookmarkStar size="30" color="#96A5FF" />
-          </Bookmarker>
-        </TitleArea>
-        <TitleExplanation>
-          {/* 술기운이 오래가는 콜라, 레몬이 섞인 묘한 */}
-          {data?.description}
-        </TitleExplanation>
-        <Title>재료</Title>
-        {/* 각각줄바꿈일어나야함. */}
-        <Ingredient>
-          {<IngredientItems>{data?.stuff}</IngredientItems>}
-          {/* <IngredientItems>보드카 15ml</IngredientItems>
-          <IngredientItems>데킬라 15ml</IngredientItems>
-          <IngredientItems>레몬 주스 30ml</IngredientItems>
-          <IngredientItems>콜라 Full up</IngredientItems> */}
-        </Ingredient>
-        <Title>RECIPE</Title>
-        <Recipe>
-          {/* 개행문자마다 줄바꿈 */}
-          <RecipeItems>{data?.recipeStep}</RecipeItems>
-          {/* <RecipeItems>450ml 잔에 얼음을 가득 채워주세요.</RecipeItems>
-          <RecipeItems>
-            얼음이 들어있는 잔에 데킬라, 보드카를 15ml씩 넣어주세요.
-          </RecipeItems>
-          <RecipeItems>술이 부어진 잔에 레몬 주스 30ml 넣어주세요.</RecipeItems>
-          <RecipeItems>마지막으로 잔에 콜라를 가득 부어주세요.</RecipeItems>
-          <RecipeItems>살짝 섞어주면 완성입니다!</RecipeItems> */}
-        </Recipe>
-      </DetailArea>
-      <WriterButtons>
-        <Button>Delete</Button>
-        <Button>Edit</Button>
-      </WriterButtons>
+      <InfoWrapper>
+        <PhotoArea src={data?.imageUrl} alt="Recipe" />
+        <DetailArea>
+          <TitleArea>
+            <Title>{data?.name}</Title>
+            <Bookmarker>
+              <BsBookmarkStar size="30" color="#96A5FF" />
+            </Bookmarker>
+          </TitleArea>
+          <TitleExplanation>{data?.description}</TitleExplanation>
+          <Title>재료</Title>
+          <Ingredient>
+            {data?.stuff?.split("\n").map((el, i) => (
+              <IngredientItems key={i}>{el}</IngredientItems>
+            ))}
+          </Ingredient>
+          <Title>RECIPE</Title>
+          <Recipe>
+            {data?.recipeStep?.split("\n").map((el, i) => (
+              <RecipeItems key={i}>{el}</RecipeItems>
+            ))}
+          </Recipe>
+        </DetailArea>
+      </InfoWrapper>
     </Container>
   );
 }
