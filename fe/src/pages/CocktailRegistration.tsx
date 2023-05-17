@@ -27,8 +27,7 @@ const CocktailRegistration = () => {
         data,
         {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYXNkZkBhZGRkZGQuY29tIiwic3ViIjoiYXNkZkBhZGRkZGQuY29tIiwiaWF0IjoxNjg0Mjg2Mjk3LCJleHAiOjE2ODQzMTE0OTd9.hmgPgX_MCRXjGraz4Al_dGrhoCgU0Cdd_fpUsttfykA6AB946kJ39zvuAo2X3ZNDCUFlnbKn4LSuFNWIv6ZlIw",
+            Authorization: "Authorization Key",
           },
         },
       );
