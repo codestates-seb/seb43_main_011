@@ -195,7 +195,7 @@ export default function LoginPage() {
         }
       })
       .catch((error) => {
-        setError("에러가 발생하였습니다.");
+        console.error(error);
       });
   };
 
