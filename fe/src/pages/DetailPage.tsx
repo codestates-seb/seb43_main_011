@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { BsBookmarkStar } from "react-icons/bs";
-import axios, { AxiosResponse } from "axios";
-import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { RecipeData } from "../utils/query";
+import { useFetchRecipe } from "../hooks/useFetchRecipe";
 
 const Container = styled.div`
   display: flex;
@@ -123,20 +122,11 @@ const RecipeItems = styled.li`
   font-size: 17px;
 `;
 
-const fetchRecipe = async (params: string | undefined) => {
-  const response: AxiosResponse<RecipeData> = await axios.get(
-    `http://localhost:4000/custom/${params}`,
-  );
-  return response.data;
-};
-
 export default function DetailPage() {
-  const params = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useQuery<RecipeData>(["recipe"], () =>
-    fetchRecipe(params.id),
-  );
-
+  const { id } = useParams();
+  // id가 undefined인 경우 빈 문자열로 설정
+  const { data, isLoading, error } = useFetchRecipe(id || "");
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     // errorBoundary로 수정 예정
