@@ -3,7 +3,6 @@ import { BsBookmarkStar } from "react-icons/bs";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecipeData } from "../utils/query";
 //BsBookmarkStarFill (색상 채운 버젼)
 
 const Container = styled.div`
@@ -105,9 +104,16 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
 `;
+interface DetailRecipe {
+  name: string;
+  imageUrl: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
 
 const fetchRecipe = async (params: string | undefined) => {
-  const response: AxiosResponse<RecipeData> = await axios.get(
+  const response: AxiosResponse<DetailRecipe> = await axios.get(
     `http://localhost:4000/custom/${params}`,
   );
   return response.data;
@@ -116,7 +122,7 @@ const fetchRecipe = async (params: string | undefined) => {
 export default function DetailPage() {
   const params = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useQuery<RecipeData>(["recipe"], () =>
+  const { data, isLoading, error } = useQuery<DetailRecipe>(["recipe"], () =>
     fetchRecipe(params.id),
   );
 
@@ -131,7 +137,7 @@ export default function DetailPage() {
   return (
     <Container>
       <PhotoArea>
-        <img src={data?.image} alt="Recipe" />
+        <img src={data?.imageUrl} alt="Recipe" />
       </PhotoArea>
 
       {/* <PhotoArea>사진</PhotoArea> */}
