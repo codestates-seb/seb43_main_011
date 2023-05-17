@@ -128,12 +128,6 @@ interface DetailRecipe {
   stuff: string;
   recipeStep: string;
 }
-const fetchRecipe = async (params: string | undefined) => {
-  const response: AxiosResponse<DetailRecipe> = await axios.get(
-    `http://localhost:4000/custom/${params}`,
-  );
-  return response.data;
-};
 
 export default function DetailPage() {
   const navigate = useNavigate();
