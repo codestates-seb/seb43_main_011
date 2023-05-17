@@ -2,7 +2,11 @@ import styled from "styled-components";
 import { useState, useRef } from "react";
 import { FcEditImage } from "react-icons/fc";
 
-const ImageUpload = () => {
+const ImageUpload = ({
+  onImageUpload,
+}: {
+  onImageUpload: (file: File) => void;
+}) => {
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
@@ -20,9 +24,8 @@ const ImageUpload = () => {
     console.log(file);
     if (file) {
       setPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
+      onImageUpload(file);
     }
-    console.log("이건 파일", file);
-    console.log("이건 프리뷰", previewImage.length);
   };
   return (
     <>

@@ -87,19 +87,29 @@ const CocktailRegistration = () => {
       totalData += line.stuff + line.amount + line.selectOption + "\n";
     });
     const data = {
+      image: selectedImage,
       name: name,
       description: description,
       recipe: recipeStep,
       ingredient: totalData,
     };
+    console.log(selectedImage);
+
     mutation.mutate(data);
+  };
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const handleImageUpload = (image: File) => {
+    setSelectedImage(image);
+    console.log(selectedImage);
   };
 
   return (
     <Container>
       <EditForm>
         <TopInfo>
-          <ImageUpload />
+          <ImageUpload onImageUpload={handleImageUpload} />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
             <InputName
