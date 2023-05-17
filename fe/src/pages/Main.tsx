@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
 import { useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import CardListFallback from "../components/errorFallback/CardListFallback";
+import { useQueryErrorResetBoundary } from "react-query";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;
@@ -19,6 +22,7 @@ const GuideText = styled.div`
 `;
 
 export default function Main() {
+  const { reset } = useQueryErrorResetBoundary();
   const alclholLevel = useMemo(() => {
     return ["0", "10", "20", "30", "40"];
   }, []);
@@ -27,7 +31,13 @@ export default function Main() {
       <RecipesContainer>
         <GuideText>정규 레시피</GuideText>
         {alclholLevel.map((alcohol, i) => (
-          <CardList path={alcohol} key={i} />
+          <ErrorBoundary
+            key={i}
+            FallbackComponent={CardListFallback}
+            onReset={reset}
+          >
+            <CardList path={alcohol} key={i} />
+          </ErrorBoundary>
         ))}
       </RecipesContainer>
     </>
