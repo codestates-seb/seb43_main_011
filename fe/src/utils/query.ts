@@ -32,10 +32,6 @@ export interface PageInfo {
   totalSize: number;
 }
 
-export interface RegularResponse {
-  data: RegularResponseData;
-}
-
 export interface RegularResponseData {
   data: RecipeCard[];
   pageInfo: PageInfo;
@@ -47,8 +43,13 @@ export const getCards = async (path: string, size: number, page: number) => {
   return response.data.data;
 };
 
+export interface CustomResponseData {
+  customRecipeResponseDtoList: RecipeCard[];
+}
+
 export const getCustomCards = async (path: string) => {
-  const response: AxiosResponse<{ data: RegularResponseData }> =
-    await axios.get(`/${path}/find?page=1&size=5`);
+  const response: AxiosResponse<{ data: CustomResponseData }> = await axios.get(
+    `/${path}/findAll`,
+  );
   return response.data.data;
 };
