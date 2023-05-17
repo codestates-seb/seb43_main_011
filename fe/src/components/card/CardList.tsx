@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState, useMemo, useEffect } from "react";
-import { GrPrevious, GrNext } from "react-icons/gr";
 import Card from "./Card";
 import { getCards, RegularResponseData } from "../../utils/query";
 import { useQuery, useQueryClient } from "react-query";
+import RecipePagination from "./RecipePagination";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -51,22 +51,6 @@ const CardsRow = styled.div<RowInterface>`
   place-items: center;
 `;
 
-const CardsPageNationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CardsPageNationDisplay = styled.div`
-  font-size: 1.1rem;
-`;
-
-const CardsPageNationButton = styled.button`
-  border: none;
-  background-color: white;
-  margin: 0 15px;
-`;
-
 interface ListProps {
   path: string;
 }
@@ -90,31 +74,37 @@ export default function CardList({ path }: ListProps) {
   }, [path]);
 
   const { data, status, isPreviousData } = useQuery<RegularResponseData>(
-    [`${path}`, page, size],
-    () => getCards(path, size, page),
+    [`${path}`, size],
+    () => getCards(path, size),
     {
       staleTime: 2000,
       keepPreviousData: true,
     },
   );
 
-  const maxPage = data?.pageInfo && data?.pageInfo.totalPage;
+  const maxPage = data?.pageInfo.totalPage;
   const hasMore = maxPage && maxPage > page;
+  const category = `Level ${path}`;
+  const showCardLength = data?.pageInfo?.size;
   useEffect(() => {
     if (!isPreviousData && !!hasMore) {
-      queryClient.prefetchQuery({
-        queryKey: [`${path}`, page + 1, size],
-        queryFn: () => getCards(path, page + 1, size),
-      });
+      queryClient.prefetchQuery([`${path}`, page + 1, size], () =>
+        getCards(path, page + 1, size),
+      );
     }
   }, [page, isPreviousData, queryClient, data]);
-  const category = `Level ${path}`;
 
-  const showCardLength = data?.pageInfo?.size;
+  const onNextClick = () => {
+    setPage((page) => Math.max(page - 1, 1));
+  };
+  const onPrevClick = () => {
+    setPage((page) => (!!hasMore ? page + 1 : page));
+  };
 
   if (status === "error") {
     return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
   }
+
   return (
     <CardsContainer>
       <CategoryBox>
@@ -137,23 +127,15 @@ export default function CardList({ path }: ListProps) {
           })}
         {data?.data?.[0] === undefined && <div>레시피가 존재하지 않습니다</div>}
       </CardsRow>
-      {
-        <CardsPageNationContainer>
-          <CardsPageNationButton disabled={page === 1}>
-            <GrPrevious
-              onClick={() => setPage((page) => Math.max(page - 1, 1))}
-              size={"1.1rem"}
-            />
-          </CardsPageNationButton>
-          <CardsPageNationDisplay>{`${data?.pageInfo.page} / ${data?.pageInfo.totalPage}`}</CardsPageNationDisplay>
-          <CardsPageNationButton disabled={isPreviousData || !!hasMore}>
-            <GrNext
-              onClick={() => setPage((page) => (hasMore ? page + 1 : page))}
-              size={"1.1rem"}
-            />
-          </CardsPageNationButton>
-        </CardsPageNationContainer>
-      }
+      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+        <RecipePagination
+          pageInfo={data?.pageInfo}
+          hasMore={!!hasMore}
+          isPreviousData={isPreviousData}
+          onNextClick={onNextClick}
+          onPrevClick={onPrevClick}
+        />
+      )}
     </CardsContainer>
   );
 }
