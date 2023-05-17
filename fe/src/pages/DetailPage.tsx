@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BsBookmarkStar } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecipeData } from "../utils/query";
+import { RecipeData } from "../hooks/useFetchRecipe";
 import { useFetchRecipe } from "../hooks/useFetchRecipe";
 
 const Container = styled.div`

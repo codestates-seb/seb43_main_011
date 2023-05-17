@@ -51,15 +51,6 @@ export interface SearchResponse {
   pageInfo: PageInfo;
 }
 
-export interface RecipeData {
-  id: number;
-  name: string;
-  imageUrl: string;
-  description: string;
-  stuff: string;
-  recipeStep: string;
-}
-
 export const getSearchResults = async (
   path: string,
   searchValue: string,

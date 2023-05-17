@@ -1,6 +1,15 @@
 import { useQuery } from "react-query";
 import axios, { AxiosResponse } from "axios";
-import { RecipeData } from "../utils/query";
+// import { RecipeData } from "../utils/query";
+
+export interface RecipeData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  description: string;
+  stuff: string;
+  recipeStep: string;
+}
 
 const fetchRecipe = async (params: string) => {
   const response: AxiosResponse<RecipeData> = await axios.get(
