@@ -1,42 +1,63 @@
 import axios, { AxiosResponse } from "axios";
-axios.defaults.baseURL = "http://localhost:4000";
 
 export interface Recipes {
   [key: string]: RecipeCard[];
 }
+
 export interface RecipeCard {
-  title: string;
-  image: string;
-  description: string;
-  ingredient: string;
-}
-export const getSearchResults = async (path: string, searchValue: string) => {
-  const response: AxiosResponse<RecipeData[]> = await axios.get(`/${path}`);
-  const data = response.data.filter(
-    (card: RecipeData) =>
-      card.stuff.includes(searchValue) || card.name.includes(searchValue),
-  );
-  console.log(response);
-  return data;
-};
-
-interface RecipeCardResponse {
-  pages: RecipeCard[][];
-  nextPage: number | null;
-  previousPage: number | null;
-}
-
-export interface RecipeData {
-  image: string;
+  imageUrl: string;
   name: string;
   description: string;
-  stuff: string;
-  recipeStep: string;
   id: number;
 }
 
-export const getCards = async (path: string) => {
-  // const size = path === "lev0" || path === "lev1" ? 5 : 10;
-  const response: AxiosResponse<RecipeData[]> = await axios.get(`/${path}`);
-  return response.data;
+export interface PageInfo {
+  page: number;
+  size: number;
+  totalPage: number;
+  totalSize: number;
+}
+
+export interface RegularResponseData {
+  data: RecipeCard[];
+  pageInfo: PageInfo;
+}
+
+export const getCards = async (path: string, size: number, page = 1) => {
+  const response: AxiosResponse<{ data: RegularResponseData }> =
+    await axios.get(`/regular/findAll/${path}?page=${page}&size=${size}`);
+  return response.data.data;
+};
+
+export interface CustomResponseData {
+  customRecipeResponseDtoList: RecipeCard[];
+}
+
+export const getCustomCards = async (path: string) => {
+  const response: AxiosResponse<{ data: CustomResponseData }> = await axios.get(
+    `/${path}/findAll`,
+  );
+  return response.data.data;
+};
+
+interface SearchResultsCard {
+  name: string;
+  imageUrl: string;
+  ingredient: string;
+}
+
+export interface SearchResponse {
+  data: SearchResultsCard[];
+  pageInfo: PageInfo;
+}
+
+export const getSearchResults = async (
+  path: string,
+  searchValue: string,
+  page = 1,
+) => {
+  const response: AxiosResponse<{ data: SearchResponse }> = await axios.get(
+    `/${path}/search/${searchValue}?page=${page}&size=8`,
+  );
+  return response.data.data;
 };

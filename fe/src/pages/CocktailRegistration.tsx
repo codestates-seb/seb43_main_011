@@ -32,8 +32,7 @@ const CocktailRegistration = () => {
         data,
         {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYXNkZkBhZGRkZGQuY29tIiwic3ViIjoiYXNkZkBhZGRkZGQuY29tIiwiaWF0IjoxNjg0MzMyMzMwLCJleHAiOjE2ODQzNTc1MzB9.Hm3iApNiC6wtpVaiAFzsG9aaJHD-efzU4ytUo8O67VPKsEljqfOkhMxAfFBWa5lJzUz1zhLhP26jqX556qT9yA",
+            Authorization: "Authorization Key",
           },
         },
       );
@@ -68,6 +67,7 @@ const CocktailRegistration = () => {
 
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
+    //키가 겹치지 않도록 고유한키 부여
     const lastSelectLine = selectLines[selectLines.length - 1];
     const newId = lastSelectLine.id + 1;
 
@@ -97,7 +97,7 @@ const CocktailRegistration = () => {
       })
       .join("\n");
     const data = {
-      // imageUrl: selectedImage,
+      // imageUrl: selectedImage, 백엔드 File형식 받는것 구현중입니다
       name: name,
       description: description,
       ingredient: totalData,
