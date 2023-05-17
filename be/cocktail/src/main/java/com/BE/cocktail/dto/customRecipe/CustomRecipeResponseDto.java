@@ -11,17 +11,23 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomRecipeResponseDto {
 
+    private Long id;
+
     private String name;
 
     private String imageUrl;
+
+    private String description;
 
 
 
     public static CustomRecipeResponseDto of(CustomRecipe customRecipe) {
         CustomRecipeResponseDto customRecipeResponseDto = new CustomRecipeResponseDto();
 
+        customRecipeResponseDto.setId(customRecipe.getId());
         customRecipeResponseDto.setName(customRecipe.getName());
         customRecipeResponseDto.setImageUrl(customRecipe.getImageUrl());
+        customRecipeResponseDto.setDescription(customRecipeResponseDto.getDescription());
 
         return customRecipeResponseDto;
     }
