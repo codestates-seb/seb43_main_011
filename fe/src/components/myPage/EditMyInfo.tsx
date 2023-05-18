@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
@@ -75,13 +76,9 @@ export default function EditMyInfo() {
 
   const mutation = useMutation(
     (data: { nickname: string; statusMessage: string }) =>
-      fetch("http://localhost:3000/member/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }).then((response) => response.json()),
+      axios
+        .post("http://localhost:3000/member/update", data)
+        .then((response) => response.data),
 
     {
       onError: (error: Error) => {
@@ -111,7 +108,7 @@ export default function EditMyInfo() {
 
   return (
     <Container>
-      <MyPhoto>사진 넣는 곳</MyPhoto>
+      <MyPhoto></MyPhoto>
       <InfoWrapper>
         <Title>Nickname</Title>
         <Input
