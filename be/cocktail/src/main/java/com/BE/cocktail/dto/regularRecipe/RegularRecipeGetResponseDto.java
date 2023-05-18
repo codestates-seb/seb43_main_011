@@ -14,8 +14,10 @@ public class RegularRecipeGetResponseDto {
 
     private String recipe;
 
+    private String imageUrl;
+
     public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe) {
 
-        return new RegularRecipeGetResponseDto(regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe());
+        return new RegularRecipeGetResponseDto(regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe(), regularRecipe.getImageUrl());
     }
 }
