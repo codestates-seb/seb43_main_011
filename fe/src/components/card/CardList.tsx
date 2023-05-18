@@ -16,14 +16,14 @@ const CategoryBox = styled.div`
   font-weight: bold;
   font-size: 1.1rem;
   margin: 10px 20px;
-  > .category {
+  > .boundary {
     border-top: 2px solid #6f8892e8;
     text-align: center;
     padding: 5px;
     margin-top: 4px;
-    flex-basis: 10%;
+    flex-basis: 15%;
   }
-  > .center {
+  > .slash {
     transform: rotate(-45deg);
     margin: 0 10.5px 0 10.5px;
     width: 2px;
@@ -98,7 +98,18 @@ export default function CardList({ path }: ListProps) {
 
   const maxPage = data?.pageInfo.totalPage;
   const hasMore = maxPage && maxPage > page;
-  const category = `Level ${path}`;
+  const boundary = useMemo(() => {
+    switch (path) {
+      case "0":
+        return "무알콜";
+      case "1":
+        return "1 ~ 9도";
+      case "40":
+        return "40도 이상";
+      default:
+        return `${path} ~ ${Number(path) + 9}도`;
+    }
+  }, [path]);
   const showCardLength = data?.pageInfo?.size;
   useEffect(() => {
     if (!isPreviousData && !!hasMore) {
@@ -118,8 +129,8 @@ export default function CardList({ path }: ListProps) {
   return (
     <CardsContainer>
       <CategoryBox>
-        <div className="category">{category}</div>
-        <div className="center"></div>
+        <div className="boundary">{`${boundary}`}</div>
+        <div className="slash"></div>
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
