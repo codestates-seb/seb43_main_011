@@ -5,12 +5,13 @@ interface CardProps {
   image: string;
   description: string;
   id: number;
+  category: string;
 }
-const Card = ({ name, image, description, id }: CardProps) => {
+const Card = ({ name, image, description, id, category }: CardProps) => {
   const navigate = useNavigate();
   // console.log(name, image);
   return (
-    <Container onClick={() => navigate(`/detail/${id}`)}>
+    <Container onClick={() => navigate(`/detail/${category}/${id}`)}>
       <Image url={image}>
         <HiddenText className="hidden-text">{description}</HiddenText>
       </Image>
