@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-public class CustomRecipePostDto {
+public class CustomUpdateDto {
 
     @Pattern(regexp = "^[가-힣]+$")
     @Size(min=3, max=255)
@@ -26,4 +26,5 @@ public class CustomRecipePostDto {
     @Pattern(regexp = "^[a-zA-Z0-9가-힣]*$")
     @NotBlank
     private String ingredient;
+
 }

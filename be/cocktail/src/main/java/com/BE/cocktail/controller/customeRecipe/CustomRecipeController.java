@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -21,46 +20,39 @@ public class CustomRecipeController {
     private final CustomRecipeService customRecipeService;
 
     @PostMapping(value="/submit", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ApiResponse<CustomRecipeResponseDto> postCustomRecipe(@RequestPart(value="image") MultipartFile image, @Valid @RequestPart CustomRecipePostDto customRecipePostDto) throws IOException {
-
-        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.saveCustomRecipe(image, customRecipePostDto);
+    public ApiResponse<CustomRecipeResponseDto> createCustomRecipe(@RequestPart(value="image") MultipartFile image, @RequestPart CustomRecipeCreateDto customRecipeCreateDto) throws IOException {
+        //todo : 응답결과에 message만 전달
+        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.saveCustomRecipe(image, customRecipeCreateDto);
 
         return ApiResponse.ok(customRecipeResponseDto);
     }
 
+    @GetMapping("/search/{keyword}")
+    public ApiResponse<MultiResponseDto<CustomSearchResponseDto>> searchCustom(@PathVariable("keyword") String keyword,
+                                                                               @RequestParam int page,
+                                                                               @RequestParam int size) {
+
+        MultiResponseDto<CustomSearchResponseDto> responseDto = customRecipeService.searchRecipes(keyword, page - 1, size);
+
+        return ApiResponse.ok(responseDto);
+    }
 
     @GetMapping("/findAll")
-    public ApiResponse<CustomRecipeResponseDtoList> getCustomRecipeList() {
+    public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> findCustoms(@RequestParam int page, @RequestParam int size) {
 
-        CustomRecipeResponseDtoList customRecipeResponseDtoList = customRecipeService.findCustomRecipeList();
-
-        return ApiResponse.ok(customRecipeResponseDtoList);
-    }
-
-    @GetMapping("/search/{keyword}")
-    public ApiResponse<MultiResponseDto<CustomSearchResponseDto>> getSearchPaging(@PathVariable("keyword") String keyword,
-                                                                                  @RequestParam int page,
-                                                                                  @RequestParam int size) {
-
-        MultiResponseDto<CustomSearchResponseDto> responseDto = customRecipeService.searchPaging(keyword, page - 1, size);
-
-        return ApiResponse.ok(responseDto);
-    }
-
-    @GetMapping("/find")
-    public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> getCustomRecipePaging(@RequestParam int page, @RequestParam int size) {
-
-        MultiResponseDto<CustomRecipeResponseDto> responseDto = customRecipeService.paging(page - 1, size);
+        MultiResponseDto<CustomRecipeResponseDto> responseDto = customRecipeService.findCustoms(page - 1, size);
 
         return ApiResponse.ok(responseDto);
     }
 
 
-    @PatchMapping("/update/{recipe_id}")
+
+    @PatchMapping(value="/update/{recipe_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<CustomRecipeResponseDto> updateCustomRecipe(@PathVariable("recipe_id") Long id,
-                                                                   @Valid @RequestBody CustomPatchDto customPatchDto) {
-
-        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.updateCustomRecipe(id, customPatchDto);
+                                                                      @RequestPart("image") MultipartFile image,
+                                                                      @RequestPart CustomUpdateDto customUpdateDto) throws IOException {
+        //todo : 응답결과에 message만 전달
+        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.updateCustomRecipe(image, id, customUpdateDto);
 
         return ApiResponse.ok(customRecipeResponseDto);
     }

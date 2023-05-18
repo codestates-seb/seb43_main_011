@@ -36,6 +36,15 @@ public class ApiResponse<T> {
         );
     }
 
+    public static <T> ApiResponse<T> created() {
+        return new ApiResponse<>(
+                CocktailRtnConsts.SCC203,
+                CocktailRtnConsts.SCC203.getDescription(),
+                CocktailRtnConsts.SCC203.getCode(),
+                null
+        );
+    }
+
     public static <T> ApiResponse<T> notContent(CocktailRtnConsts status, String message) {
 
         return new ApiResponse<>(

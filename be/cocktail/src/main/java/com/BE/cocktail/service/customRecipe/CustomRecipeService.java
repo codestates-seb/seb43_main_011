@@ -29,12 +29,12 @@ public class CustomRecipeService {
     private final S3Uploader s3Uploader;
 
     private final MemberService memberService;
-
-    public CustomRecipeResponseDto saveCustomRecipe(MultipartFile image, CustomRecipePostDto customRecipePostDto) throws IOException {
+    //todo : 데이터가 삭제 된지 안된지 확인하는 로직 필요!!!!!!!!!!!!!!!!
+    public CustomRecipeResponseDto saveCustomRecipe(MultipartFile image, CustomRecipeCreateDto customRecipeCreateDto) throws IOException {
 
         Long memberId = memberService.getLoginMember().getId();
         String storedFileName = s3Uploader.upload(image,"images");
-        CustomRecipe customRecipe = CustomRecipe.of(customRecipePostDto, memberId, storedFileName);
+        CustomRecipe customRecipe = CustomRecipe.of(customRecipeCreateDto, memberId, storedFileName);
 
         customRecipeRepository.save(customRecipe);
 
@@ -42,13 +42,7 @@ public class CustomRecipeService {
     }
 
 
-    public CustomRecipeResponseDtoList findCustomRecipeList() {
-        List<CustomRecipe> customRecipeList = customRecipeRepository.findByDeletedFalse();
-        return CustomRecipeResponseDtoList.of(customRecipeList);
-    }
-
-
-    public CustomRecipeResponseDto updateCustomRecipe(Long id, CustomPatchDto customPatchDto) {
+    public CustomRecipeResponseDto updateCustomRecipe(MultipartFile image, Long id, CustomUpdateDto customUpdateDto) throws IOException {
 
 
         CustomRecipe updateCustomRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
@@ -58,18 +52,21 @@ public class CustomRecipeService {
             throw new CocktailException(CocktailRtnConsts.ERR401);
         }
 
-
-        if (customPatchDto.getName() != null) {
-            updateCustomRecipe.setName(customPatchDto.getName());
+        if (image != null) {
+            String storedFileName = s3Uploader.upload(image,"images");
+            updateCustomRecipe.setImageUrl(storedFileName);
         }
-        if (customPatchDto.getDescription() != null) {
-            updateCustomRecipe.setDescription(customPatchDto.getDescription());
+        if (customUpdateDto.getName() != null) {
+            updateCustomRecipe.setName(customUpdateDto.getName());
         }
-        if (customPatchDto.getRecipe() != null) {
-            updateCustomRecipe.setRecipe(customPatchDto.getRecipe());
+        if (customUpdateDto.getDescription() != null) {
+            updateCustomRecipe.setDescription(customUpdateDto.getDescription());
         }
-        if (customPatchDto.getIngredient() != null) {
-            updateCustomRecipe.setIngredient(customPatchDto.getIngredient());
+        if (customUpdateDto.getRecipe() != null) {
+            updateCustomRecipe.setRecipe(customUpdateDto.getRecipe());
+        }
+        if (customUpdateDto.getIngredient() != null) {
+            updateCustomRecipe.setIngredient(customUpdateDto.getIngredient());
         }
 
         updateCustomRecipe.setModifiedAt(LocalDateTime.now());
@@ -78,13 +75,6 @@ public class CustomRecipeService {
 
         return CustomRecipeResponseDto.of(updateCustomRecipe);
     }
-
-
-//    public void deleteCustomRecipe(Long id) {
-//        CustomRecipe existingRecipe = customRecipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-//        existingRecipe.setDeleted(true);
-//        customRecipeRepository.save(existingRecipe);
-//    }
 
     public void deleteCustomRecipe(Long id) {
         CustomRecipe existingRecipe = customRecipeRepository.findById(id)
@@ -103,15 +93,15 @@ public class CustomRecipeService {
     }
 
 
-    public MultiResponseDto<CustomRecipeResponseDto> paging(int page, int size) {
+    public MultiResponseDto<CustomRecipeResponseDto> findCustoms(int page, int size) {
 
         Page<CustomRecipe> pages = customRecipeRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
         List<CustomRecipe> customRecipes = pages.getContent();
 
-        return MultiResponseDto.of(CustomRecipeResponseDtoList.of(customRecipes).getCustomRecipeResponseDtoList(), PageInfo.of(pages));
+        return MultiResponseDto.of(CustomRecipeResponseDtoList.of(customRecipes).getData(), PageInfo.of(pages));
     }
 
-    public MultiResponseDto<CustomSearchResponseDto> searchPaging(String keyword, int page, int size) {
+    public MultiResponseDto<CustomSearchResponseDto> searchRecipes(String keyword, int page, int size) {
         Page<CustomRecipe> pages = customRecipeRepository.findAllByKeyword(keyword, PageRequest.of(page, size, Sort.by("id").descending()));
         List<CustomRecipe> customRecipes = pages.getContent();
 

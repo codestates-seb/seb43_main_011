@@ -26,20 +26,12 @@ public class RegularRecipeController {
         return ApiResponse.ok(response);
     }
 
-//    @GetMapping(value = "/findAll")
-//    public ApiResponse<RegularRecipeResponse> findAllRegularRecipes() {
-//
-//        RegularRecipeMultiResponseDto responseDto = regularRecipeService.findAllRecipes();
-//
-//        return ApiResponse.ok(responseDto);
-//    }
-
     @GetMapping("/search/{keyword}")
-    public ApiResponse<MultiResponseDto<RegularSearchResponseDto>> getSearchPaging(@PathVariable("keyword") String keyword,
+    public ApiResponse<MultiResponseDto<RegularSearchResponseDto>> searchRegular(@PathVariable("keyword") String keyword,
                                                                                    @RequestParam int page,
                                                                                    @RequestParam int size) {
 
-        MultiResponseDto<RegularSearchResponseDto> responseDto = regularRecipeService.searchPaging(keyword, page - 1, size);
+        MultiResponseDto<RegularSearchResponseDto> responseDto = regularRecipeService.searchRecipes(keyword, page - 1, size);
 
         return ApiResponse.ok(responseDto);
     }

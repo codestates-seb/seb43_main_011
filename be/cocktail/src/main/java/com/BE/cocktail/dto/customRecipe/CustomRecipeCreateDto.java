@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-public class CustomPatchDto {
+public class CustomRecipeCreateDto {
 
 
     @Pattern(regexp = "^[가-힣]+$")

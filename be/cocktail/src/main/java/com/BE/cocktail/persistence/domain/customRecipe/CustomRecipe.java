@@ -1,6 +1,6 @@
 package com.BE.cocktail.persistence.domain.customRecipe;
 
-import com.BE.cocktail.dto.customRecipe.CustomRecipePostDto;
+import com.BE.cocktail.dto.customRecipe.CustomRecipeCreateDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,14 +49,14 @@ public class CustomRecipe {
 
 
 
-    public static CustomRecipe of(CustomRecipePostDto customRecipePostDto, Long memberId, String imageUrl) {
+    public static CustomRecipe of(CustomRecipeCreateDto customRecipeCreateDto, Long memberId, String imageUrl) {
         CustomRecipe customRecipe = new CustomRecipe();
 
         customRecipe.setImageUrl(imageUrl);
-        customRecipe.setName(customRecipePostDto.getName());
-        customRecipe.setDescription(customRecipePostDto.getDescription());
-        customRecipe.setRecipe(customRecipePostDto.getRecipe());
-        customRecipe.setIngredient(customRecipePostDto.getIngredient());
+        customRecipe.setName(customRecipeCreateDto.getName());
+        customRecipe.setDescription(customRecipeCreateDto.getDescription());
+        customRecipe.setRecipe(customRecipeCreateDto.getRecipe());
+        customRecipe.setIngredient(customRecipeCreateDto.getIngredient());
         customRecipe.setMemberId(memberId);
 
         return customRecipe;

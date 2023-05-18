@@ -1,9 +1,11 @@
 package com.BE.cocktail.controller.member;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
+import com.BE.cocktail.dto.member.MemberInfoResponseDto;
 import com.BE.cocktail.dto.member.SignUpDto;
 import com.BE.cocktail.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,5 +25,21 @@ public class MemberController {
 
         return ApiResponse.ok();
     }
+
+    @GetMapping("/member/myPage")
+    public ApiResponse<MemberInfoResponseDto> findMypageInfo() {
+
+        MemberInfoResponseDto response = memberService.findMyPageInfo();
+
+        return ApiResponse.ok(response);
+    }
+
+    //todo : 회원 정보 업데이트
+
+    //todo : 나의 레시피목록
+
+
+    //todo : 나의 찜목록
+
 
 }

@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.*;
 
@@ -34,7 +33,7 @@ public class RegularRecipeService {
         return RegularRecipeGetResponseDto.of(regularRecipe);
     }
 
-    public MultiResponseDto<RegularSearchResponseDto> searchPaging(String keyword, int page, int size) {
+    public MultiResponseDto<RegularSearchResponseDto> searchRecipes(String keyword, int page, int size) {
 
         Page<RegularRecipe> pages = regularRecipeRepository.findAllByKeyword(keyword, PageRequest.of(page, size, Sort.by("id").descending()));
         List<RegularRecipe> responses = pages.getContent();
