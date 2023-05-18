@@ -58,9 +58,7 @@ public class CustomRecipeService {
             throw new CocktailException(CocktailRtnConsts.ERR401);
         }
 
-        if (customPatchDto.getImageUrl() != null) {
-            updateCustomRecipe.setImageUrl(customPatchDto.getImageUrl());
-        }
+
         if (customPatchDto.getName() != null) {
             updateCustomRecipe.setName(customPatchDto.getName());
         }

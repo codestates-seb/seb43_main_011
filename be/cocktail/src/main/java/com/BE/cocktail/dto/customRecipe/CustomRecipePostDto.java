@@ -4,19 +4,22 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 public class CustomRecipePostDto {
 
     @Pattern(regexp = "^[가-힣]+$")
+    @Size(min=3, max=255)
     @NotBlank
     private String name;
 
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]*$")
+    @Pattern(regexp = "^[가-힣a-zA-Z]+$")
+    @Size(min=3, max=255)
     @NotBlank
     private String description;
 
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]*$")
+    @Size(max=900)
     @NotBlank
     private String recipe;
 
