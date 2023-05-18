@@ -40,7 +40,7 @@ const Title = styled.h2`
   color: #504f4f;
 `;
 
-const Input = styled.div`
+const Content = styled.div`
   padding-left: 23px;
   margin: 10px 50px 10px 0;
   font-size: 20px;
@@ -107,11 +107,11 @@ export default function MyInfo() {
       <InfoWrapper>
         <InputWrapper>
           <Title>Nickname</Title>
-          <Input>{nickname}</Input>
+          <Content>{nickname}</Content>
         </InputWrapper>
         <InputWrapper>
           <Title>Status Message</Title>
-          <Input>{statusMessage}</Input>
+          <Content>{statusMessage}</Content>
         </InputWrapper>
         <Button>Edit</Button>
       </InfoWrapper>
