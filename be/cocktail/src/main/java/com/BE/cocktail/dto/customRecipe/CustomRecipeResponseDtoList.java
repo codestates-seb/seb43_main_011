@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomRecipeResponseDtoList {
 
-    private List<CustomRecipeResponseDto> customRecipeResponseDtoList;
-
+    private List<CustomRecipeResponseDto> data;
 
 
     public static CustomRecipeResponseDtoList of(List<CustomRecipe> all) {
@@ -27,7 +26,7 @@ public class CustomRecipeResponseDtoList {
             customRecipeResponseDtos.add(customRecipeResponseDto);
         }
 
-        customRecipeList.setCustomRecipeResponseDtoList(customRecipeResponseDtos);
+        customRecipeList.setData(customRecipeResponseDtos);
 
         return customRecipeList;
     }

@@ -2,6 +2,7 @@ package com.BE.cocktail.service.member;
 
 import com.BE.cocktail.auth.CustomAuthorityUtils;
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
+import com.BE.cocktail.dto.member.MemberInfoResponseDto;
 import com.BE.cocktail.dto.member.SignUpDto;
 import com.BE.cocktail.exception.CocktailException;
 import com.BE.cocktail.persistence.domain.member.Member;
@@ -45,5 +46,12 @@ public class MemberService {
         findMember.orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
         Member member = findMember.get();
         return member;
+    }
+
+    public MemberInfoResponseDto findMyPageInfo() {
+
+        Member member = getLoginMember();
+
+        return MemberInfoResponseDto.of(member);
     }
 }

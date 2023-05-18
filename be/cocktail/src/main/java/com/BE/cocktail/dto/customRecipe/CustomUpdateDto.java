@@ -5,10 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class CustomPatchDto {
-
-    @NotBlank
-    private String imageUrl;
+public class CustomUpdateDto {
 
     @NotBlank
     private String name;

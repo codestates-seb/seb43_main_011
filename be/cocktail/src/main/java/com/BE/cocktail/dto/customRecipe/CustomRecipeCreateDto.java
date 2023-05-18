@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class CustomRecipePostDto {
+public class CustomRecipeCreateDto {
 
     @NotBlank
     private String name;
