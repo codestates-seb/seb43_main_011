@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useState, useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import Card from "./Card";
-import { getCards, RegularResponseData } from "../../utils/query";
-import { useQuery, useQueryClient } from "react-query";
 import RecipePagination from "./RecipePagination";
 import LoadingImage from "./../../images/loading.gif";
+import { useMainPagination } from "../../hooks/useMainPagination";
+import { getCards } from "../../utils/query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -71,33 +71,17 @@ interface ListProps {
 }
 
 export default function CardList({ path }: ListProps) {
-  const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
-  const size = useMemo(() => {
-    switch (path) {
-      case "30":
-        return 10;
-      case "40":
-        return 10;
-      default:
-        return 5;
-    }
-  }, [path]);
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isPreviousData,
+    hasMore,
+    showCardLength,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination(path, getCards);
 
-  const { data, isLoading, isFetching, isPreviousData } =
-    useQuery<RegularResponseData>(
-      [`${path}`, size],
-      () => getCards(path, size),
-      {
-        useErrorBoundary: true,
-        retry: 0,
-        staleTime: 2000,
-        keepPreviousData: true,
-      },
-    );
-
-  const maxPage = data?.pageInfo.totalPage;
-  const hasMore = maxPage && maxPage > page;
   const boundary = useMemo(() => {
     switch (path) {
       case "0":
@@ -110,21 +94,6 @@ export default function CardList({ path }: ListProps) {
         return `${path} ~ ${Number(path) + 9}도`;
     }
   }, [path]);
-  const showCardLength = data?.pageInfo?.size;
-  useEffect(() => {
-    if (!isPreviousData && !!hasMore) {
-      queryClient.prefetchQuery([`${path}`, page + 1, size], () =>
-        getCards(path, page + 1, size),
-      );
-    }
-  }, [page, isPreviousData, queryClient, data]);
-
-  const onNextClick = () => {
-    setPage((page) => Math.max(page - 1, 1));
-  };
-  const onPrevClick = () => {
-    setPage((page) => (!!hasMore ? page + 1 : page));
-  };
 
   return (
     <CardsContainer>
