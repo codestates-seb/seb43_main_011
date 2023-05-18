@@ -58,8 +58,7 @@ const Signup = () => {
           headers: {
             "Content-Type": "application/json",
             withCredentials: true, //추가된부분
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYXNkZkBhZGRkZGQuY29tIiwic3ViIjoiYXNkZkBhZGRkZGQuY29tIiwiaWF0IjoxNjg0MzgzMzU0LCJleHAiOjE2ODQ0MDg1NTR9.pqune0-PsoMrS8RNIS80GUsMF1V6WmAzJUgScRGAdqc9tqetr7LgXUUUk_LwY5EFgcl17bNsN3UsG5HQU6nmbw",
+            Authorization: "Authorization Key",
           },
         },
       );
