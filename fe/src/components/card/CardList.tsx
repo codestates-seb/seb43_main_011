@@ -75,10 +75,6 @@ export default function CardList({ path }: ListProps) {
   const [page, setPage] = useState(1);
   const size = useMemo(() => {
     switch (path) {
-      case "10":
-        return 5;
-      case "20":
-        return 10;
       case "30":
         return 10;
       case "40":
@@ -88,12 +84,13 @@ export default function CardList({ path }: ListProps) {
     }
   }, [path]);
 
-  const { data, error, isLoading, isFetching, isPreviousData } =
+  const { data, isLoading, isFetching, isPreviousData } =
     useQuery<RegularResponseData>(
       [`${path}`, size],
       () => getCards(path, size),
       {
-        retry: 2,
+        useErrorBoundary: true,
+        retry: 0,
         staleTime: 2000,
         keepPreviousData: true,
       },
@@ -117,10 +114,6 @@ export default function CardList({ path }: ListProps) {
   const onPrevClick = () => {
     setPage((page) => (!!hasMore ? page + 1 : page));
   };
-
-  if (error) {
-    return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
-  }
 
   return (
     <CardsContainer>
