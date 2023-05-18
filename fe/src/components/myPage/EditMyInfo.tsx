@@ -127,7 +127,7 @@ export default function EditMyInfo() {
           value={statusMessage}
           onChange={handleStatusMessageChange}
         />
-        <Button onClick={handleSubmit}>Edit</Button>
+        <Button onClick={handleSubmit}>save</Button>
         {mutation.isLoading && <p>로딩중입니다...</p>}
 
         {mutation.isError && <p>에러 발생: {mutation.error.message}</p>}
