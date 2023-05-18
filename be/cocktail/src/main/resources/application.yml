@@ -5,6 +5,16 @@ spring:
     username: root
     password:
 
+# swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  springfox:
+    documentation:
+      swagger-ui:
+        host: localhost:8080
+
   jpa:
     hibernate:
       ddl-auto: create
