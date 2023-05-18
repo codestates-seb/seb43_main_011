@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MenuBar from "../components/myPage/MenuBar";
-import MyInfo from "../components/myPage/EditMyInfo";
+import EditMyInfo from "../components/myPage/EditMyInfo";
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export default function Mypage() {
   return (
     <Container>
       <MenuBar />
-      <MyInfo />
+      <EditMyInfo />
     </Container>
   );
 }
