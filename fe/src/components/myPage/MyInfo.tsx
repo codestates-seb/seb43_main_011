@@ -1,3 +1,5 @@
+import { useState, ChangeEvent } from "react";
+import { useMutation } from "react-query";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -68,15 +70,71 @@ const Button = styled.button`
 `;
 
 export default function MyInfo() {
+  const [nickname, setNickname] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const mutation = useMutation(
+    (data: { nickname: string; statusMessage: string }) =>
+      fetch("http://localhost:3000/member/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((response) => response.json()),
+
+    {
+      onError: (error: Error) => {
+        console.error("에러가 발생했습니다.", error);
+      },
+    },
+  );
+
+  const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+  };
+
+  const handleStatusMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setStatusMessage(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      nickname: nickname,
+      statusMessage: statusMessage,
+    };
+
+    mutation.mutate(data);
+  };
+
   return (
     <Container>
       <MyPhoto>사진 넣는 곳</MyPhoto>
       <InfoWrapper>
         <Title>Nickname</Title>
-        <Input type="text" placeholder="닉네임을 입력해주세요." />
+        <Input
+          type="text"
+          placeholder="닉네임을 입력해주세요."
+          value={nickname}
+          onChange={handleNicknameChange}
+        />
         <Title>Status Message</Title>
-        <Input type="text" placeholder="상태메세지를 입력해주세요." />
-        <Button>Edit</Button>
+        <Input
+          type="text"
+          placeholder="상태메세지를 입력해주세요."
+          value={statusMessage}
+          onChange={handleStatusMessageChange}
+        />
+        <Button onClick={handleSubmit}>Edit</Button>
+        {mutation.isLoading && <p>로딩중입니다...</p>}
+
+        {mutation.isError && <p>에러 발생: {mutation.error.message}</p>}
+
+        {mutation.isSuccess && (
+          <p>Server response: {JSON.stringify(mutation.data)}</p>
+        )}
       </InfoWrapper>
     </Container>
   );
