@@ -69,7 +69,7 @@ const Button = styled.button`
   margin-left: auto;
 `;
 
-export default function MyInfo() {
+export default function EditMyInfo() {
   const [nickname, setNickname] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
