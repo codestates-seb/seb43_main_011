@@ -20,7 +20,7 @@ const CocktailRegistration = () => {
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
 
-  const fetchRecipe = async (formData: FormData) => {
+  const postCustomRecipe = async (formData: FormData) => {
     try {
       const response = await axios.post(
         "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/submit",
@@ -39,7 +39,7 @@ const CocktailRegistration = () => {
     }
   };
 
-  const mutation = useMutation(fetchRecipe, {
+  const mutation = useMutation(postCustomRecipe, {
     onMutate: (variable) => {
       console.log("onMutate", variable);
     },

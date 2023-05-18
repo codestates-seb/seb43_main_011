@@ -49,7 +49,7 @@ const Signup = () => {
     password: string;
   }
 
-  const fetchUserData = async (userData: UserData) => {
+  const postUserData = async (userData: UserData) => {
     try {
       const response = await axios.post(
         "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/sign",
@@ -74,7 +74,7 @@ const Signup = () => {
       email: email,
       password: password,
     };
-    const mutation = useMutation(fetchUserData, {
+    const mutation = useMutation(postUserData, {
       onMutate: (variable) => {
         console.log("onMutate", variable);
       },
