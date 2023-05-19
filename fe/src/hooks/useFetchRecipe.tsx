@@ -1,20 +1,20 @@
 import { useQuery } from "react-query";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 // import { RecipeData } from "../utils/query";
 
 export interface RecipeData {
-  id: number;
-  name: string;
-  imageUrl: string;
-  description: string;
-  stuff: string;
-  recipeStep: string;
+  data: {
+    id: number;
+    name: string;
+    imageUrl: string;
+    description: string;
+    ingredient: string;
+    recipe: string;
+  };
 }
 
 const fetchRecipe = async (params: string) => {
-  const response: AxiosResponse<RecipeData> = await axios.get(
-    `http://localhost:4000/custom/${params}`,
-  );
+  const response = await axios.get(`/regular/find/${params}`);
   return response.data;
 };
 
