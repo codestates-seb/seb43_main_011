@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useState, useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import Card from "./Card";
-import { getCards, RegularResponseData } from "../../utils/query";
-import { useQuery, useQueryClient } from "react-query";
 import RecipePagination from "./RecipePagination";
 import LoadingImage from "./../../images/loading.gif";
+import { useMainPagination } from "../../hooks/useMainPagination";
+import { getCards } from "../../utils/query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -16,14 +16,14 @@ const CategoryBox = styled.div`
   font-weight: bold;
   font-size: 1.1rem;
   margin: 10px 20px;
-  > .category {
+  > .boundary {
     border-top: 2px solid #6f8892e8;
     text-align: center;
     padding: 5px;
     margin-top: 4px;
-    flex-basis: 10%;
+    flex-basis: 15%;
   }
-  > .center {
+  > .slash {
     transform: rotate(-45deg);
     margin: 0 10.5px 0 10.5px;
     width: 2px;
@@ -71,55 +71,35 @@ interface ListProps {
 }
 
 export default function CardList({ path }: ListProps) {
-  const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
-  const size = useMemo(() => {
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isPreviousData,
+    hasMore,
+    showCardLength,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination(path, getCards);
+
+  const boundary = useMemo(() => {
     switch (path) {
-      case "30":
-        return 10;
+      case "0":
+        return "무알콜";
+      case "1":
+        return "1 ~ 9도";
       case "40":
-        return 10;
+        return "40도 이상";
       default:
-        return 5;
+        return `${path} ~ ${Number(path) + 9}도`;
     }
   }, [path]);
-
-  const { data, isLoading, isFetching, isPreviousData } =
-    useQuery<RegularResponseData>(
-      [`${path}`, size],
-      () => getCards(path, size),
-      {
-        useErrorBoundary: true,
-        retry: 0,
-        staleTime: 2000,
-        keepPreviousData: true,
-      },
-    );
-
-  const maxPage = data?.pageInfo.totalPage;
-  const hasMore = maxPage && maxPage > page;
-  const category = `Level ${path}`;
-  const showCardLength = data?.pageInfo?.size;
-  useEffect(() => {
-    if (!isPreviousData && !!hasMore) {
-      queryClient.prefetchQuery([`${path}`, page + 1, size], () =>
-        getCards(path, page + 1, size),
-      );
-    }
-  }, [page, isPreviousData, queryClient, data]);
-
-  const onNextClick = () => {
-    setPage((page) => Math.max(page - 1, 1));
-  };
-  const onPrevClick = () => {
-    setPage((page) => (!!hasMore ? page + 1 : page));
-  };
 
   return (
     <CardsContainer>
       <CategoryBox>
-        <div className="category">{category}</div>
-        <div className="center"></div>
+        <div className="boundary">{`${boundary}`}</div>
+        <div className="slash"></div>
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
