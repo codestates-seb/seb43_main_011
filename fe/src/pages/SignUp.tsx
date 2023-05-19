@@ -57,8 +57,7 @@ const Signup = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYWFhYUBhYWFhLmNvbSIsInN1YiI6ImFhYWFAYWFhYS5jb20iLCJpYXQiOjE2ODQ0NjMzODQsImV4cCI6MTY4NDQ4ODU4NH0.NqBNeIgR6BUmhxWztbADH5JR8vXiBgc2HSp6PiOeFWlCh0YWJdAxvgAWlgHTgNc-FIOgL9VwBcbiUviK6zjI_g",
+            Authorization: "Authorization Key",
           },
         },
       );
