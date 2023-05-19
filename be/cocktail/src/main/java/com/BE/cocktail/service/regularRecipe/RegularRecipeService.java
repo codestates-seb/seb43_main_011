@@ -60,11 +60,8 @@ public class RegularRecipeService {
         } else if (alcVolRange == 20) {
             startRange = alcVolRange;
             endRange = 29;
-        } else if (alcVolRange == 30) {
-            startRange = alcVolRange;
-            endRange = 39;
         } else {
-            startRange = 40;
+            startRange = 30;
             endRange = Integer.MAX_VALUE;
         }
 
