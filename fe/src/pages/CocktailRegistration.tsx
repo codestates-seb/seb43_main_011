@@ -5,57 +5,70 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import ImageUpload from "../components/imageupload/ImageUpload";
-
+import { useNavigate } from "react-router-dom";
+import FormData from "form-data";
+axios.defaults.withCredentials = true;
 const CocktailRegistration = () => {
+  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [recipeStep, setRecipeStep] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File>();
   const [selectLineId, setSelectLineId] = useState<number>(-1);
   const [selectLines, setSelectLines] = useState([
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
 
-  interface Data {
-    // imageUrl: string;
-    name: string; // 이름
-    description: string; // 설명
-    recipe: string; // 단계
-    ingredient: string; //재료
+  interface NewRecipe {
+    name: string;
+    description: string;
+    recipe: string;
+    ingredient: string;
   }
 
-  const fetchRecipe = async (data: Data) => {
+  const postCustomRecipe = async (data: NewRecipe) => {
+    const content = JSON.stringify(data);
+    try {
+      const response = await axios.post("/custom/submit/content", content, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "token",
+        },
+      });
+      console.log(response);
+      return response.data.data.recipeId;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  interface NewImaage {
+    id: number;
+    formData: FormData;
+  }
+  const postCustomImage = async (data: NewImaage) => {
     try {
       const response = await axios.post(
-        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/submit",
-        data,
+        `/custom/submit/image/${data.id}`,
+        data.formData,
         {
           headers: {
-            Authorization: "Authorization Key",
+            "Content-Type": "multipart/form-data",
+            Authorization: "token",
           },
         },
       );
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const mutation = useMutation(fetchRecipe, {
-    onMutate: (variable) => {
-      console.log("onMutate", variable);
-    },
-    onError: (error) => {
-      console.log("에러발생", error);
-    }, //variable, context
-    onSuccess: (data, variables, context) => {
-      console.log("success", data, variables, context);
-    },
-    onSettled: () => {
-      console.log("end");
-    },
-  });
+  const recipeMutation = useMutation(postCustomRecipe);
+  const imageMutation = useMutation(postCustomImage);
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -89,21 +102,37 @@ const CocktailRegistration = () => {
       setSelectLineId(-1);
     }
   };
-
-  const handleSubmitData = () => {
+  const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line) => {
         return line.stuff + line.amount + line.selectOption;
       })
       .join("\n");
-    const data = {
-      // imageUrl: selectedImage, 백엔드 File형식 받는것 구현중입니다
+
+    const customRecipeCreateDto = {
       name: name,
       description: description,
-      ingredient: totalData,
       recipe: recipeStep,
+      ingredient: totalData,
     };
-    mutation.mutate(data);
+
+    recipeMutation.mutate(customRecipeCreateDto, {
+      onSuccess: (data) => {
+        const formData: FormData = new FormData();
+        formData.append("image", selectedImage);
+
+        const input = {
+          id: data,
+          formData: formData,
+        };
+        imageMutation.mutate(input, {
+          onSuccess: (data) => {
+            console.log(data.message);
+            navigate("/custom");
+          },
+        });
+      },
+    });
   };
 
   const handleImageUpload = (image: File) => {
@@ -379,9 +408,9 @@ const EditForm = styled.div`
   margin-top: 60px;
   width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능아래 box-shadow 주석확인
   min-height: 100%;
-  border-right: 1px solid lightgray;
-  border-left: 1px solid lightgray;
-  /* box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);  */
+  /* border-right: 1px solid lightgray;
+  border-left: 1px solid lightgray; 
+  box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);  */
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -394,13 +423,12 @@ const SelectLine = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative; /* 수정: 추가 */
+  position: relative;
 `;
 
 const SubmitButton = styled.button`
   width: 5rem;
   height: 2rem;
-  /* margin: 10px; */
   border-radius: 5px;
   border-style: none;
   background-color: #96a5ff;

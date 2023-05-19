@@ -21,7 +21,6 @@ const ImageUpload = ({
   //업로드할 이미지 변경
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; // 선택한 이미지 파일
-    console.log(file);
     if (file) {
       setPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
       onImageUpload(file);
