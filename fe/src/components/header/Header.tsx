@@ -82,8 +82,6 @@ const Header = () => {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
   const isLogin = sessionStorage.getItem("UTK") !== null;
-  console.log(sessionStorage.getItem("UTK"));
-  console.log(isLogin);
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
 
