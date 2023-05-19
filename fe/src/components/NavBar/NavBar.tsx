@@ -63,7 +63,7 @@ export default function NavBar() {
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"}>레시피 추천</StyledNavLink>
+            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
