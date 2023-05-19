@@ -44,11 +44,11 @@ const CocktailRegistration = () => {
     }
   };
 
-  interface NewImaage {
+  interface NewImage {
     id: number;
     formData: FormData;
   }
-  const postCustomImage = async (data: NewImaage) => {
+  const postCustomImage = async (data: NewImage) => {
     try {
       const response = await axios.post(
         `/custom/submit/image/${data.id}`,
