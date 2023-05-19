@@ -28,7 +28,7 @@ export const useMainPagination = (
   const { data, isLoading, isFetching, isPreviousData } =
     useQuery<RegularResponseData>(
       [`${path}`, listSize],
-      () => getFunction(path, listSize),
+      () => getFunction(path, listSize, page),
       {
         useErrorBoundary: true,
         retry: 0,
@@ -39,20 +39,19 @@ export const useMainPagination = (
 
   const maxPage = data?.pageInfo.totalPage;
   const hasMore = maxPage && maxPage > page;
-  useEffect(() => {
-    if (!isPreviousData && !!hasMore) {
-      queryClient.prefetchQuery([`${path}`, page + 1, listSize], () =>
-        getFunction(path, listSize, page + 1),
-      );
-    }
-  }, [page, isPreviousData, queryClient, data]);
 
   const onNextClick = () => {
-    setPage((page) => Math.max(page - 1, 1));
-  };
-  const onPrevClick = () => {
     setPage((page) => (!!hasMore ? page + 1 : page));
   };
+  const onPrevClick = () => {
+    setPage((page) => Math.max(page - 1, 1));
+  };
+
+  useEffect(() => {
+    getFunction(path, listSize, page).then((responseData) => {
+      queryClient.setQueryData([`${path}`, listSize], responseData);
+    });
+  }, [path, listSize, page, queryClient]);
 
   return {
     data,
