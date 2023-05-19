@@ -14,6 +14,8 @@ export const useMainPagination = (
   const [page, setPage] = useState(1);
   const listSize = useMemo(() => {
     switch (path) {
+      case "custom":
+        return 20;
       case "30":
         return 10;
       case "40":
