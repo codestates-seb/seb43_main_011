@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegularSearchResponseDto {
 
+    private Long id;
 
     private String name;
 
@@ -21,7 +22,7 @@ public class RegularSearchResponseDto {
 
     public static RegularSearchResponseDto of(RegularRecipe recipe) {
 
-        RegularSearchResponseDto response = new RegularSearchResponseDto(recipe.getName(), recipe.getImageUrl(), recipe.getIngredient());
+        RegularSearchResponseDto response = new RegularSearchResponseDto(recipe.getId(), recipe.getName(), recipe.getImageUrl(), recipe.getIngredient());
 
         return response;
     }

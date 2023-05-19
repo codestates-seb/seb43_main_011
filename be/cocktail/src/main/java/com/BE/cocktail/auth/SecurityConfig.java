@@ -46,8 +46,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/signup").permitAll()
                         .antMatchers("/login").permitAll()
-                        .antMatchers("/regular/*").permitAll()
-                        .antMatchers("/custom/submit").hasRole("USER"));
+                        .antMatchers("/regular/**").permitAll()
+                        .antMatchers("/custom/submit").hasRole("USER")
+                        .antMatchers("/custom/update/*").hasRole("USER")
+                        .antMatchers("/custom/delete/*").hasAnyRole("USER", "ADMIN")
+                        .antMatchers("/member/**").hasRole("USER")
+                );
         return http.build();
     }
 
@@ -62,7 +66,6 @@ public class SecurityConfig {
         corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE"));
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

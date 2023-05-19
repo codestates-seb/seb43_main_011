@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomSearchResponseDto {
 
+    private Long id;
+
     private String name;
 
     private String imageUrl;
@@ -20,7 +22,7 @@ public class CustomSearchResponseDto {
 
     public static CustomSearchResponseDto of(CustomRecipe recipe) {
 
-        CustomSearchResponseDto response = new CustomSearchResponseDto(recipe.getName(), recipe.getImageUrl(), recipe.getIngredient());
+        CustomSearchResponseDto response = new CustomSearchResponseDto(recipe.getId(), recipe.getName(), recipe.getImageUrl(), recipe.getIngredient());
 
         return response;
     }
