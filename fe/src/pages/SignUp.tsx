@@ -1,34 +1,39 @@
 import styled from "styled-components";
 import signup from "../images/enter1.jpg";
 import logo from "../images/logo.png";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 
 const Signup = () => {
   //이름 유효성검사
-  const [nickname, setNickname] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false); //특수문자오류
   const [showLengthError, setShowLengthError] = useState(false); //길이오류
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
     const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(e.target.value);
     const lengthMatch = e.target.value.length < 2;
 
-    setShowErrorMessage(hasSpecialChars); ///정규식에 일치하지않으면 출력.
+    setShowErrorMessage(hasSpecialChars);
     setShowLengthError(lengthMatch);
   };
-  //이메일(아이디) 유효성검사
-  const [email, setEmail] = useState("");
-  const [showEmailError, setShowEmailError] = useState(false);
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     const emailRegex =
       /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,}){1,2}$/.test(e.target.value);
-    setShowEmailError(!emailRegex); //정규식에 일치하지않으면 출력.
+    setShowEmailError(!emailRegex);
   };
-  //비밀번호 유효성검사
-  const [password, setPassword] = useState("");
-  const [showPasswordError, setShowPasswordError] = useState(false);
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
@@ -38,13 +43,66 @@ const Signup = () => {
     setShowPasswordError(!passwordRegex);
   };
 
-  const handleSubmit = (/*보내는데이터 타입*/) => {
-    //post 요청으로 데이터보내기 axios
-    setNickname("");
-    setEmail("");
-    setPassword("");
+  interface UserData {
+    nickname: string;
+    email: string;
+    password: string;
+  }
+
+  const postUserData = async (userData: UserData) => {
+    try {
+      const response = await axios.post(
+        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/sign",
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true, //추가된부분
+            Authorization: "Authorization Key",
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  const handleSubmit = () => {
+    const userData = {
+      nickname: nickname,
+      email: email,
+      password: password,
+    };
+    const mutation = useMutation(postUserData, {
+      onMutate: (variable) => {
+        console.log("onMutate", variable);
+      },
+      onError: (error) => {
+        console.log("뮤테이션 에러", error);
+      }, //variable, context
+      onSuccess: (data, variables, context) => {
+        console.log("뮤테이션 성공", data, variables, context);
+      },
+      onSettled: () => {
+        console.log("뮤테이션 끝");
+      },
+    });
+
+    mutation.mutate(userData, {
+      onSuccess: (response) => {
+        console.log(response.data);
+        navigate("signin");
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    });
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <Container>
       {/* <BlankFrom></BlankFrom> */}
@@ -72,7 +130,17 @@ const Signup = () => {
         </EmailForm>
         <PasswordForm>
           <Label>Password</Label>
-          <InputArea value={password} onChange={handlePassword}></InputArea>
+          <InputContainer>
+            <InputArea
+              value={password}
+              onChange={handlePassword}
+              type={showPassword ? "text" : "password"}
+            ></InputArea>
+            <VisibilityIcon onClick={handleTogglePassword}>
+              {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+            </VisibilityIcon>
+          </InputContainer>
+
           {showPasswordError && (
             <ErrorMessage>
               최소 1개 이상의 숫자와 특수문자가 포함되어어 합니다.
@@ -88,10 +156,26 @@ const Signup = () => {
 
 export default Signup;
 
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
+const VisibilityIcon = styled.div`
+  position: absolute;
+  color: #96a5ff;
+  right: 10px;
+  top: 62%;
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
+
 const InputArea = styled.input`
   width: 16rem;
   height: 2rem;
-  padding: 5px;
+  padding: 7px;
   margin-top: 7px;
   border-radius: 5px;
   border: 0.5px solid #96a5ff;

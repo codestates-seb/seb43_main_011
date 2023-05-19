@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import MenuBar from "../components/myPage/MenuBar";
+// import EditMyInfo from "../components/myPage/EditMyInfo";
 import MyInfo from "../components/myPage/MyInfo";
 
 const Container = styled.div`

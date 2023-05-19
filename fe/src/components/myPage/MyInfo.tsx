@@ -1,6 +1,6 @@
-import { useState, ChangeEvent } from "react";
-import { useMutation } from "react-query";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 const Container = styled.div`
   display: flex;
@@ -15,9 +15,9 @@ const Container = styled.div`
 `;
 
 const MyPhoto = styled.div`
-  margin: 0px 100px 50px 0px;
-  width: 230px;
-  height: 230px;
+  margin: 0px 50px 50px 0px;
+  width: 280px;
+  height: 280px;
   background-color: #7b8ade;
   border-radius: 10px;
 `;
@@ -35,23 +35,26 @@ const Title = styled.h2`
   font-size: 23px;
   font-weight: 800;
   margin: 10px;
+  padding-left: 15px;
   text-align: left;
+  color: #504f4f;
 `;
 
-const Input = styled.input`
-  padding: 5px;
+const Content = styled.div`
+  padding-left: 23px;
   margin: 10px 50px 10px 0;
-
-  border-radius: 5px;
-  border: 1.5px solid #828282;
-  font-size: 17px;
-  width: 100%;
+  font-size: 20px;
+  width: 450px;
   height: 50px;
-  &:focus {
-    outline: none;
-    border: 1px solid #96a5ff;
-    box-shadow: 0 0 3px 1px #abb7fc;
-  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  padding: 5px;
+  border-radius: 27px;
+  box-shadow: 0px 0px 8px 0px #cacaca;
 `;
 
 const Button = styled.button`
@@ -73,68 +76,44 @@ export default function MyInfo() {
   const [nickname, setNickname] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
-  const mutation = useMutation(
-    (data: { nickname: string; statusMessage: string }) =>
-      fetch("http://localhost:3000/member/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }).then((response) => response.json()),
+  const { data, isLoading, isError } = useQuery("userInfo", fetchUserInfo);
 
-    {
-      onError: (error: Error) => {
-        console.error("에러가 발생했습니다.", error);
-      },
-    },
-  );
+  useEffect(() => {
+    if (data) {
+      setNickname(data.nickname);
+      setStatusMessage(data.statusMessage);
+    }
+  }, [data]);
 
-  const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-  };
+  async function fetchUserInfo() {
+    const response = await fetch("http://localhost:3000/member");
 
-  const handleStatusMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setStatusMessage(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const data = {
-      nickname: nickname,
-      statusMessage: statusMessage,
-    };
-
-    mutation.mutate(data);
-  };
+    if (!response.ok) {
+      throw new Error("회원정보를 가져오는데 실패했습니다.");
+    }
+    return response.json();
+  }
+  if (isLoading) {
+    return <p>로딩중입니다...</p>;
+  }
+  if (isError) {
+    return <p>에러가 발생하였습니다: {isError.toString()}</p>;
+    //toString() 메서드를 사용하여 에러를 문자열로 변환하여 출력
+  }
 
   return (
     <Container>
       <MyPhoto>사진 넣는 곳</MyPhoto>
       <InfoWrapper>
-        <Title>Nickname</Title>
-        <Input
-          type="text"
-          placeholder="닉네임을 입력해주세요."
-          value={nickname}
-          onChange={handleNicknameChange}
-        />
-        <Title>Status Message</Title>
-        <Input
-          type="text"
-          placeholder="상태메세지를 입력해주세요."
-          value={statusMessage}
-          onChange={handleStatusMessageChange}
-        />
-        <Button onClick={handleSubmit}>Edit</Button>
-        {mutation.isLoading && <p>로딩중입니다...</p>}
-
-        {mutation.isError && <p>에러 발생: {mutation.error.message}</p>}
-
-        {mutation.isSuccess && (
-          <p>Server response: {JSON.stringify(mutation.data)}</p>
-        )}
+        <InputWrapper>
+          <Title>Nickname</Title>
+          <Content>{nickname}</Content>
+        </InputWrapper>
+        <InputWrapper>
+          <Title>Status Message</Title>
+          <Content>{statusMessage}</Content>
+        </InputWrapper>
+        <Button>Edit</Button>
       </InfoWrapper>
     </Container>
   );
