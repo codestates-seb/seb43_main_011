@@ -8,6 +8,7 @@ import { useMemo, useState, useEffect } from "react";
 import SearchedRecipe from "../components/card/SearchedRecipe";
 import RecipePagination from "../components/card/RecipePagination";
 import loadingImg from "./../images/loading.gif";
+import { useSearchedPagination } from "../hooks/useSearchedPagination";
 const CardListArea = styled.div`
   margin: 30px 0;
   display: grid;
@@ -30,44 +31,20 @@ const LoadingImage = styled.img`
 `;
 
 export default function SearchResults() {
-  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("value") ?? "";
-
   const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
-  const [page, setPage] = useState(1);
-
-  const { data, error, isLoading, isPreviousData } = useQuery<SearchResponse>(
-    [`${path}`, searchValue],
-    () => getSearchResults(path, searchValue),
-    {
-      staleTime: 2000,
-      keepPreviousData: true,
-    },
-  );
-
-  const maxPage = data?.pageInfo.totalPage;
-  const hasMore = maxPage && maxPage > page;
-
-  useEffect(() => {
-    if (!isPreviousData && !!hasMore) {
-      queryClient.prefetchQuery([`${path}`, page + 1, searchValue], () =>
-        getSearchResults(path, searchValue, page + 1),
-      );
-    }
-  }, [page, isPreviousData, queryClient, data]);
-
-  const onNextClick = () => {
-    setPage((page) => Math.max(page - 1, 1));
-  };
-  const onPrevClick = () => {
-    setPage((page) => (!!hasMore ? page + 1 : page));
-  };
-
-  if (error) {
-    return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
-  }
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isPreviousData,
+    hasMore,
+    showCardLength,
+    onNextClick,
+    onPrevClick,
+  } = useSearchedPagination(path, searchValue);
 
   return (
     <RecipesContainer>

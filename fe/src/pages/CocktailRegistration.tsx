@@ -5,54 +5,70 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import ImageUpload from "../components/imageupload/ImageUpload";
-import defaultImage from "../images/ex3.jpeg";
-
+import { useNavigate } from "react-router-dom";
+import FormData from "form-data";
+axios.defaults.withCredentials = true;
 const CocktailRegistration = () => {
+  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [recipeStep, setRecipeStep] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File | string | Blob>(
-    new File([], defaultImage),
-  );
+  const [selectedImage, setSelectedImage] = useState<File>();
   const [selectLineId, setSelectLineId] = useState<number>(-1);
   const [selectLines, setSelectLines] = useState([
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
 
-  const postCustomRecipe = async (formData: FormData) => {
+  interface NewRecipe {
+    name: string;
+    description: string;
+    recipe: string;
+    ingredient: string;
+  }
+
+  const postCustomRecipe = async (data: NewRecipe) => {
+    const content = JSON.stringify(data);
+    try {
+      const response = await axios.post("/custom/submit/content", content, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "token",
+        },
+      });
+      console.log(response);
+      return response.data.data.recipeId;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  interface NewImage {
+    id: number;
+    formData: FormData;
+  }
+  const postCustomImage = async (data: NewImage) => {
     try {
       const response = await axios.post(
-        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/submit",
-        formData,
+        `/custom/submit/image/${data.id}`,
+        data.formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            withCredentials: true, //추가된부분
-            Authorization: "Authorization Key",
+            Authorization: "token",
           },
         },
       );
+      console.log(response);
       return response.data;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const mutation = useMutation(postCustomRecipe, {
-    onMutate: (variable) => {
-      console.log("onMutate", variable);
-    },
-    onError: (error) => {
-      console.log("뮤테이션 에러", error);
-    }, //variable, context
-    onSuccess: (data, variables, context) => {
-      console.log("뮤테이션 성공", data, variables, context);
-    },
-    onSettled: () => {
-      console.log("뮤테이션 끝");
-    },
-  });
+  const recipeMutation = useMutation(postCustomRecipe);
+  const imageMutation = useMutation(postCustomImage);
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -86,23 +102,37 @@ const CocktailRegistration = () => {
       setSelectLineId(-1);
     }
   };
-
-  const handleSubmitData = () => {
-    const formData: FormData = new FormData();
+  const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line) => {
         return line.stuff + line.amount + line.selectOption;
       })
       .join("\n");
-    const customRecipePostDto = {
+
+    const customRecipeCreateDto = {
       name: name,
       description: description,
       recipe: recipeStep,
       ingredient: totalData,
     };
-    formData.append("image", selectedImage);
-    formData.append("customRecipePostDto", JSON.stringify(customRecipePostDto));
-    mutation.mutate(formData);
+
+    recipeMutation.mutate(customRecipeCreateDto, {
+      onSuccess: (data) => {
+        const formData: FormData = new FormData();
+        formData.append("image", selectedImage);
+
+        const input = {
+          id: data,
+          formData: formData,
+        };
+        imageMutation.mutate(input, {
+          onSuccess: (data) => {
+            console.log(data.message);
+            navigate("/custom");
+          },
+        });
+      },
+    });
   };
 
   const handleImageUpload = (image: File) => {
