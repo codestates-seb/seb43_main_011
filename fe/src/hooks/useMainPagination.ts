@@ -7,7 +7,7 @@ export const useMainPagination = (
   getFunction: (
     path: string,
     size: number,
-    page?: number,
+    page: number,
   ) => Promise<RegularResponseData>,
 ) => {
   const queryClient = useQueryClient();

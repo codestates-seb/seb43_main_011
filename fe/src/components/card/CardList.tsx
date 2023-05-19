@@ -37,14 +37,14 @@ const CategoryBox = styled.div`
   }
 `;
 
-const LoadingContainer = styled.div`
+export const LoadingContainer = styled.div`
   width: 1360px;
   height: 360px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-const LoadingImg = styled.img`
+export const LoadingImg = styled.img`
   width: 30%;
   height: 100%;
   margin: auto;
