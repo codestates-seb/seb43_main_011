@@ -81,6 +81,9 @@ const Header = () => {
   const navigate = useNavigate();
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
+  const isLogin = sessionStorage.getItem("UTK") !== null;
+  console.log(sessionStorage.getItem("UTK"));
+  console.log(isLogin);
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
 
@@ -89,6 +92,9 @@ const Header = () => {
       navigate(`/search?value=${searchText}`);
     }
   };
+
+  const endPoind = isLogin ? "/myPage" : "/signin";
+
   return (
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
@@ -111,8 +117,17 @@ const Header = () => {
         </SearchContainer>
 
         <Menu>
-          <MenuItem to={"/signin"}>로그인</MenuItem>
-          <MenuItem to={"/signup"}>회원가입</MenuItem>
+          {!isLogin && (
+            <>
+              <MenuItem to={endPoind}>로그인</MenuItem>
+              <MenuItem to={"/signup"}>회원가입</MenuItem>
+            </>
+          )}
+          {isLogin && (
+            <>
+              <MenuItem to={endPoind}>마이페이지</MenuItem>
+            </>
+          )}
         </Menu>
         <NavController />
       </ItemArea>

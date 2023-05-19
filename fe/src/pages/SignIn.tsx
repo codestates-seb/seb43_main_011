@@ -3,7 +3,7 @@ import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
 import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 
@@ -16,6 +16,7 @@ const Signup = () => {
   //이메일(아이디) 유효성검사
   const [email, setEmail] = useState("");
   const [showEmailError, setShowEmailError] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -62,6 +63,7 @@ const Signup = () => {
         console.log("로그인 성공");
         setEmail("");
         setPassword("");
+        navigate("/");
       },
     });
   };
