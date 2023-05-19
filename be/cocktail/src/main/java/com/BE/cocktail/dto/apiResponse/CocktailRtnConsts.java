@@ -25,7 +25,13 @@ public enum CocktailRtnConsts {
     ERR403(CocktailRtnGrp.Validation, 403, "삭제에 실패했습니다."),
 
     ERR404(CocktailRtnGrp.Validation, 404, "이미 삭제된 레시피입니다."),
-    ERR405(CocktailRtnGrp.Validation, 405, "가져올 상세 페이지가 없습니다.");
+
+    ERR405(CocktailRtnGrp.Validation, 405, "가져올 상세 페이지가 없습니다."),
+    ERR406(CocktailRtnGrp.Validation, 404, "회원을 찾을 수 없습니다."),
+    ERR407(CocktailRtnGrp.Validation, 406, "이미 사용중인 이메일입니다."),
+    ERR408(CocktailRtnGrp.Validation, 404, "지원하지 않는 OAuth 입니다.");
+
+
 
 
     private CocktailRtnGrp grp;

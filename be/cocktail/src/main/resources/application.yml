@@ -30,6 +30,15 @@ spring:
       schema-locations: classpath:/ddl/ddl.sql
       data-locations: classpath:/dml/dml.sql
 
+  #OAuth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId:
+            clientSecret:
+
 logging:
   level:
     com:

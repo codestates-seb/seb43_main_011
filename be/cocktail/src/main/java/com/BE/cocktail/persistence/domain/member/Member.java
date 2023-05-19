@@ -1,10 +1,7 @@
 package com.BE.cocktail.persistence.domain.member;
 
 import com.BE.cocktail.dto.member.SignUpDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,16 +46,36 @@ public class Member {
     @Column(nullable = false)
     private boolean deleted;
 
-    private Member(String nickname, String email, String password, List<String> roles) {
+    private String provider;
+    private String providerId;
+
+//    public static Member of(SignUpDto sign, String encryptedPassword, List<String> roles) {
+//    }
+
+    public void addRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+//    private Member(String nickname, String email, String password, List<String> roles) {
+//        this.nickname = nickname;
+//        this.email = email;
+//        this.password = password;
+//        this.roles = roles;
+//    }
+
+    @Builder
+    private Member(String nickname, String email, String password, List<String> roles, String provider, String providerId) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
-    public static Member of(SignUpDto sign, String password, List<String> roles) {
+    public static Member of(SignUpDto sign, String password, List<String> roles, String provider, String providerId) {
 
-        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles);
+        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles, provider, providerId);
 
         return member;
 
