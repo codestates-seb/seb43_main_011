@@ -2,6 +2,7 @@ package com.BE.cocktail.controller.customeRecipe;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
 import com.BE.cocktail.dto.customRecipe.*;
+import com.BE.cocktail.dto.customRecipe.createCustom.CustomRecipeIdResponseDto;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.service.customRecipe.CustomRecipeService;
 import io.swagger.annotations.Api;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
+import static org.springframework.http.MediaType.*;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "customRecipe",description = "커스텀 레시피 API")
@@ -23,13 +26,21 @@ public class CustomRecipeController {
 
     private final CustomRecipeService customRecipeService;
 
-    @ApiOperation(value = "커스텀 레시피 등록")
-    @PostMapping(value="/submit", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ApiResponse<CustomRecipeResponseDto> createCustomRecipe(@RequestPart(value="image") MultipartFile image, @RequestPart @Valid CustomRecipeCreateDto customRecipeCreateDto) throws IOException {
+    @ApiOperation(value = "커스텀 레시피 내용 등록")
+    @PostMapping("/submit/content")
+    public ApiResponse<CustomRecipeIdResponseDto> createContent(@RequestBody CustomRecipeCreateDto customRecipeCreateDto) {
         //todo : 응답결과에 message만 전달
-        CustomRecipeResponseDto customRecipeResponseDto = customRecipeService.saveCustomRecipe(image, customRecipeCreateDto);
+        CustomRecipeIdResponseDto responseDto = customRecipeService.saveContentCustomRecipe(customRecipeCreateDto);
 
-        return ApiResponse.ok(customRecipeResponseDto);
+        return ApiResponse.ok(responseDto);
+    }
+    @ApiOperation(value = "커스텀 레시피 사진 등록")
+    @PostMapping(value="/submit/image/{recipe_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> createCustomRecipe(@RequestPart(value="image") MultipartFile image, @PathVariable("recipe_id") Long recipeId) throws IOException {
+        //todo : 응답결과에 message만 전달
+        customRecipeService.saveImageCustomRecipe(image, recipeId);
+
+        return ApiResponse.created();
     }
 
     @ApiOperation(value = "커스텀 레시피 검색")
@@ -42,6 +53,7 @@ public class CustomRecipeController {
 
         return ApiResponse.ok(responseDto);
     }
+
     @ApiOperation(value = "커스텀 레시피 전체 조회")
     @GetMapping("/findAll")
     public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> findCustoms(@RequestParam int page, @RequestParam int size) {
@@ -50,8 +62,6 @@ public class CustomRecipeController {
 
         return ApiResponse.ok(responseDto);
     }
-
-
 
     @PatchMapping(value="/update/{recipe_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "커스텀 레시피 수정")
@@ -80,5 +90,13 @@ public class CustomRecipeController {
         return ApiResponse.ok(response);
     }
 
+    @ApiOperation(value = "나의 레시피 목록 조회")
+    @GetMapping("/find/myRecipe")
+    public ApiResponse<MultiResponseDto<CustomRecipeResponseDto>> findMyRecipe(@RequestParam int page, @RequestParam int size) {
+
+        MultiResponseDto<CustomRecipeResponseDto> responseDto = customRecipeService.findMyRecipe(page - 1, size);
+
+        return ApiResponse.ok(responseDto);
+    }
 
 }

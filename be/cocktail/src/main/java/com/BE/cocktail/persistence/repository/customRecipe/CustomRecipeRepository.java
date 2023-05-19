@@ -15,4 +15,7 @@ public interface CustomRecipeRepository extends JpaRepository<CustomRecipe, Long
 
     @Query("SELECT c FROM CustomRecipe c WHERE (c.name LIKE %:keyword% OR c.ingredient LIKE %:keyword%)")
     Page<CustomRecipe> findAllByKeyword(String keyword, PageRequest pageRequest);
+
+    @Query("SELECT r FROM CustomRecipe r WHERE r.memberId = :memberId AND r.deleted = false")
+    Page<CustomRecipe> findByMemberId(Long memberId, PageRequest pageRequest);
 }

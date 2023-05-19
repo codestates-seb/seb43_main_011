@@ -8,6 +8,7 @@ import com.BE.cocktail.exception.CocktailException;
 import com.BE.cocktail.persistence.domain.member.Member;
 import com.BE.cocktail.persistence.repository.member.MemberRepository;
 import com.BE.cocktail.utils.GetAuthUserUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -35,17 +37,23 @@ public class MemberService {
 
         String encryptedPassword = passwordEncoder.encode(sign.getPassword());
         List<String> roles = customAuthorityUtils.createRole(sign.getEmail());
+        String defaultProfileImage = "https://cocktails3bucket.s3.ap-northeast-2.amazonaws.com/images/%EA%B8%B0%EB%B3%B8%ED%94%84%EC%82%AC.png";
 
-        Member member = Member.of(sign, encryptedPassword, roles);
+        Member member = Member.of(sign, encryptedPassword, roles, defaultProfileImage);
 
         memberRepository.save(member);
     }
 
     public Member getLoginMember() {
-        Optional<Member> findMember = memberRepository.findByEmail(GetAuthUserUtils.getAuthUser().getName());
-        findMember.orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
-        Member member = findMember.get();
-        return member;
+
+        Member findMember = memberRepository.findByEmail(GetAuthUserUtils.getAuthUser().getName())
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
+
+        if(findMember.isDeleted()) {
+            throw new CocktailException(CocktailRtnConsts.ERR406);
+        }
+
+        return findMember;
     }
 
     public MemberInfoResponseDto findMyPageInfo() {

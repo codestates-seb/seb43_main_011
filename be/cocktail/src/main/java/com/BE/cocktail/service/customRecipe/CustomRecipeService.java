@@ -2,6 +2,7 @@ package com.BE.cocktail.service.customRecipe;
 
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
 import com.BE.cocktail.dto.customRecipe.*;
+import com.BE.cocktail.dto.customRecipe.createCustom.CustomRecipeIdResponseDto;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,16 +32,15 @@ public class CustomRecipeService {
 
     private final MemberService memberService;
     //todo : 데이터가 삭제 된지 안된지 확인하는 로직 필요!!!!!!!!!!!!!!!!
-    public CustomRecipeResponseDto saveCustomRecipe(MultipartFile image, CustomRecipeCreateDto customRecipeCreateDto) throws IOException {
-
-        Long memberId = memberService.getLoginMember().getId();
-        String storedFileName = s3Uploader.upload(image,"images");
-        CustomRecipe customRecipe = CustomRecipe.of(customRecipeCreateDto, memberId, storedFileName);
-
-        customRecipeRepository.save(customRecipe);
-
-        return CustomRecipeResponseDto.of(customRecipe);
-    }
+//    public CustomRecipeResponseDto saveCustomRecipe(MultipartFile image, CustomRecipeCreateDto customRecipeCreateDto) throws IOException {
+//        Long memberId = memberService.getLoginMember().getId();
+//        String storedFileName = s3Uploader.upload(image,"images");
+//        CustomRecipe customRecipe = CustomRecipe.of(customRecipeCreateDto, memberId, storedFileName);
+//
+//        customRecipeRepository.save(customRecipe);
+//
+//        return CustomRecipeResponseDto.of(customRecipe);
+//    }
 
 
     public CustomRecipeResponseDto updateCustomRecipe(MultipartFile image, Long id, CustomUpdateDto customUpdateDto) throws IOException {
@@ -114,5 +115,35 @@ public class CustomRecipeService {
 
         return CustomRecipeGetResponseDto.of(customRecipe);
 
+    }
+
+    public MultiResponseDto<CustomRecipeResponseDto> findMyRecipe(int page, int size) {
+        Long memberId = memberService.getLoginMember().getId();
+
+        Page<CustomRecipe> pages = customRecipeRepository.findByMemberId(memberId, PageRequest.of(page, size, Sort.by("id").descending()));
+        List<CustomRecipe> customRecipes = pages.getContent();
+
+        return MultiResponseDto.of(CustomRecipeResponseDtoList.of(customRecipes).getData(), PageInfo.of(pages));
+    }
+
+    public CustomRecipeIdResponseDto saveContentCustomRecipe(CustomRecipeCreateDto customRecipeCreateDto) {
+        Long memberId = memberService.getLoginMember().getId();
+
+        CustomRecipe customRecipe = CustomRecipe.of(customRecipeCreateDto, memberId);
+
+        customRecipeRepository.save(customRecipe);
+
+        return CustomRecipeIdResponseDto.of(customRecipe.getId());
+    }
+
+    @Transactional
+    public void saveImageCustomRecipe(MultipartFile image, Long recipeId) throws IOException {
+
+        String storedFileName = s3Uploader.upload(image,"images");
+
+        CustomRecipe customRecipe = customRecipeRepository.findById(recipeId)
+                .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
+
+        customRecipe.insertImageUrl(storedFileName);
     }
 }

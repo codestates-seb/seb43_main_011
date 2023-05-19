@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class CustomRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false, unique = true)
@@ -49,10 +50,9 @@ public class CustomRecipe {
 
 
 
-    public static CustomRecipe of(CustomRecipeCreateDto customRecipeCreateDto, Long memberId, String imageUrl) {
+    public static CustomRecipe of(CustomRecipeCreateDto customRecipeCreateDto, Long memberId) {
         CustomRecipe customRecipe = new CustomRecipe();
 
-        customRecipe.setImageUrl(imageUrl);
         customRecipe.setName(customRecipeCreateDto.getName());
         customRecipe.setDescription(customRecipeCreateDto.getDescription());
         customRecipe.setRecipe(customRecipeCreateDto.getRecipe());
@@ -60,6 +60,10 @@ public class CustomRecipe {
         customRecipe.setMemberId(memberId);
 
         return customRecipe;
+    }
+
+    public void insertImageUrl(String imageUrl) {
+        this.setImageUrl(imageUrl);
     }
 
 }

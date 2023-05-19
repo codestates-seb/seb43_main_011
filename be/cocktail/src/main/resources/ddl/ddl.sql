@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `custom_recipe`
 (
     id                   BIGINT          NOT NULL    AUTO_INCREMENT,
     member_id            BIGINT          NOT NULL,
-    image_url            TEXT            Not NULL,
+    image_url            TEXT            ,
     name                 VARCHAR(255)    NOT NULL    UNIQUE,
     description          TEXT            NOT NULL,
     recipe               LONGTEXT            Not NULL,

@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 public class CustomRecipeCreateDto {
 
 
-    @Pattern(regexp = "^[가-힣]+$")
+//    @Pattern(regexp = "^[가-힣]+$")
     @Size(min=3, max=255)
     @NotBlank
     private String name;
 
-    @Pattern(regexp = "^[가-힣a-zA-Z]+$")
+//    @Pattern(regexp = "^[가-힣a-zA-Z]+$")
     @Size(min=3, max=255)
     @NotBlank
     private String description;
@@ -24,7 +24,7 @@ public class CustomRecipeCreateDto {
     @NotBlank
     private String recipe;
 
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]*$")
+//    @Pattern(regexp = "^[a-zA-Z0-9가-힣]*$")
     @NotBlank
     private String ingredient;
 

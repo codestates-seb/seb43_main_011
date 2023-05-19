@@ -23,7 +23,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false, unique = true, length = 30)
@@ -49,16 +49,17 @@ public class Member {
     @Column(nullable = false)
     private boolean deleted;
 
-    private Member(String nickname, String email, String password, List<String> roles) {
+    private Member(String nickname, String email, String password, List<String> roles, String imageUrl) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.imageUrl = imageUrl;
     }
 
-    public static Member of(SignUpDto sign, String password, List<String> roles) {
+    public static Member of(SignUpDto sign, String password, List<String> roles, String imageUrl) {
 
-        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles);
+        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles, imageUrl);
 
         return member;
 
