@@ -10,13 +10,14 @@ import lombok.Setter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomRecipeGetResponseDto {
 
+    private Long id;
     private String name;
     private String ingredient;
     private String recipe;
     private String imageUrl;
 
     public static CustomRecipeGetResponseDto of(CustomRecipe customRecipe) {
-        return new CustomRecipeGetResponseDto(customRecipe.getName(), customRecipe.getIngredient(), customRecipe.getRecipe(),customRecipe.getImageUrl());
+        return new CustomRecipeGetResponseDto(customRecipe.getId(),customRecipe.getName(), customRecipe.getIngredient(), customRecipe.getRecipe(),customRecipe.getImageUrl());
     }
 
 

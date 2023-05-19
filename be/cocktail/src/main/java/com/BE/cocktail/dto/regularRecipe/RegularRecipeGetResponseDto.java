@@ -8,6 +8,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegularRecipeGetResponseDto {
+
+    private Long id;
+
     private String name;
 
     private String ingredient;
@@ -18,6 +21,6 @@ public class RegularRecipeGetResponseDto {
 
     public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe) {
 
-        return new RegularRecipeGetResponseDto(regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe(), regularRecipe.getImageUrl());
+        return new RegularRecipeGetResponseDto(regularRecipe.getId(), regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe(), regularRecipe.getImageUrl());
     }
 }
