@@ -1,8 +1,6 @@
 import axios from "axios";
-import TokenStorege from "./tokenStorege";
-const tokenStorege = new TokenStorege();
 
-const tokenInstance = axios.create({
+export const tokenInstance = axios.create({
   headers: {
     "content-type": "application/json",
     accept: "application/json",
@@ -11,7 +9,7 @@ const tokenInstance = axios.create({
 });
 
 tokenInstance.interceptors.request.use(function (config) {
-  const token = tokenStorege.getToken();
+  const token = sessionStorage.getItem("UTK");
   if (token) {
     config.headers.common["Authorization"] = token;
   } else {

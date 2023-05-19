@@ -4,11 +4,19 @@ import logo from "../images/logo.png";
 import { useState } from "react";
 import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
 import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import axios from "axios";
+
+interface UserData {
+  email: string;
+  password: string;
+}
 
 const Signup = () => {
   //이메일(아이디) 유효성검사
   const [email, setEmail] = useState("");
   const [showEmailError, setShowEmailError] = useState(false);
+
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     const emailRegex =
@@ -26,14 +34,37 @@ const Signup = () => {
       );
     setShowPasswordError(!passwordRegex);
   };
+  const setLogin = async (data: UserData) => {
+    const res = await axios
+      .post("/login", JSON.stringify(data))
+      .then((response) => {
+        const token = response.headers["authorization"];
+        if (token) {
+          sessionStorage.setItem("UTK", token);
+          console.log(token);
+        }
+        return response;
+      });
+    return res.headers;
+  };
+
+  const loginMutate = useMutation(setLogin);
 
   //눌렀을때 서버로 전송하는 함수
   const handlelogin = (/*보내는데이터 타입*/) => {
     //post 요청으로 데이터보내기 axios
-    setEmail("");
-    setPassword("");
+    const loginInfo = {
+      email: email,
+      password: password,
+    };
+    loginMutate.mutate(loginInfo, {
+      onSuccess: () => {
+        console.log("로그인 성공");
+        setEmail("");
+        setPassword("");
+      },
+    });
   };
-
   return (
     <Container>
       {/* <BlankFrom></BlankFrom> */}
