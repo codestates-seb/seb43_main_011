@@ -110,16 +110,7 @@ export default function CardList({ path }: ListProps) {
         )}
         {data?.data?.[0] &&
           data?.data.map((recipe, i) => {
-            return (
-              <Card
-                name={recipe.name}
-                image={recipe.imageUrl}
-                description={recipe.description}
-                id={recipe.id}
-                key={i}
-                category="regular"
-              />
-            );
+            return <Card recipe={recipe} key={i} category="regular" />;
           })}
         {!isFetching && data?.data?.[0] === undefined && (
           <div>레시피가 존재하지 않습니다</div>

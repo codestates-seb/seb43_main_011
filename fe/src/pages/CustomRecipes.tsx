@@ -59,16 +59,7 @@ export default function CustomRecipes() {
           </LoadingContainer>
         )}
         {data?.data.map((recipe) => {
-          return (
-            <Card
-              key={recipe.id}
-              name={recipe.name}
-              image={recipe.imageUrl}
-              description={recipe.description}
-              id={recipe.id}
-              category="custom"
-            />
-          );
+          return <Card key={recipe.id} recipe={recipe} category="custom" />;
         })}
       </CardsRow>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
