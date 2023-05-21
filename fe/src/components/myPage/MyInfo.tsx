@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { tokenInstance } from "../../utils/tokeninstance";
 
 const Container = styled.div`
   display: flex;
@@ -14,11 +15,10 @@ const Container = styled.div`
   padding: 100px;
 `;
 
-const MyPhoto = styled.div`
+const MyPhoto = styled.img`
   margin: 0px 50px 50px 0px;
   width: 280px;
   height: 280px;
-  background-color: #7b8ade;
   border-radius: 10px;
 `;
 
@@ -78,20 +78,11 @@ export default function MyInfo() {
 
   const { data, isLoading, isError } = useQuery("userInfo", fetchUserInfo);
 
-  useEffect(() => {
-    if (data) {
-      setNickname(data.nickname);
-      setStatusMessage(data.statusMessage);
-    }
-  }, [data]);
-
   async function fetchUserInfo() {
-    const response = await fetch("http://localhost:3000/member");
+    const response = await tokenInstance.get("/member/myPage");
+    console.log(response);
 
-    if (!response.ok) {
-      throw new Error("회원정보를 가져오는데 실패했습니다.");
-    }
-    return response.json();
+    return response.data.data;
   }
   if (isLoading) {
     return <p>로딩중입니다...</p>;
@@ -101,17 +92,19 @@ export default function MyInfo() {
     //toString() 메서드를 사용하여 에러를 문자열로 변환하여 출력
   }
 
+  console.log(data);
+
   return (
     <Container>
-      <MyPhoto>사진 넣는 곳</MyPhoto>
+      <MyPhoto src={data.imageUrl} />
       <InfoWrapper>
         <InputWrapper>
           <Title>Nickname</Title>
-          <Content>{nickname}</Content>
+          <Content>{data.nickName}</Content>
         </InputWrapper>
         <InputWrapper>
           <Title>Status Message</Title>
-          <Content>{statusMessage}</Content>
+          <Content>{data.description || "상태메세지를 넣어주세요."}</Content>
         </InputWrapper>
         <Button>Edit</Button>
       </InfoWrapper>
