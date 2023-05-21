@@ -16,6 +16,12 @@ const CardsPageNationButton = styled.button`
   border: none;
   background-color: white;
   margin: 0 15px;
+  border-radius: 50%;
+  color: #404040;
+  font-size: 1.1rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 interface RecipePaginationProps {

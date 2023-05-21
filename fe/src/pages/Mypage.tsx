@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MenuBar from "../components/myPage/MenuBar";
 import MyInfo from "../components/myPage/MyInfo";
+import MyRecipes from "../components/myPage/MyRecipes";
 import { useState } from "react";
 
 const Container = styled.div`
@@ -20,7 +21,7 @@ export default function Mypage() {
       <MenuBar page={page} setPage={setPage} />
       {page === "myInfo" && <MyInfo />}
       {page === "bookMark" && <MyInfo />}
-      {/* {page === "myRecipe" && <MyRecipes />} */}
+      {page === "myRecipe" && <MyRecipes />}
     </Container>
   );
 }
