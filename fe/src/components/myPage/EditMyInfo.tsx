@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, ChangeEvent } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
+import ImageUpload from "../imageupload/ImageUpload";
 
 const Container = styled.div`
   display: flex;
@@ -15,11 +16,17 @@ const Container = styled.div`
   padding: 100px;
 `;
 
+const MyPhotoWrapper = styled.div`
+  margin-right: 100px;
+  margin-bottom: 100px;
+  overflow: hidden;
+`;
+
 const MyPhoto = styled.div`
   margin: 0px 100px 50px 0px;
   width: 230px;
   height: 230px;
-  background-color: #7b8ade;
+  background-color: #ffffff;
   border-radius: 10px;
 `;
 
@@ -70,7 +77,16 @@ const Button = styled.button`
   margin-left: auto;
 `;
 
-export default function EditMyInfo() {
+const handleImageUpload = (file: File) => {
+  // 여기서 이미지 업로드 로직을 처리합니다.
+  console.log("업로드된 이미지:", file);
+};
+
+export default function EditMyInfo({
+  ToggleEditHandle,
+}: {
+  ToggleEditHandle: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   const [nickname, setNickname] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
@@ -108,7 +124,11 @@ export default function EditMyInfo() {
 
   return (
     <Container>
-      <MyPhoto></MyPhoto>
+      <MyPhotoWrapper>
+        <MyPhoto>
+          <ImageUpload onImageUpload={handleImageUpload} />
+        </MyPhoto>
+      </MyPhotoWrapper>
       <InfoWrapper>
         <Title>Nickname</Title>
         <Input
@@ -124,7 +144,7 @@ export default function EditMyInfo() {
           value={statusMessage}
           onChange={handleStatusMessageChange}
         />
-        <Button onClick={handleSubmit}>save</Button>
+        <Button onClick={ToggleEditHandle}>save</Button>
         {mutation.isLoading && <p>로딩중입니다...</p>}
 
         {mutation.isError && <p>에러 발생: {mutation.error.message}</p>}
