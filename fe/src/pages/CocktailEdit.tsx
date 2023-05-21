@@ -4,12 +4,13 @@ import { TiDelete } from "react-icons/ti";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import ImageUpload from "../components/imageupload/ImageUpload";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormData from "form-data";
 import { tokenInstance } from "../utils/tokeninstance";
 
-const CocktailRegistration = () => {
+const CocktailEdit = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); // 해당 커스텀레시피 ID
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -34,7 +35,6 @@ const CocktailRegistration = () => {
         "/custom/submit/content",
         content,
       );
-      console.log(response);
       return response.data.data.recipeId;
     } catch (error) {
       console.error(error);
@@ -129,7 +129,6 @@ const CocktailRegistration = () => {
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
   };
-
   return (
     <Container>
       <EditForm>
@@ -244,7 +243,7 @@ const CocktailRegistration = () => {
   );
 };
 
-export default CocktailRegistration;
+export default CocktailEdit;
 
 const BottomInfo = styled.div`
   text-align: center;
