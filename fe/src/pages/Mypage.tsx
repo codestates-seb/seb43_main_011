@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import MenuBar from "../components/myPage/MenuBar";
-// import EditMyInfo from "../components/myPage/EditMyInfo";
+import EditMyInfo from "../components/myPage/EditMyInfo";
 import MyInfo from "../components/myPage/MyInfo";
-// import MyRecipes from "../components/myPage/MyRecipes";
+// import MyRecipes from "../components/myPage/myRecipe";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { tokenInstance } from "../utils/tokeninstance";
 
 const Container = styled.div`
   display: flex;
@@ -15,14 +17,45 @@ const Container = styled.div`
   width: 100%;
 `;
 
+export interface MyInfoData {
+  nickName: string;
+  description: string;
+  imageUrl: string;
+}
+
 export default function Mypage() {
   const [page, setPage] = useState("myInfo");
+  const [isUserEdit, setIsUserEdit] = useState(false);
+  const ToggleMyInfo = () => {
+    setIsUserEdit((edit) => !edit);
+  };
+
+  const { data, isLoading, isError } = useQuery<MyInfoData>(
+    "userInfo",
+    fetchUserInfo,
+  );
+  async function fetchUserInfo() {
+    const response = await tokenInstance.get("/member/myPage");
+
+    return response.data.data;
+  }
+
   return (
     <Container>
       <MenuBar page={page} setPage={setPage} />
-      {page === "myInfo" && <MyInfo />}
-      {page === "bookMark" && <MyInfo />}
-      {/* {page === "myRecipe" && <MyRecipes />} */}
+      {page === "myInfo" && (
+        <>
+          {!isUserEdit && (
+            <MyInfo
+              data={data}
+              isLoading={isLoading}
+              isError={isError}
+              ToggleEditHandle={ToggleMyInfo}
+            />
+          )}
+          {isUserEdit && <EditMyInfo ToggleEditHandle={ToggleMyInfo} />}
+        </>
+      )}
     </Container>
   );
 }
