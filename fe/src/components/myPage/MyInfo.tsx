@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { tokenInstance } from "../../utils/tokeninstance";
+import { useState } from "react";
+import { MyInfoData } from "../../pages/Mypage";
 
 const Container = styled.div`
   display: flex;
@@ -70,20 +72,27 @@ const Button = styled.button`
   margin: 28px;
   margin-left: auto;
 `;
+interface MyInterfaceInfo {
+  data: MyInfoData | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  ToggleEditHandle: () => void;
+}
 
-export default function MyInfo() {
-  const { data, isLoading, isError } = useQuery("userInfo", fetchUserInfo);
-
-  async function fetchUserInfo() {
-    const response = await tokenInstance.get("/member/myPage");
-    return response.data.data;
-  }
+export default function MyInfo({
+  data,
+  isLoading,
+  isError,
+  ToggleEditHandle,
+}: MyInterfaceInfo) {
   if (isLoading) {
     return <p>로딩중입니다...</p>;
   }
   if (isError) {
     return <p>에러가 발생하였습니다: {isError.toString()}</p>;
-    //toString() 메서드를 사용하여 에러를 문자열로 변환하여 출력
+  }
+  if (!data) {
+    return null;
   }
 
   return (
@@ -98,7 +107,7 @@ export default function MyInfo() {
           <Title>Status Message</Title>
           <Content>{data.description || "상태메세지를 넣어주세요."}</Content>
         </InputWrapper>
-        <Button>Edit</Button>
+        <Button onClick={ToggleEditHandle}>Edit</Button>
       </InfoWrapper>
     </Container>
   );
