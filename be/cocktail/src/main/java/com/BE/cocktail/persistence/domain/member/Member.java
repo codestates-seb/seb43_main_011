@@ -1,5 +1,6 @@
 package com.BE.cocktail.persistence.domain.member;
 
+import com.BE.cocktail.dto.member.MemberUpdateDto;
 import com.BE.cocktail.dto.member.SignUpDto;
 import lombok.*;
 
@@ -46,38 +47,37 @@ public class Member {
     @Column(nullable = false)
     private boolean deleted;
 
-    private String provider;
-    private String providerId;
 
-//    public static Member of(SignUpDto sign, String encryptedPassword, List<String> roles) {
-//    }
-
-    public void addRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-//    private Member(String nickname, String email, String password, List<String> roles) {
-//        this.nickname = nickname;
-//        this.email = email;
-//        this.password = password;
-//        this.roles = roles;
-//    }
-
-    @Builder
-    private Member(String nickname, String email, String password, List<String> roles, String provider, String providerId) {
+    private Member(String nickname, String email, String password, List<String> roles) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.provider = provider;
-        this.providerId = providerId;
     }
 
-    public static Member of(SignUpDto sign, String password, List<String> roles, String provider, String providerId) {
+    public static Member of(SignUpDto sign, String password, List<String> roles) {
 
-        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles, provider, providerId);
+        Member member = new Member(sign.getNickName(), sign.getEmail(), password, roles);
 
         return member;
+    }
+
+    public void updateImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void updateContent(MemberUpdateDto updateDto) {
+
+        if(updateDto.getNickname() != null) {
+            this.nickname = updateDto.getNickname();
+        }
+
+        if(updateDto.getStatusMessage() != null) {
+            this.statusMessage = updateDto.getStatusMessage();
+        }
+
+        this.modifiedAt = LocalDateTime.now();
 
     }
 }

@@ -12,7 +12,7 @@ public class SignUpDto {
 
     private String imageUrl;
 
-    @Pattern(regexp = "^[a-zA-Zㄱ-힣0-9-_.]{2,12}$") // 한글, 영문, 숫자, 특수문자 (- _ .) 포함한 2 ~ 12글자
+//    @Pattern(regexp = "^[a-zA-Zㄱ-힣0-9-_.]{2,12}$") // 한글, 영문, 숫자, 특수문자 (- _ .) 포함한 2 ~ 12글자
     @NotBlank
     private String nickName;
 
@@ -20,7 +20,7 @@ public class SignUpDto {
     @NotBlank
     private String email;
 
-    @Pattern(regexp = "(?=.[a-zA-ZS])(?=.?[#?!@$%^&*-]).{6,24}") // 영어, 특수문자 조합의 6~24 자리
+//    @Pattern(regexp = "(?=.[a-zA-ZS])(?=.?[#?!@$%^&*-]).{6,24}") // 영어, 특수문자 조합의 6~24 자리
     @NotBlank
     private String password;
 

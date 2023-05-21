@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .antMatchers("/signup").permitAll()
                         .antMatchers("/login").permitAll()
                         .antMatchers("/regular/**").permitAll()
-                        .antMatchers("/custom/submit").hasRole("USER")
+                        .antMatchers("/custom/submit/**").hasRole("USER")
                         .antMatchers("/custom/update/*").hasRole("USER")
                         .antMatchers("/custom/delete/*").hasAnyRole("USER", "ADMIN")
                         .antMatchers("/member/**").hasRole("USER")

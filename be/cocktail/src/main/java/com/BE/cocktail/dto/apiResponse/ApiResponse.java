@@ -36,11 +36,37 @@ public class ApiResponse<T> {
         );
     }
 
+    public static <T> ApiResponse<T> deleted() {
+        return new ApiResponse<>(
+                CocktailRtnConsts.SCC202,
+                CocktailRtnConsts.SCC202.getDescription(),
+                CocktailRtnConsts.SCC202.getCode(),
+                null
+        );
+    }
+
     public static <T> ApiResponse<T> created() {
         return new ApiResponse<>(
                 CocktailRtnConsts.SCC203,
                 CocktailRtnConsts.SCC203.getDescription(),
                 CocktailRtnConsts.SCC203.getCode(),
+                null
+        );
+    }
+
+    public static <T> ApiResponse<T> bookmark() {
+        return new ApiResponse<>(
+                CocktailRtnConsts.SCC204,
+                CocktailRtnConsts.SCC204.getDescription(),
+                CocktailRtnConsts.SCC204.getCode(),
+                null
+        );
+    }
+    public static <T> ApiResponse<T> cancelBookmark() {
+        return new ApiResponse<>(
+                CocktailRtnConsts.SCC205,
+                CocktailRtnConsts.SCC205.getDescription(),
+                CocktailRtnConsts.SCC205.getCode(),
                 null
         );
     }

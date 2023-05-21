@@ -2,17 +2,18 @@ package com.BE.cocktail.controller.member;
 
 import com.BE.cocktail.dto.apiResponse.ApiResponse;
 import com.BE.cocktail.dto.member.MemberInfoResponseDto;
+import com.BE.cocktail.dto.member.MemberUpdateDto;
 import com.BE.cocktail.dto.member.SignUpDto;
 import com.BE.cocktail.service.member.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @Api(tags = "member",description = "유저 API")
@@ -40,9 +41,27 @@ public class MemberController {
     }
 
     //todo : 회원 정보 업데이트
+    @ApiOperation(value = "회원 정보 수정(content)")
+    @PatchMapping("/member/update/content")
+    public ApiResponse<Void> updateMypageContent(@RequestBody MemberUpdateDto updateDto) {
+
+        memberService.updateContent(updateDto);
+
+        return ApiResponse.ok();
+
+    }
+
+    @ApiOperation(value = "회원 정보 수정(image)")
+    @PatchMapping(value = "/member/update/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> updateMypageImage(@RequestPart(value="image") MultipartFile image) throws IOException {
+
+        memberService.updateImage(image);
+
+        return ApiResponse.ok();
+
+    }
 
     //todo : 나의 레시피목록
-
 
     //todo : 나의 찜목록
 

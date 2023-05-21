@@ -20,7 +20,6 @@ public class CustomRecipe {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false, unique = true)
@@ -47,12 +46,9 @@ public class CustomRecipe {
     @Column(nullable = false)
     private boolean deleted;
 
-
-
-    public static CustomRecipe of(CustomRecipeCreateDto customRecipeCreateDto, Long memberId, String imageUrl) {
+    public static CustomRecipe of(CustomRecipeCreateDto customRecipeCreateDto, Long memberId) {
         CustomRecipe customRecipe = new CustomRecipe();
 
-        customRecipe.setImageUrl(imageUrl);
         customRecipe.setName(customRecipeCreateDto.getName());
         customRecipe.setDescription(customRecipeCreateDto.getDescription());
         customRecipe.setRecipe(customRecipeCreateDto.getRecipe());
@@ -62,4 +58,7 @@ public class CustomRecipe {
         return customRecipe;
     }
 
+    public void insertImageUrl(String imageUrl) {
+        this.setImageUrl(imageUrl);
+    }
 }

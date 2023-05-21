@@ -33,6 +33,10 @@ public class MemberDetailsService implements UserDetailsService {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         Member findMember = optionalMember.orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
 
+        if(findMember.isDeleted() != false) {
+            throw new CocktailException(CocktailRtnConsts.ERR409);
+        }
+
         return new MemberDetails(findMember);
     }
 
