@@ -1,26 +1,30 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-// import { RecipeData } from "../utils/query";
+import { useNavigate } from "react-router-dom";
 
 export interface RecipeData {
   data: {
     id: number;
-    name: string;
     imageUrl: string;
-    description: string;
     ingredient: string;
+    name: string;
     recipe: string;
+    description: string;
   };
 }
 
-const fetchRecipe = async (params: string) => {
-  const response = await axios.get(`/regular/find/${params}`);
+const fetchRecipe = async (category: string, id: string) => {
+  const response = await axios.get(`/${category}/find/${id}`);
   return response.data;
 };
 
-export const useFetchRecipe = (id: string) => {
+export const useFetchRecipe = (category: string, id: string) => {
+  const navigate = useNavigate();
+  if (category === "" && id === "") {
+    navigate("/error");
+  }
   const { data, isLoading, error } = useQuery<RecipeData>(["recipe", id], () =>
-    fetchRecipe(id),
+    fetchRecipe(category, id),
   );
   return { data, isLoading, error };
 };
