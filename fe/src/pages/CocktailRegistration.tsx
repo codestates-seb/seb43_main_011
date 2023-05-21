@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import React, { useState } from "react";
-import axios from "axios";
 import { useMutation } from "react-query";
 import ImageUpload from "../components/imageupload/ImageUpload";
 import { useNavigate } from "react-router-dom";
@@ -120,7 +119,7 @@ const CocktailRegistration = () => {
         imageMutation.mutate(input, {
           onSuccess: (data) => {
             console.log(data);
-            // navigate("/custom");
+            navigate("/custom");
           },
         });
       },
