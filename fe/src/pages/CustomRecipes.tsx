@@ -5,8 +5,7 @@ import Card from "../components/card/Card";
 import { getCustomCards } from "../utils/query";
 import { useMainPagination } from "../hooks/useMainPagination";
 import RecipePagination from "../components/card/RecipePagination";
-import { LoadingContainer, LoadingImg } from "../components/card/CardList";
-import LoadingImage from "./../images/loading.gif";
+import LoadingComponent from "../components/card/LoadingComponent";
 const CustomGuide = styled.div`
   display: flex;
 `;
@@ -53,22 +52,9 @@ export default function CustomRecipes() {
         <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
       </CustomGuide>
       <CardsRow>
-        {isLoading && (
-          <LoadingContainer>
-            <LoadingImg src={LoadingImage} />
-          </LoadingContainer>
-        )}
+        {isLoading && <LoadingComponent />}
         {data?.data.map((recipe) => {
-          return (
-            <Card
-              key={recipe.id}
-              name={recipe.name}
-              image={recipe.imageUrl}
-              description={recipe.description}
-              id={recipe.id}
-              category="custom"
-            />
-          );
+          return <Card key={recipe.id} recipe={recipe} category="custom" />;
         })}
       </CardsRow>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (

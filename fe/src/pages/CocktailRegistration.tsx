@@ -7,7 +7,8 @@ import { useMutation } from "react-query";
 import ImageUpload from "../components/imageupload/ImageUpload";
 import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
-axios.defaults.withCredentials = true;
+import { tokenInstance } from "../utils/tokeninstance";
+
 const CocktailRegistration = () => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -30,13 +31,10 @@ const CocktailRegistration = () => {
   const postCustomRecipe = async (data: NewRecipe) => {
     const content = JSON.stringify(data);
     try {
-      const response = await axios.post("/custom/submit/content", content, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "token",
-        },
-      });
+      const response = await tokenInstance.post(
+        "/custom/submit/content",
+        content,
+      );
       console.log(response);
       return response.data.data.recipeId;
     } catch (error) {
@@ -50,15 +48,10 @@ const CocktailRegistration = () => {
   }
   const postCustomImage = async (data: NewImage) => {
     try {
-      const response = await axios.post(
+      const response = await tokenInstance.post(
         `/custom/submit/image/${data.id}`,
         data.formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "token",
-          },
-        },
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       console.log(response);
       return response.data;
@@ -120,15 +113,14 @@ const CocktailRegistration = () => {
       onSuccess: (data) => {
         const formData: FormData = new FormData();
         formData.append("image", selectedImage);
-
         const input = {
           id: data,
           formData: formData,
         };
         imageMutation.mutate(input, {
           onSuccess: (data) => {
-            console.log(data.message);
-            navigate("/custom");
+            console.log(data);
+            // navigate("/custom");
           },
         });
       },

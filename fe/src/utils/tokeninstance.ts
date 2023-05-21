@@ -11,7 +11,7 @@ export const tokenInstance = axios.create({
 tokenInstance.interceptors.request.use(function (config) {
   const token = sessionStorage.getItem("UTK");
   if (token) {
-    config.headers.common["Authorization"] = token;
+    config.headers.Authorization = token;
   } else {
     throw Error("로그인 상태가 아닙니다.");
   }

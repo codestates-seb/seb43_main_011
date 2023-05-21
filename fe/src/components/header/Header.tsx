@@ -18,7 +18,7 @@ const Container = styled.header<{ isNavOpen: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 3;
 `;
 
 const ItemArea = styled.div`
