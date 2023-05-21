@@ -15,6 +15,7 @@ export interface RecipeData {
 
 const fetchRecipe = async (category: string, id: string) => {
   const response = await axios.get(`/${category}/find/${id}`);
+  console.log(response.data);
   return response.data;
 };
 

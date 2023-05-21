@@ -8,6 +8,7 @@ export default function DetailPage() {
   const { category, id } = useParams();
 
   const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
+  console.log("디테일의 데이터 ", data?.data.ingredient);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -15,6 +16,8 @@ export default function DetailPage() {
     console.error(error);
     navigate("/Error");
   }
+
+  const separator = new RegExp(`${"\n|\\\\n"}`);
 
   return (
     <Container>
@@ -30,13 +33,13 @@ export default function DetailPage() {
           <TitleExplanation>{data?.data.description}</TitleExplanation>
           <IngredientTab>재료</IngredientTab>
           <Ingredient>
-            {data?.data.ingredient.split("\\n").map((el, i) => (
+            {data?.data.ingredient.split(separator).map((el, i) => (
               <IngredientItems key={i}>{el}</IngredientItems>
             ))}
           </Ingredient>
           <RecipeTab>RECIPE</RecipeTab>
           <Recipe>
-            {data?.data.recipe.split("\\n").map((el, i) => (
+            {data?.data.recipe.split(separator).map((el, i) => (
               <RecipeItems key={i}>{el}</RecipeItems>
             ))}
           </Recipe>
