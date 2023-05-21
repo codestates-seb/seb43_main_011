@@ -8,7 +8,6 @@ export default function DetailPage() {
   const { category, id } = useParams();
 
   const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
-  console.log("디테일의 데이터 ", data?.data.ingredient);
   if (isLoading) {
     return <div>Loading...</div>;
   }

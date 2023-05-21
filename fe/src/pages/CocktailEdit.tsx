@@ -1,66 +1,72 @@
 import styled from "styled-components";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
-import React, { useState } from "react";
-import { useMutation } from "react-query";
+import React, { useState, useEffect } from "react";
 import ImageUpload from "../components/imageupload/ImageUpload";
 import { useNavigate, useParams } from "react-router-dom";
-import FormData from "form-data";
-import { tokenInstance } from "../utils/tokeninstance";
+import axios from "axios";
 
 const CocktailEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // 해당 커스텀레시피 ID
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [recipeStep, setRecipeStep] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File>();
-  const [selectLineId, setSelectLineId] = useState<number>(-1);
-  const [selectLines, setSelectLines] = useState([
+  const [editName, setEditName] = useState<string>("");
+  const [editDescription, setEditDescription] = useState<string>("");
+  const [editRecipeStep, setEditRecipeStep] = useState<string>("");
+  const [editSelectedImage, setEditSelectedImage] = useState<File>();
+  const [editSelectLineId, setEditSelectLineId] = useState<number>(-1);
+  const [ingredient, setIngredient] = useState([]);
+  const [preview, setPeview] = useState("");
+  const [editSelectLines, setEditSelectLines] = useState([
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
 
-  interface NewRecipe {
-    name: string;
-    description: string;
-    recipe: string;
-    ingredient: string;
+  interface GetRecipe {
+    data: {
+      id: number;
+      imageUrl: string;
+      // description: string;
+      ingredient: string;
+      name: string;
+      recipe: string;
+    };
   }
+  const [getRecipe, setGetRecipe] = useState<GetRecipe | undefined>();
 
-  const postCustomRecipe = async (data: NewRecipe) => {
-    const content = JSON.stringify(data);
-    try {
-      const response = await tokenInstance.post(
-        "/custom/submit/content",
-        content,
-      );
-      return response.data.data.recipeId;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  interface NewImage {
-    id: number;
-    formData: FormData;
-  }
-  const postCustomImage = async (data: NewImage) => {
+  const fetchData = async () => {
     try {
-      const response = await tokenInstance.post(
-        `/custom/submit/image/${data.id}`,
-        data.formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
+      const response = await axios.get(
+        `http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/find/9`,
       );
-      console.log(response);
+      console.log(response.data.data);
+      setIngredient(response.data.data.ingredient);
+      setPeview(response.data.data.imageUrl);
+      setEditName(response.data.data.name);
+      setEditRecipeStep(response.data.data.recipe);
+      setGetRecipe(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error:", error);
     }
   };
 
-  const recipeMutation = useMutation(postCustomRecipe);
-  const imageMutation = useMutation(postCustomImage);
+  // const updateRecipe = async (id: string, data: GetRecipe) => {
+  //   try {
+  //     const response = await axios.patch(
+  //       `http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/update/${id}`,
+  //       data,
+  //     );
+  //     console.log(response.data);
+  //     // return response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //     navigate("/error");
+  //   }
+  // };
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -72,63 +78,40 @@ const CocktailEdit = () => {
 
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
-    //키가 겹치지 않도록 고유한키 부여
-    const lastSelectLine = selectLines[selectLines.length - 1];
+    const lastSelectLine = editSelectLines[editSelectLines.length - 1];
     const newId = lastSelectLine.id + 1;
 
     const newSelectLines = [
-      ...selectLines,
+      ...editSelectLines,
       { id: newId, stuff: "", amount: "", selectOption: "ml" },
     ];
-    setSelectLines(newSelectLines);
+    setEditSelectLines(newSelectLines);
   };
 
   // X버튼을 누르면 재료등록리스트 삭제
   const handleDeleteSelectLine = (id: number) => {
-    const isCurrentSelection = id === selectLineId; // 현재 선택된 항목인지 확인
+    const isCurrentSelection = id === editSelectLineId; // 현재 선택된 항목인지 확인
 
-    const newSelectLines = selectLines.filter((line) => line.id !== id);
-    setSelectLines(newSelectLines);
+    const newSelectLines = editSelectLines.filter((line) => line.id !== id);
+    setEditSelectLines(newSelectLines);
 
     if (isCurrentSelection) {
-      setSelectLineId(-1);
+      setEditSelectLineId(-1);
     }
   };
+
   const handleSubmitData = async () => {
-    const totalData = selectLines
+    const totalData = editSelectLines
       .map((line) => {
         return line.stuff + line.amount + line.selectOption;
       })
       .join("\n");
-
-    const customRecipeCreateDto = {
-      name: name,
-      description: description,
-      recipe: recipeStep,
-      ingredient: totalData,
-    };
-
-    recipeMutation.mutate(customRecipeCreateDto, {
-      onSuccess: (data) => {
-        const formData: FormData = new FormData();
-        formData.append("image", selectedImage);
-        const input = {
-          id: data,
-          formData: formData,
-        };
-        imageMutation.mutate(input, {
-          onSuccess: (data) => {
-            console.log(data);
-            navigate("/custom");
-          },
-        });
-      },
-    });
   };
 
   const handleImageUpload = (image: File) => {
-    setSelectedImage(image);
+    setEditSelectedImage(image);
   };
+
   return (
     <Container>
       <EditForm>
@@ -137,37 +120,33 @@ const CocktailEdit = () => {
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
             <InputName
-              placeholder=" 롱 아일랜드 아이스티"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
             />
             <LabelSummary>이 칵테일을 한줄로 표현해주세요</LabelSummary>
             <InputSummary
-              placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
             />
           </TopCocktailSummary>
         </TopInfo>
 
         <BottomInfo>
           <IngredientLabel>재료 목록</IngredientLabel>
-
-          {selectLines.map((line) => (
+          {editSelectLines.map((line) => (
             <React.Fragment key={line.id}>
               <SelectList>
                 <SelectLine>
                   <ListType>종류 :</ListType>
                   <InputType
-                    placeholder=" 종류를 선택해주세요"
                     value={line.stuff}
                     onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
+                      const skdmlrjt = editSelectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, stuff: e.target.value }
                           : item,
                       );
-                      setSelectLines(newSelectLines);
+                      setEditSelectLines(skdmlrjt);
                     }}
                   />
                   <DeleteButton
@@ -177,26 +156,25 @@ const CocktailEdit = () => {
                 <SelectLine>
                   <ListAmount>수량 :</ListAmount>
                   <InputAmount
-                    placeholder=" 수량을 입력해주세요"
                     value={line.amount}
                     onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
+                      const skdmlrjt = editSelectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, amount: e.target.value }
                           : item,
                       );
-                      setSelectLines(newSelectLines);
+                      setEditSelectLines(skdmlrjt);
                     }}
                   />
                   <UnitSelector
                     value={line.selectOption}
                     onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
+                      const skdmlrjt = editSelectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, selectOption: e.target.value }
                           : item,
                       );
-                      setSelectLines(newSelectLines);
+                      setEditSelectLines(skdmlrjt);
                     }}
                   >
                     <option value="ml">ml</option>
@@ -226,13 +204,8 @@ const CocktailEdit = () => {
 
           <RecipeLabel>레시피를 단계별로 설명해 주세요</RecipeLabel>
           <RecipeStep
-            placeholder="ex)
-1.유리잔 테두리에 소금을 바른다.
-2.얼음을 채운 셰이커에 데킬라 블랑코 50ml, 쿠앵트로(혹은 트리플 섹) 20ml을 붓는다.
-3.라임 주스 15ml를 넣는다.
-4.잘 흔들어 마가리타 잔에 따른다."
-            value={recipeStep}
-            onChange={(e) => setRecipeStep(e.target.value)}
+            value={editRecipeStep}
+            onChange={(e) => setEditRecipeStep(e.target.value)}
           />
         </BottomInfo>
         <SubmitButton type="submit" onClick={handleSubmitData}>

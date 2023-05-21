@@ -10,6 +10,7 @@ import CustomRecipes from "./pages/CustomRecipes";
 import SearchResults from "./pages/SearchResults";
 import SignUp from "./pages/SignUp";
 import Mypage from "./pages/Mypage";
+import CocktailEdit from "./pages/CocktailEdit";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/detail/:category/:id" element={<DetailPage />} />
           <Route path="/registration" element={<CocktailRegistration />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/customedit" element={<CocktailEdit />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
