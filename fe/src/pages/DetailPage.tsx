@@ -1,142 +1,15 @@
 import styled from "styled-components";
 import { BsBookmarkStar } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecipeData } from "../hooks/useFetchRecipe";
 import { useFetchRecipe } from "../hooks/useFetchRecipe";
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  position: relative;
-  margin-top: 20px;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const PhotoArea = styled.img`
-  width: 30rem;
-  min-height: 615px;
-  height: 100%;
-  border-radius: 10px;
-`;
-
-const DetailArea = styled.div`
-  width: 535px;
-  min-height: 665px;
-  margin-left: 50px;
-  padding: 0 50px;
-`;
-
-const TitleArea = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 22px;
-`;
-
-const Title = styled.div`
-  font-size: 25px;
-  font-weight: 800;
-  margin-bottom: 20px;
-`;
-
-const Bookmarker = styled.div`
-  padding-bottom: 15px;
-  margin-left: 15px;
-  cursor: pointer;
-`;
-
-const TitleExplanation = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0 0 30px 20px;
-  font-size: 17px;
-`;
-
-const Ingredient = styled.ul`
-  width: 550px;
-  height: 145px;
-  margin: 0 0 30px 12px;
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #ffffff;
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-`;
-
-const IngredientItems = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-left: 12px;
-  font-size: 17px;
-`;
-
-const Recipe = styled.ol`
-  width: 550px;
-  height: 207px;
-  margin: 0 0 0 12px;
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #ffffff;
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-`;
-
-const RecipeItems = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-left: 12px;
-  font-size: 17px;
-`;
-interface DetailRecipe {
-  name: string;
-  imageUrl: string;
-  description: string;
-  stuff: string;
-  recipeStep: string;
-}
 
 export default function DetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  // id가 undefined인 경우 빈 문자열로 설정
   const { data, isLoading, error } = useFetchRecipe(id || "");
   if (isLoading) return <div>Loading...</div>;
   if (error) {
-    // errorBoundary로 수정 예정
+    // errorBoundary로 수정 예정?
     console.error(error);
     navigate("/Error");
   }
@@ -144,24 +17,24 @@ export default function DetailPage() {
   return (
     <Container>
       <InfoWrapper>
-        <PhotoArea src={data?.imageUrl} alt="Recipe" />
+        <PhotoArea src={data?.data.imageUrl} />
         <DetailArea>
           <TitleArea>
-            <Title>{data?.name}</Title>
+            <TitleTab>{data?.data.name}</TitleTab>
             <Bookmarker>
               <BsBookmarkStar size="30" color="#96A5FF" />
             </Bookmarker>
           </TitleArea>
-          <TitleExplanation>{data?.description}</TitleExplanation>
-          <Title>재료</Title>
+          <TitleExplanation>{data?.data.description}</TitleExplanation>
+          <IngredientTab>재료</IngredientTab>
           <Ingredient>
-            {data?.stuff?.split("\n").map((el, i) => (
+            {data?.data.ingredient.split("\\n").map((el, i) => (
               <IngredientItems key={i}>{el}</IngredientItems>
             ))}
           </Ingredient>
-          <Title>RECIPE</Title>
+          <RecipeTab>RECIPE</RecipeTab>
           <Recipe>
-            {data?.recipeStep?.split("\n").map((el, i) => (
+            {data?.data.recipe.split("\\n").map((el, i) => (
               <RecipeItems key={i}>{el}</RecipeItems>
             ))}
           </Recipe>
@@ -170,3 +43,97 @@ export default function DetailPage() {
     </Container>
   );
 }
+
+const IngredientTab = styled.div`
+  margin-bottom: 20px;
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const RecipeTab = styled.div`
+  margin-bottom: 20px;
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin-top: 7rem;
+`;
+
+const InfoWrapper = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 80%;
+  padding: 4rem;
+  border: 1px solid gray;
+  border-radius: 20px;
+`;
+
+const PhotoArea = styled.img`
+  max-width: 500px;
+  min-height: 600px;
+  border-radius: 3%;
+`;
+
+const DetailArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 7rem;
+  width: 470px;
+  min-height: 665px;
+  padding: 20px;
+  border-radius: 3%;
+`;
+
+const TitleArea = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const TitleTab = styled.div`
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const Bookmarker = styled.div`
+  margin-left: 1rem;
+  cursor: pointer;
+`;
+
+const TitleExplanation = styled.div`
+  font-size: 17px;
+  margin-bottom: 40px;
+  margin-left: 10px;
+  line-height: 2;
+`;
+
+const Ingredient = styled.ul`
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+const IngredientItems = styled.li`
+  margin-bottom: 20px;
+  margin-left: 10px;
+  font-size: 17px;
+`;
+
+const Recipe = styled.ol`
+  width: 100%;
+`;
+
+const RecipeItems = styled.li`
+  font-size: 17px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  line-height: 2;
+`;

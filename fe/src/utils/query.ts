@@ -23,7 +23,7 @@ export interface RegularResponseData {
   pageInfo: PageInfo;
 }
 
-export const getCards = async (alcohol: string, size: number, page = 1) => {
+export const getCards = async (alcohol: string, size: number, page: number) => {
   const response: AxiosResponse<{ data: RegularResponseData }> =
     await axios.get(`/regular/findAll/${alcohol}?page=${page}&size=${size}`);
   return response.data.data;
@@ -33,10 +33,13 @@ export interface CustomResponseData {
   customRecipeResponseDtoList: RecipeCard[];
 }
 
-export const getCustomCards = async (path: string) => {
-  const response: AxiosResponse<{ data: CustomResponseData }> = await axios.get(
-    `/${path}/findAll`,
-  );
+export const getCustomCards = async (
+  path: string,
+  size: number,
+  page: number,
+) => {
+  const response: AxiosResponse<{ data: RegularResponseData }> =
+    await axios.get(`/${path}/findAll?page=${page}&size=${size}`);
   return response.data.data;
 };
 
@@ -59,5 +62,6 @@ export const getSearchResults = async (
   const response: AxiosResponse<{ data: SearchResponse }> = await axios.get(
     `/${path}/search/${searchValue}?page=${page}&size=8`,
   );
+  console.log(response.data);
   return response.data.data;
 };

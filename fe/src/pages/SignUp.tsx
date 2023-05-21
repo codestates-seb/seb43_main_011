@@ -44,7 +44,7 @@ const Signup = () => {
   };
 
   interface UserData {
-    nickname: string;
+    nickName: string;
     email: string;
     password: string;
   }
@@ -52,12 +52,11 @@ const Signup = () => {
   const postUserData = async (userData: UserData) => {
     try {
       const response = await axios.post(
-        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/sign",
+        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/signup",
         userData,
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentials: true, //추가된부분
             Authorization: "Authorization Key",
           },
         },
@@ -68,30 +67,31 @@ const Signup = () => {
     }
   };
 
+  const mutation = useMutation(postUserData, {
+    onMutate: (variable) => {
+      console.log("onMutate", variable);
+    },
+    onError: (error) => {
+      console.log("뮤테이션 에러", error);
+    }, //variable, context
+    onSuccess: (data, variables, context) => {
+      console.log("뮤테이션 성공", data, variables, context);
+    },
+    onSettled: () => {
+      console.log("뮤테이션 끝");
+    },
+  });
+
   const handleSubmit = () => {
     const userData = {
-      nickname: nickname,
+      nickName: nickname,
       email: email,
       password: password,
     };
-    const mutation = useMutation(postUserData, {
-      onMutate: (variable) => {
-        console.log("onMutate", variable);
-      },
-      onError: (error) => {
-        console.log("뮤테이션 에러", error);
-      }, //variable, context
-      onSuccess: (data, variables, context) => {
-        console.log("뮤테이션 성공", data, variables, context);
-      },
-      onSettled: () => {
-        console.log("뮤테이션 끝");
-      },
-    });
 
     mutation.mutate(userData, {
-      onSuccess: (response) => {
-        console.log(response.data);
+      onSuccess: (data) => {
+        console.log(data);
         navigate("signin");
       },
       onError: (error) => {
@@ -134,7 +134,7 @@ const Signup = () => {
             <InputArea
               value={password}
               onChange={handlePassword}
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? "password" : "text"}
             ></InputArea>
             <VisibilityIcon onClick={handleTogglePassword}>
               {showPassword ? <MdVisibilityOff /> : <MdVisibility />}

@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { RecipesContainer } from "./Main";
 import { Link } from "react-router-dom";
 import Card from "../components/card/Card";
-import { useQuery } from "react-query";
-import { getCustomCards, CustomResponseData } from "../utils/query";
-
+import { getCustomCards } from "../utils/query";
+import { useMainPagination } from "../hooks/useMainPagination";
+import RecipePagination from "../components/card/RecipePagination";
+import LoadingComponent from "../components/card/LoadingComponent";
 const CustomGuide = styled.div`
   display: flex;
 `;
@@ -41,12 +42,9 @@ const CardsRow = styled.div`
 
 export default function CustomRecipes() {
   const path = "custom";
-  const { data, isError } = useQuery<CustomResponseData>(["custom", path], () =>
-    getCustomCards(path),
-  );
-  if (isError) {
-    return <h2>error boundary 쓰고 싶은데.. query reset도 해보고 싶은디..</h2>;
-  }
+  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
+    useMainPagination(path, getCustomCards);
+
   return (
     <RecipesContainer>
       <CustomGuide>
@@ -54,19 +52,20 @@ export default function CustomRecipes() {
         <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
       </CustomGuide>
       <CardsRow>
-        {data?.customRecipeResponseDtoList.map((recipe, i) => {
-          return (
-            <Card
-              key={i}
-              name={recipe.name}
-              image={recipe.imageUrl}
-              description={recipe.description}
-              id={recipe.id}
-              category="custom"
-            />
-          );
+        {isLoading && <LoadingComponent />}
+        {data?.data.map((recipe) => {
+          return <Card key={recipe.id} recipe={recipe} category="custom" />;
         })}
       </CardsRow>
+      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+        <RecipePagination
+          pageInfo={data?.pageInfo}
+          hasMore={!!hasMore}
+          isPreviousData={isPreviousData}
+          onNextClick={onNextClick}
+          onPrevClick={onPrevClick}
+        />
+      )}
     </RecipesContainer>
   );
 }
