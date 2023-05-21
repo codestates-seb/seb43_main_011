@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { tokenInstance } from "../../utils/tokeninstance";
 
@@ -73,15 +72,10 @@ const Button = styled.button`
 `;
 
 export default function MyInfo() {
-  const [nickname, setNickname] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
-
   const { data, isLoading, isError } = useQuery("userInfo", fetchUserInfo);
 
   async function fetchUserInfo() {
     const response = await tokenInstance.get("/member/myPage");
-    console.log(response);
-
     return response.data.data;
   }
   if (isLoading) {
@@ -91,8 +85,6 @@ export default function MyInfo() {
     return <p>에러가 발생하였습니다: {isError.toString()}</p>;
     //toString() 메서드를 사용하여 에러를 문자열로 변환하여 출력
   }
-
-  console.log(data);
 
   return (
     <Container>
