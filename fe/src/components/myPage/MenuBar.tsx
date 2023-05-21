@@ -22,6 +22,7 @@ const MenuItem = styled.button`
   color: black;
   border: none;
   background-color: #ffffff;
+
   &:hover {
     cursor: pointer;
     text-decoration: underline solid;
@@ -40,11 +41,26 @@ interface MenuBarProps {
 export default function MenuBar({ page, setPage }: MenuBarProps) {
   return (
     <Menu>
-      <MenuItem onClick={() => setPage("myInfo")}>내 정보</MenuItem>
+      <MenuItem
+        onClick={() => setPage("myInfo")}
+        style={{ color: page === "myInfo" ? "#6879f2" : "black" }}
+      >
+        내 정보
+      </MenuItem>
       <VerticalBar />
-      <MenuItem onClick={() => setPage("bookMark")}>찜 목록</MenuItem>
+      <MenuItem
+        onClick={() => setPage("bookMark")}
+        style={{ color: page === "bookMark" ? "#6879f2" : "black" }}
+      >
+        찜 목록
+      </MenuItem>
       <VerticalBar />
-      <MenuItem onClick={() => setPage("myRecipe")}>나의 레시피</MenuItem>
+      <MenuItem
+        onClick={() => setPage("myRecipe")}
+        style={{ color: page === "myRecipe" ? "#6879f2" : "black" }}
+      >
+        나의 레시피
+      </MenuItem>
     </Menu>
   );
 }
