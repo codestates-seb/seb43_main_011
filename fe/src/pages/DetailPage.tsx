@@ -5,11 +5,13 @@ import { useFetchRecipe } from "../hooks/useFetchRecipe";
 
 export default function DetailPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { data, isLoading, error } = useFetchRecipe(id || "");
-  if (isLoading) return <div>Loading...</div>;
+  const { category, id } = useParams();
+
+  const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   if (error) {
-    // errorBoundary로 수정 예정?
     console.error(error);
     navigate("/Error");
   }
@@ -65,27 +67,32 @@ const Container = styled.div`
 `;
 
 const InfoWrapper = styled.div`
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 80%;
+  padding: 4rem;
+  border: 1px solid gray;
+  border-radius: 20px;
 `;
 
 const PhotoArea = styled.img`
   max-width: 500px;
   min-height: 600px;
   border-radius: 3%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const DetailArea = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 7rem;
   width: 470px;
   min-height: 665px;
   padding: 20px;
   border-radius: 3%;
-  border: 1px solid lightgray;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const TitleArea = styled.div`
@@ -108,6 +115,7 @@ const TitleExplanation = styled.div`
   font-size: 17px;
   margin-bottom: 40px;
   margin-left: 10px;
+  line-height: 2;
 `;
 
 const Ingredient = styled.ul`
@@ -116,7 +124,7 @@ const Ingredient = styled.ul`
 `;
 
 const IngredientItems = styled.li`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   margin-left: 10px;
   font-size: 17px;
 `;
@@ -127,6 +135,7 @@ const Recipe = styled.ol`
 
 const RecipeItems = styled.li`
   font-size: 17px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   margin-left: 10px;
+  line-height: 2;
 `;

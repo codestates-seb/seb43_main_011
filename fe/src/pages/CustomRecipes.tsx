@@ -49,7 +49,9 @@ export default function CustomRecipes() {
     <RecipesContainer>
       <CustomGuide>
         <GuideText>커스텀 레시피</GuideText>
-        <RegistrationLink to={"/upload"}>레시피 등록하기</RegistrationLink>
+        <RegistrationLink to={"/registration"}>
+          레시피 등록하기
+        </RegistrationLink>
       </CustomGuide>
       <CardsRow>
         {isLoading && <LoadingComponent />}
