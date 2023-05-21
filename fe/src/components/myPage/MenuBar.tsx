@@ -33,15 +33,18 @@ const VerticalBar = styled(RxDividerVertical)`
   font-size: 25px;
   color: #909090;
 `;
-
-export default function MenuBar() {
+interface MenuBarProps {
+  page: string;
+  setPage: (pageName: string) => void;
+}
+export default function MenuBar({ page, setPage }: MenuBarProps) {
   return (
     <Menu>
-      <MenuItem>내 정보</MenuItem>
+      <MenuItem onClick={() => setPage("myInfo")}>내 정보</MenuItem>
       <VerticalBar />
-      <MenuItem>찜 목록</MenuItem>
+      <MenuItem onClick={() => setPage("bookMark")}>찜 목록</MenuItem>
       <VerticalBar />
-      <MenuItem>나의 레시피</MenuItem>
+      <MenuItem onClick={() => setPage("myRecipe")}>나의 레시피</MenuItem>
     </Menu>
   );
 }
