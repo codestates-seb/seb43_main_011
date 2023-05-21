@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useMemo } from "react";
 import Card from "./Card";
 import RecipePagination from "./RecipePagination";
-import LoadingImage from "./../../images/loading.gif";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getCards } from "../../utils/query";
+import LoadingComponent from "./LoadingComponent";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -35,19 +35,6 @@ const CategoryBox = styled.div`
     flex-basis: 90%;
     margin-bottom: 4px;
   }
-`;
-
-export const LoadingContainer = styled.div`
-  width: 1360px;
-  height: 360px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-export const LoadingImg = styled.img`
-  width: 30%;
-  height: 100%;
-  margin: auto;
 `;
 
 interface RowInterface {
@@ -103,11 +90,7 @@ export default function CardList({ path }: ListProps) {
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {isLoading && (
-          <LoadingContainer>
-            <LoadingImg src={LoadingImage} />
-          </LoadingContainer>
-        )}
+        {isLoading && <LoadingComponent />}
         {data?.data?.[0] &&
           data?.data.map((recipe, i) => {
             return <Card recipe={recipe} key={i} category="regular" />;
