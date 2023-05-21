@@ -9,6 +9,7 @@ import { IoMdClose } from "react-icons/io";
 import { RiEdit2Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { GoGear, GoCheck } from "react-icons/go";
+import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
 
 const MyRecipesContainer = styled.div`
   width: 1300px;
@@ -45,7 +46,7 @@ const CardContainer = styled.div`
   padding: 50px 30px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   row-gap: 50px;
   place-items: center;
 `;
@@ -70,6 +71,30 @@ const CardMover = styled.div<EditProps>`
   position: absolute;
   left: ${({ isEdit }) => (isEdit ? "-5%" : "0")};
   transition: all 0.3s;
+`;
+
+const DeleteChecked = styled.div`
+  width: 100%;
+  height: 83.5%;
+  border-radius: 15px 15px 7px 7px;
+  background-color: #b0b0b0;
+  position: absolute;
+  overflow: hidden;
+  z-index: 1;
+  > div {
+    width: 20px;
+    height: 100%;
+    background-color: #dfdfdf;
+    position: absolute;
+    left: 45%;
+    border-radius: 15px;
+  }
+  > .left {
+    transform: rotate(45deg);
+  }
+  > .right {
+    transform: rotate(-45deg);
+  }
 `;
 
 const EditSpace = styled.div<EditProps>`
@@ -121,13 +146,37 @@ export default function MyRecipes() {
   const navigate = useNavigate();
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
     useMainPagination("myRecipe", getMyRecipe);
-  const recipeDeleteClick = () => {
-    // 레시피 삭제하는 요청 보내고 데이터 새로 가져오기
+
+  const [deleteQueue, setDeleteQueue] = useState<number[]>([]);
+  const addToDeleteQueue = (id: number) => {
+    if (deleteQueue?.includes(id)) {
+      setDeleteQueue(deleteQueue.filter((hasId) => hasId !== id));
+    } else {
+      setDeleteQueue((queue) => queue && [...queue, id]);
+    }
   };
+
+  const deleteMutation = useDeleteRecipe(); // Assuming you have a custom delete mutation hook
+
+  const recipeDeleteClick = async () => {
+    deleteQueue &&
+      (await Promise.all(
+        deleteQueue.map((id) => deleteMutation.mutateAsync(id)),
+      ));
+  };
+
+  const EditFormChange = async () => {
+    if (deleteQueue && deleteQueue.length > 0) {
+      recipeDeleteClick();
+    }
+    setDeleteQueue([]);
+    setIsEdit((isEdit) => !isEdit);
+  };
+
   return (
     <MyRecipesContainer>
       <ButtonArea>
-        <FormChangeButton onClick={() => setIsEdit((isEdit) => !isEdit)}>
+        <FormChangeButton onClick={EditFormChange}>
           {!isEdit && <GoGear />}
           {isEdit && <GoCheck />}
         </FormChangeButton>
@@ -137,10 +186,16 @@ export default function MyRecipes() {
         {data?.data.map((recipe) => (
           <CardWrapper key={recipe.id}>
             <CardMover isEdit={isEdit}>
+              {deleteQueue.includes(recipe.id) && (
+                <DeleteChecked>
+                  <div className="left"></div>
+                  <div className="right"></div>
+                </DeleteChecked>
+              )}
               <Card recipe={recipe} category="custom" />
             </CardMover>
             <EditSpace isEdit={isEdit}>
-              <RecipeDelete />
+              <RecipeDelete onClick={() => addToDeleteQueue(recipe.id)} />
               <RecipeEdit />
             </EditSpace>
           </CardWrapper>
