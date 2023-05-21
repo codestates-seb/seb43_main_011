@@ -9,7 +9,7 @@ const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   background-color: white;
 
   transition: 0.5s ease;
-  z-index: 1;
+  z-index: 2;
   top: ${(props) => (props.isNavOpen ? "85px" : "-100%")};
   width: 100%;
   box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
