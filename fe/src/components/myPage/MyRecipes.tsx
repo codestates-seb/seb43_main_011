@@ -94,6 +94,9 @@ const RecipeDelete = styled(IoMdClose)`
   font-size: 1.3rem;
   border-radius: 25%;
   color: #404040;
+  &:hover {
+    cursor: pointer;
+  }
   &:active {
     background-color: #96a5ff;
     color: white;
@@ -104,6 +107,9 @@ const RecipeEdit = styled(RiEdit2Line)`
   border-radius: 25%;
   color: #636363;
   margin-top: 10px;
+  &:hover {
+    cursor: pointer;
+  }
   &:active {
     background-color: #96a5ff;
     color: white;
@@ -115,7 +121,6 @@ export default function MyRecipes() {
   const navigate = useNavigate();
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
     useMainPagination("myRecipe", getMyRecipe);
-  // 편집 버튼 누르면 카드 오른쪽으로 편집 버튼 있는 div가 나타나게 만들자
   const recipeDeleteClick = () => {
     // 레시피 삭제하는 요청 보내고 데이터 새로 가져오기
   };
