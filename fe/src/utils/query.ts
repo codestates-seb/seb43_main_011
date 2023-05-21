@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { tokenInstance } from "./tokeninstance";
 
 export interface Recipes {
   [key: string]: RecipeCard[];
@@ -62,6 +63,11 @@ export const getSearchResults = async (
   const response: AxiosResponse<{ data: SearchResponse }> = await axios.get(
     `/${path}/search/${searchValue}?page=${page}&size=8`,
   );
-  console.log(response.data);
+  return response.data.data;
+};
+
+export const getMyRecipe = async (path: string, size: number, page: number) => {
+  const response: AxiosResponse<{ data: RegularResponseData }> =
+    await tokenInstance.get(`/custom/find/${path}?page=${page}&size=${size}`);
   return response.data.data;
 };

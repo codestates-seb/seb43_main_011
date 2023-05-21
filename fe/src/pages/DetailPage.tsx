@@ -12,7 +12,6 @@ export default function DetailPage() {
     return <div>Loading...</div>;
   }
   if (error) {
-    console.error(error);
     navigate("/Error");
   }
 
