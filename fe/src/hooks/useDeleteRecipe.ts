@@ -13,7 +13,7 @@ export const useDeleteRecipe = () => {
     onSuccess: () => {
       queryClient.invalidateQueries("myRecipe");
     },
-    onError: (error: Error) => {
+    onError: () => {
       queryClient.invalidateQueries("myRecipe");
     },
   });

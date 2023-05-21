@@ -156,7 +156,7 @@ export default function MyRecipes() {
     }
   };
 
-  const deleteMutation = useDeleteRecipe(); // Assuming you have a custom delete mutation hook
+  const deleteMutation = useDeleteRecipe();
 
   const recipeDeleteClick = async () => {
     deleteQueue &&
