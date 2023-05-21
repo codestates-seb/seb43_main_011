@@ -14,6 +14,7 @@ import com.BE.cocktail.utils.GetAuthUserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class MemberService {
         return MemberInfoResponseDto.of(member);
     }
 
+    @Transactional
     public void updateContent(MemberUpdateDto updateDto) {
 
         Member findMember = getLoginMember();
@@ -66,6 +68,7 @@ public class MemberService {
         findMember.updateContent(updateDto);
     }
 
+    @Transactional
     public void updateImage(MultipartFile image) throws IOException {
 
         String storedFileName = s3Uploader.upload(image,"images");
