@@ -1,72 +1,71 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
-import React, { useState, useEffect } from "react";
-import ImageUpload from "../components/imageupload/ImageUpload";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
+import { useQuery } from "react-query";
+// import FormData from "form-data";
+import { FcEditImage } from "react-icons/fc";
 
 const CocktailEdit = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // 해당 커스텀레시피 ID
+  const fetchData = async () => {
+    const response = await axios.get(
+      "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/find/8",
+    );
+    return response.data;
+  };
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const [EditpreviewImage, setEditPreviewImage] = useState<string>("");
   const [editName, setEditName] = useState<string>("");
   const [editDescription, setEditDescription] = useState<string>("");
   const [editRecipeStep, setEditRecipeStep] = useState<string>("");
-  const [editSelectedImage, setEditSelectedImage] = useState<File>();
-  const [editSelectLineId, setEditSelectLineId] = useState<number>(-1);
-  const [ingredient, setIngredient] = useState([]);
-  const [preview, setPeview] = useState("");
-  const [editSelectLines, setEditSelectLines] = useState([
-    { id: 0, stuff: "", amount: "", selectOption: "ml" },
-  ]);
 
-  interface GetRecipe {
-    data: {
-      id: number;
-      imageUrl: string;
-      // description: string;
-      ingredient: string;
-      name: string;
-      recipe: string;
-    };
+  const { data, isLoading, error } = useQuery("myData", fetchData);
+  if (error) {
+    navigate("/error");
   }
-  const [getRecipe, setGetRecipe] = useState<GetRecipe | undefined>();
-
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/find/9`,
-      );
-      console.log(response.data.data);
-      setIngredient(response.data.data.ingredient);
-      setPeview(response.data.data.imageUrl);
-      setEditName(response.data.data.name);
-      setEditRecipeStep(response.data.data.recipe);
-      setGetRecipe(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error:", error);
+    if (!isLoading && data) {
+      setEditPreviewImage(data?.data.imageUrl);
+      setEditName(data?.data.name);
+      setEditRecipeStep(data?.data.recipe);
+      setEditDescription(data?.data.description);
     }
-  };
+  }, [data, isLoading]);
 
-  // const updateRecipe = async (id: string, data: GetRecipe) => {
-  //   try {
-  //     const response = await axios.patch(
-  //       `http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/custom/update/${id}`,
-  //       data,
-  //     );
-  //     console.log(response.data);
-  //     // return response.data;
-  //   } catch (error) {
-  //     console.error(error);
-  //     navigate("/error");
-  //   }
-  // };
+  const separator = new RegExp(`${"\n|\\\\n"}`);
+  const rowStuff = data?.data.ingredient;
+  const myStuff = rowStuff && rowStuff.split(separator);
+  console.log(myStuff);
+  const ingredientCount = myStuff && myStuff.length;
+  const initialSelectLines = Array.from(
+    { length: ingredientCount },
+    (_, index) => ({
+      id: index,
+      stuff: "",
+      amount: "",
+      selectOption: "ml",
+    }),
+  );
+  const [selectLineId, setSelectLineId] = useState<number>(-1);
+  const [selectLines, setSelectLines] = useState(initialSelectLines);
+  //분리
+
+  // interface NewRecipe {
+  //   id: number;
+  //   name: string;
+  //   description: string;
+  //   recipe: string;
+  //   ingredient: string;
+  // }
+
+  // interface NewImage {
+  //   id: number;
+  //   formData: FormData;
+  // }
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -78,45 +77,67 @@ const CocktailEdit = () => {
 
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
-    const lastSelectLine = editSelectLines[editSelectLines.length - 1];
+    //키가 겹치지 않도록 고유한키 부여
+    const lastSelectLine = selectLines[selectLines.length - 1];
     const newId = lastSelectLine.id + 1;
 
     const newSelectLines = [
-      ...editSelectLines,
+      ...selectLines,
       { id: newId, stuff: "", amount: "", selectOption: "ml" },
     ];
-    setEditSelectLines(newSelectLines);
+    setSelectLines(newSelectLines);
   };
 
   // X버튼을 누르면 재료등록리스트 삭제
   const handleDeleteSelectLine = (id: number) => {
-    const isCurrentSelection = id === editSelectLineId; // 현재 선택된 항목인지 확인
+    const isCurrentSelection = id === selectLineId; // 현재 선택된 항목인지 확인
 
-    const newSelectLines = editSelectLines.filter((line) => line.id !== id);
-    setEditSelectLines(newSelectLines);
+    const newSelectLines = selectLines.filter((line) => line.id !== id);
+    setSelectLines(newSelectLines);
 
     if (isCurrentSelection) {
-      setEditSelectLineId(-1);
+      setSelectLineId(-1);
     }
   };
 
   const handleSubmitData = async () => {
-    const totalData = editSelectLines
+    const totalData = selectLines
       .map((line) => {
         return line.stuff + line.amount + line.selectOption;
       })
       .join("\n");
   };
+  const handleUploadImage = () => {
+    // 파일 선택(input) 요소를 클릭하여 이미지 선택 다이얼로그 표시
+    if (inputFileRef.current !== undefined) {
+      inputFileRef.current?.click();
+    }
+  };
 
-  const handleImageUpload = (image: File) => {
-    setEditSelectedImage(image);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // 선택한 이미지 파일
+    if (file) {
+      setEditPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
+      handleUploadImage();
+    }
   };
 
   return (
     <Container>
       <EditForm>
         <TopInfo>
-          <ImageUpload onImageUpload={handleImageUpload} />
+          <UploadImgButton onClick={handleUploadImage}>
+            {data ? (
+              <PreviewImg src={EditpreviewImage} alt="Preview" />
+            ) : (
+              <UploadImgIcon />
+            )}
+          </UploadImgButton>
+          <UploadImgInput
+            type="file"
+            ref={inputFileRef}
+            onChange={handleImageChange}
+          />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
             <InputName
@@ -133,20 +154,22 @@ const CocktailEdit = () => {
 
         <BottomInfo>
           <IngredientLabel>재료 목록</IngredientLabel>
-          {editSelectLines.map((line) => (
+
+          {selectLines.map((line) => (
             <React.Fragment key={line.id}>
               <SelectList>
                 <SelectLine>
                   <ListType>종류 :</ListType>
                   <InputType
+                    placeholder=" 종류를 선택해주세요"
                     value={line.stuff}
                     onChange={(e) => {
-                      const skdmlrjt = editSelectLines.map((item) =>
+                      const newSelectLines = selectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, stuff: e.target.value }
                           : item,
                       );
-                      setEditSelectLines(skdmlrjt);
+                      setSelectLines(newSelectLines);
                     }}
                   />
                   <DeleteButton
@@ -156,25 +179,26 @@ const CocktailEdit = () => {
                 <SelectLine>
                   <ListAmount>수량 :</ListAmount>
                   <InputAmount
+                    placeholder=" 수량을 입력해주세요"
                     value={line.amount}
                     onChange={(e) => {
-                      const skdmlrjt = editSelectLines.map((item) =>
+                      const newSelectLines = selectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, amount: e.target.value }
                           : item,
                       );
-                      setEditSelectLines(skdmlrjt);
+                      setSelectLines(newSelectLines);
                     }}
                   />
                   <UnitSelector
                     value={line.selectOption}
                     onChange={(e) => {
-                      const skdmlrjt = editSelectLines.map((item) =>
+                      const newSelectLines = selectLines.map((item) =>
                         item.id === line.id
                           ? { ...item, selectOption: e.target.value }
                           : item,
                       );
-                      setEditSelectLines(skdmlrjt);
+                      setSelectLines(newSelectLines);
                     }}
                   >
                     <option value="ml">ml</option>
@@ -209,7 +233,7 @@ const CocktailEdit = () => {
           />
         </BottomInfo>
         <SubmitButton type="submit" onClick={handleSubmitData}>
-          SUBMIT
+          EDIT
         </SubmitButton>
       </EditForm>
     </Container>
@@ -454,4 +478,33 @@ const FillIcon = styled(AiFillPlusCircle)`
     cursor: pointer;
     color: #5d5d5d;
   }
+`;
+
+const UploadImgIcon = styled(FcEditImage)`
+  font-size: 3rem;
+`;
+
+const UploadImgButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+  margin-top: 5rem;
+  width: 16rem;
+  height: 16rem;
+  border: none;
+  background: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const PreviewImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+`;
+
+const UploadImgInput = styled.input`
+  display: none;
 `;

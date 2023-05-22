@@ -22,7 +22,7 @@ const Signup = () => {
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
-    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(e.target.value);
+    const hasSpecialChars = /^[a-zA-Z가-힣0-9]{2,12}$/.test(e.target.value);
     const lengthMatch = e.target.value.length < 2;
 
     setShowErrorMessage(hasSpecialChars);
@@ -37,7 +37,7 @@ const Signup = () => {
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&-]{6,24}$/.test(
         e.target.value,
       );
     setShowPasswordError(!passwordRegex);

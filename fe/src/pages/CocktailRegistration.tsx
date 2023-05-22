@@ -94,7 +94,6 @@ const CocktailRegistration = () => {
       setSelectLineId(-1);
     }
   };
-
   const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line) => {
