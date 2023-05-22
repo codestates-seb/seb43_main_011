@@ -9,6 +9,8 @@ interface TabProps {
 }
 const RegularTab = styled.div<TabProps>`
   border: 1px solid #6f8892e8;
+  font-weight: 600;
+  color: ${({ path }) => (path ? "#4c4c4c" : "#767676")};
   background-color: ${({ path }) => (path ? "white" : "#dfdfdf")};
   ${({ path }) => (path ? "border-bottom: none;" : "")}
   font-size: 1.3rem;
@@ -16,6 +18,9 @@ const RegularTab = styled.div<TabProps>`
   flex-basis: 12%;
   text-align: center;
   border-radius: 5px 5px 0 0;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const LeftMargin = styled.div`
   flex-basis: 3%;

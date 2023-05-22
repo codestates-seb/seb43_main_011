@@ -48,6 +48,7 @@ interface SearchResultsCard {
   name: string;
   imageUrl: string;
   ingredient: string;
+  id: number;
 }
 
 export interface SearchResponse {

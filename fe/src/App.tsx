@@ -23,6 +23,7 @@ function App() {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/detail/:category/:id" element={<DetailPage />} />
           <Route path="/registration" element={<CocktailRegistration />} />
+          <Route path="/custom/edit/:id" element={<CocktailEdit />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/customedit" element={<CocktailEdit />} />
           <Route path="/custom/edit/:id" element={<CocktailEdit />} />
