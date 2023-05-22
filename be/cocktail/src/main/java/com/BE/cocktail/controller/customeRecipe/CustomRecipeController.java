@@ -31,7 +31,7 @@ public class CustomRecipeController {
 
     @ApiOperation(value = "커스텀 레시피 내용 등록")
     @PostMapping("/submit/content")
-    public ApiResponse<CustomRecipeIdResponseDto> createContent(@RequestBody CustomRecipeCreateDto customRecipeCreateDto) {
+    public ApiResponse<CustomRecipeIdResponseDto> createContent(@RequestBody @Valid CustomRecipeCreateDto customRecipeCreateDto) {
         //todo : 응답결과에 message만 전달
         CustomRecipeIdResponseDto responseDto = customRecipeService.saveContentCustomRecipe(customRecipeCreateDto);
 
