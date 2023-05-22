@@ -108,7 +108,7 @@ const CocktailRegistration = () => {
       recipe: recipeStep,
     };
     if (isNotOk.description || isNotOk.name || isNotOk.recipeStep) {
-      window.alert("안돼");
+      window.alert("입력 양식에 맞지 않는 요소가 있습니다.");
     } else {
       recipeMutation.mutate(customRecipeCreateDto, {
         onSuccess: (data) => {
@@ -119,7 +119,7 @@ const CocktailRegistration = () => {
             formData: formData,
           };
           imageMutation.mutate(input, {
-            onSuccess: (data) => {
+            onSuccess: () => {
               navigate("/custom");
             },
             onError: () => {
