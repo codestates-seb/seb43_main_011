@@ -196,7 +196,9 @@ export default function MyRecipes() {
             </CardMover>
             <EditSpace isEdit={isEdit}>
               <RecipeDelete onClick={() => addToDeleteQueue(recipe.id)} />
-              <RecipeEdit />
+              <RecipeEdit
+                onClick={() => navigate(`/custom/edit/${recipe.id}`)}
+              />
             </EditSpace>
           </CardWrapper>
         ))}
