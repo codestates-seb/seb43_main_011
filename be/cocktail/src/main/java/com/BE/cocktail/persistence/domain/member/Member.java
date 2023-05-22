@@ -21,8 +21,8 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = false)
-    private String imageUrl;
+    @Column(nullable = false)
+    private String imageUrl = "https://cocktails3bucket.s3.ap-northeast-2.amazonaws.com/images/%EA%B8%B0%EB%B3%B8%ED%94%84%EC%82%AC.png";
 
     @Column(nullable = false, unique = true, length = 30)
     private String nickname;

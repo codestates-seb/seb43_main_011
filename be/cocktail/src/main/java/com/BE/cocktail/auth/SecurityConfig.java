@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .antMatchers("/custom/update/*").hasRole("USER")
                         .antMatchers("/custom/delete/*").hasAnyRole("USER", "ADMIN")
                         .antMatchers("/member/**").hasRole("USER")
+                        .antMatchers("/bookmark/**").hasRole("USER")
                 );
         return http.build();
     }
