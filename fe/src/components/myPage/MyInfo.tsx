@@ -72,6 +72,7 @@ const Button = styled.button`
   margin: 28px;
   margin-left: auto;
 `;
+
 interface MyInterfaceInfo {
   data: MyInfoData | undefined;
   isLoading: boolean;
@@ -94,7 +95,7 @@ export default function MyInfo({
   if (!data) {
     return null;
   }
-
+  console.log(data);
   return (
     <Container>
       <MyPhoto src={data.imageUrl} />
