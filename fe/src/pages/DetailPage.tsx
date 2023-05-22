@@ -1,21 +1,31 @@
 import styled from "styled-components";
-import { BsBookmarkStar } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
-import { useFetchRecipe } from "../hooks/useFetchRecipe";
+import { BsBookmarkStar, BsBookmarkStarFill } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import {
+  useFetchRecipe,
+  useAddWish,
+  useDeleteWish,
+} from "../hooks/useFetchRecipe";
+import { useQueryClient } from "react-query";
 
 export default function DetailPage() {
-  const navigate = useNavigate();
   const { category, id } = useParams();
-
-  const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    navigate("/Error");
-  }
-
+  const queryClient = useQueryClient();
+  const { data } = useFetchRecipe(category || "", id || "");
   const separator = new RegExp(`${"\n|\\\\n"}`);
+  const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
+  const propsData = { type: rcpType, recipeId: id };
+  const deleteWishMutation = useDeleteWish(propsData);
+  const addWishMutation = useAddWish(propsData);
+  const widhClickHandle = async () => {
+    if (data?.data.wishList) {
+      await deleteWishMutation.mutateAsync();
+      queryClient.invalidateQueries("recipe");
+    } else {
+      await addWishMutation.mutateAsync();
+      queryClient.invalidateQueries("recipe");
+    }
+  };
 
   return (
     <Container>
@@ -24,8 +34,13 @@ export default function DetailPage() {
         <DetailArea>
           <TitleArea>
             <TitleTab>{data?.data.name}</TitleTab>
-            <Bookmarker>
-              <BsBookmarkStar size="30" color="#96A5FF" />
+            <Bookmarker onClick={widhClickHandle}>
+              {data?.data.wishList && (
+                <BsBookmarkStarFill size="30" color="#96A5FF" />
+              )}
+              {!data?.data.wishList && (
+                <BsBookmarkStar size="30" color="#96A5FF" />
+              )}
             </Bookmarker>
           </TitleArea>
           <TitleExplanation>{data?.data.description}</TitleExplanation>
