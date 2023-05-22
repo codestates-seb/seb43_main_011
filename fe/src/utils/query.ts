@@ -39,9 +39,15 @@ export const getCustomCards = async (
   size: number,
   page: number,
 ) => {
-  const response: AxiosResponse<{ data: RegularResponseData }> =
-    await axios.get(`/${path}/findAll?page=${page}&size=${size}`);
-  return response.data.data;
+  if (path === "bookmark") {
+    const response: AxiosResponse<{ data: RegularResponseData }> =
+      await tokenInstance.get(`/${path}/findAll?page=${page}&size=${size}`);
+    return response.data.data;
+  } else {
+    const response: AxiosResponse<{ data: RegularResponseData }> =
+      await axios.get(`/${path}/findAll?page=${page}&size=${size}`);
+    return response.data.data;
+  }
 };
 
 interface SearchResultsCard {
