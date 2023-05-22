@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState, ChangeEvent } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import ImageUpload from "../imageupload/ImageUpload";
+import { tokenInstance } from "../../utils/tokeninstance";
 
 const Container = styled.div`
   display: flex;
@@ -77,32 +77,38 @@ const Button = styled.button`
   margin-left: auto;
 `;
 
-const handleImageUpload = (file: File) => {
-  // 여기서 이미지 업로드 로직을 처리합니다.
-  console.log("업로드된 이미지:", file);
-};
-
 export default function EditMyInfo({
   ToggleEditHandle,
 }: {
-  ToggleEditHandle: React.MouseEventHandler<HTMLButtonElement>;
+  ToggleEditHandle: () => void;
 }) {
   const [nickname, setNickname] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
+  const [imageFile, setImageFile] = useState<File>();
 
-  const mutation = useMutation(
+  const contentMutation = useMutation(
     (data: { nickname: string; statusMessage: string }) =>
-      axios
-        .post("http://localhost:3000/member/update", data)
+      tokenInstance
+        .patch("/member/update/content", data)
         .then((response) => response.data),
+  );
 
+  const imageMutation = useMutation(
+    async (image: File) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      return await tokenInstance
+        .patch("/member/update/image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => response.data);
+    },
     {
-      onError: (error: Error) => {
-        console.error("에러가 발생했습니다.", error);
+      onError: () => {
+        window.alert("이미지 업로드에 실패했습니다.");
       },
     },
   );
-
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
@@ -111,17 +117,37 @@ export default function EditMyInfo({
     setStatusMessage(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const data = {
-      nickname: nickname,
-      statusMessage: statusMessage,
-    };
-
-    mutation.mutate(data);
+  const handleImageUpload = (file: File) => {
+    setImageFile(file);
   };
+  const QueryClient = useQueryClient();
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (nickname === "") {
+      window.alert("이름은 비울수 없습니다.");
+    } else {
+      const data = {
+        nickname: nickname,
+        statusMessage: statusMessage,
+      };
+      contentMutation.mutate(data, {
+        onSuccess: () => {
+          if (imageFile) {
+            imageMutation.mutate(imageFile, {
+              onSuccess: () => {
+                QueryClient.invalidateQueries("userInfo");
+                setNickname("");
+                setStatusMessage("");
+                setImageFile(undefined);
+                ToggleEditHandle();
+              },
+            });
+          }
+        },
+      });
+    }
+  };
   return (
     <Container>
       <MyPhotoWrapper>
@@ -144,14 +170,7 @@ export default function EditMyInfo({
           value={statusMessage}
           onChange={handleStatusMessageChange}
         />
-        <Button onClick={ToggleEditHandle}>save</Button>
-        {mutation.isLoading && <p>로딩중입니다...</p>}
-
-        {mutation.isError && <p>에러 발생: {mutation.error.message}</p>}
-
-        {mutation.isSuccess && (
-          <p>Server response: {JSON.stringify(mutation.data)}</p>
-        )}
+        <Button onClick={handleSubmit}>save</Button>
       </InfoWrapper>
     </Container>
   );
