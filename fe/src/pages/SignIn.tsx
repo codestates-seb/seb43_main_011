@@ -42,7 +42,6 @@ const Signup = () => {
         const token = response.headers["authorization"];
         if (token) {
           sessionStorage.setItem("UTK", token);
-          console.log(token);
         }
         return response;
       });
