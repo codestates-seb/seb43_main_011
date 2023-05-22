@@ -91,8 +91,7 @@ const Signup = () => {
 
     mutation.mutate(userData, {
       onSuccess: (data) => {
-        console.log(data);
-        navigate("signin");
+        navigate("/signin");
       },
       onError: (error) => {
         console.error(error);
