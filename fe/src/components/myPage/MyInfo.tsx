@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import { useQuery } from "react-query";
-import { tokenInstance } from "../../utils/tokeninstance";
-import { useState } from "react";
 import { MyInfoData } from "../../pages/Mypage";
 
 const Container = styled.div`
@@ -95,7 +92,6 @@ export default function MyInfo({
   if (!data) {
     return null;
   }
-  console.log(data);
   return (
     <Container>
       <MyPhoto src={data.imageUrl} />
