@@ -35,16 +35,8 @@ export default function SearchResults() {
   const searchValue = searchParams.get("value") ?? "";
   const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isPreviousData,
-    hasMore,
-    showCardLength,
-    onNextClick,
-    onPrevClick,
-  } = useSearchedPagination(path, searchValue);
+  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
+    useSearchedPagination(path, searchValue);
 
   return (
     <RecipesContainer>
@@ -56,15 +48,7 @@ export default function SearchResults() {
       )}
       <CardListArea>
         {data?.data.map((card, i) => {
-          return (
-            <SearchedRecipe
-              key={i}
-              name={card.name}
-              image={card.imageUrl}
-              ingredient={card.ingredient.split("\n")}
-              id={i}
-            />
-          );
+          return <SearchedRecipe key={i} recipe={card} category={path} />;
         })}
       </CardListArea>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { MyInfoData } from "../../pages/Mypage";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -54,20 +55,28 @@ const InputWrapper = styled.div`
   border-radius: 27px;
   box-shadow: 0px 0px 8px 0px #cacaca;
 `;
-
-const Button = styled.button`
+interface ButtonProps {
+  red?: boolean;
+}
+const Button = styled.button<ButtonProps>`
   width: 111px;
   height: 40px;
-  background-color: #96a5ff;
+  background-color: ${({ red }) => (red ? "#fc9d9d" : "#96a5ff")};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-  color: #ffff;
+  color: #fff;
   font-weight: 800;
   font-size: 24px;
   border: none;
   cursor: pointer;
-  margin: 28px;
-  margin-left: auto;
+  margin: 28px 10px 10px;
+`;
+
+const ButtonRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
 `;
 
 interface MyInterfaceInfo {
@@ -83,6 +92,7 @@ export default function MyInfo({
   isError,
   ToggleEditHandle,
 }: MyInterfaceInfo) {
+  const navigate = useNavigate();
   if (isLoading) {
     return <p>로딩중입니다...</p>;
   }
@@ -104,7 +114,18 @@ export default function MyInfo({
           <Title>Status Message</Title>
           <Content>{data.description || "상태메세지를 넣어주세요."}</Content>
         </InputWrapper>
-        <Button onClick={ToggleEditHandle}>Edit</Button>
+        <ButtonRow>
+          <Button
+            onClick={() => {
+              sessionStorage.removeItem("UTK");
+              navigate("/");
+            }}
+            red={true}
+          >
+            LogOut
+          </Button>
+          <Button onClick={ToggleEditHandle}>Edit</Button>
+        </ButtonRow>
       </InfoWrapper>
     </Container>
   );

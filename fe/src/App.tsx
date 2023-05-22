@@ -10,6 +10,7 @@ import CustomRecipes from "./pages/CustomRecipes";
 import SearchResults from "./pages/SearchResults";
 import SignUp from "./pages/SignUp";
 import Mypage from "./pages/Mypage";
+import CocktailEdit from "./pages/CocktailEdit";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/detail/:category/:id" element={<DetailPage />} />
           <Route path="/registration" element={<CocktailRegistration />} />
+          <Route path="/custom/edit/:id" element={<CocktailEdit />} />
           <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
