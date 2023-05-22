@@ -75,8 +75,8 @@ export default function CardList({ path }: ListProps) {
         return "무알콜";
       case "1":
         return "1 ~ 9도";
-      case "40":
-        return "40도 이상";
+      case "30":
+        return "30도 이상";
       default:
         return `${path} ~ ${Number(path) + 9}도`;
     }

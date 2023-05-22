@@ -35,16 +35,8 @@ export default function SearchResults() {
   const searchValue = searchParams.get("value") ?? "";
   const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isPreviousData,
-    hasMore,
-    showCardLength,
-    onNextClick,
-    onPrevClick,
-  } = useSearchedPagination(path, searchValue);
+  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
+    useSearchedPagination(path, searchValue);
 
   return (
     <RecipesContainer>

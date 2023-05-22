@@ -24,7 +24,7 @@ const GuideText = styled.div`
 export default function Main() {
   const { reset } = useQueryErrorResetBoundary();
   const alclholLevel = useMemo(() => {
-    return ["0", "1", "10", "20", "30", "40"];
+    return ["0", "1", "10", "20", "30"];
   }, []);
   return (
     <>

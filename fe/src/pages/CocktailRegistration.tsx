@@ -138,11 +138,11 @@ const CocktailRegistration = () => {
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
   };
-  const descriptionRegex = /[가-힣a-zA-Z]{3,}/;
-  const nameRegex = /^[가-힣]+$/;
-  const stuffRegex = /^[가-힣a-zA-Z]+$/;
+  const descriptionRegex = /[가-힣a-zA-Z0-9\s.()!]{3,}/;
+  const nameRegex = /^[가-힣\s()]+$/;
+  const recipeStepRegex = /^[^ㄱ-ㅎ\s]*$/u;
+  const stuffRegex = /^[가-힣a-zA-Z\s]+$/;
   const amountRegex = /^\d+$/;
-  const recipeStepRegex = /^[^ㄱ-ㅎ]*$/u;
   return (
     <Container>
       {!isLogin && <IsNotLogin />}
