@@ -40,7 +40,6 @@ public class MemberController {
         return ApiResponse.ok(response);
     }
 
-    //todo : 회원 정보 업데이트
     @ApiOperation(value = "회원 정보 수정(content)")
     @PatchMapping("/member/update/content")
     public ApiResponse<Void> updateMypageContent(@RequestBody MemberUpdateDto updateDto) {
@@ -55,15 +54,11 @@ public class MemberController {
     @PatchMapping(value = "/member/update/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Void> updateMypageImage(@RequestPart(value="image") MultipartFile image) throws IOException {
 
+        if(image.getSize() == 0) return ApiResponse.ok();
+
         memberService.updateImage(image);
 
         return ApiResponse.ok();
 
     }
-
-    //todo : 나의 레시피목록
-
-    //todo : 나의 찜목록
-
-
 }

@@ -32,7 +32,7 @@ public class CustomRecipeController {
     @ApiOperation(value = "커스텀 레시피 내용 등록")
     @PostMapping("/submit/content")
     public ApiResponse<CustomRecipeIdResponseDto> createContent(@RequestBody @Valid CustomRecipeCreateDto customRecipeCreateDto) {
-        //todo : 응답결과에 message만 전달
+
         CustomRecipeIdResponseDto responseDto = customRecipeService.saveContentCustomRecipe(customRecipeCreateDto);
 
         return ApiResponse.ok(responseDto);
@@ -40,7 +40,9 @@ public class CustomRecipeController {
     @ApiOperation(value = "커스텀 레시피 사진 등록")
     @PostMapping(value="/submit/image/{recipe_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Void> createCustomRecipe(@RequestPart(value="image") MultipartFile image, @PathVariable("recipe_id") Long recipeId) throws IOException {
-        //todo : 응답결과에 message만 전달
+
+        if(image.getSize() == 0) return ApiResponse.ok();
+
         customRecipeService.saveImageCustomRecipe(image, recipeId);
 
         return ApiResponse.created();
@@ -71,7 +73,6 @@ public class CustomRecipeController {
     @PatchMapping("/update/content/{recipe_id}")
     public ApiResponse<Void> updateContent(@RequestBody @Valid CustomUpdateDto customUpdateDto, @PathVariable("recipe_id") Long recipeId) {
 
-        //todo : 응답결과에 message만 전달
         customRecipeService.updateCustomRecipe(recipeId, customUpdateDto);
 
         return ApiResponse.ok();
@@ -101,7 +102,4 @@ public class CustomRecipeController {
 
         return ApiResponse.ok(responseDto);
     }
-
-
-
 }
