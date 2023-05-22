@@ -22,7 +22,7 @@ const CocktailEdit = () => {
   const [editDescription, setEditDescription] = useState<string>("");
   const [editRecipeStep, setEditRecipeStep] = useState<string>("");
   const fetchData = async () => {
-    const response = await axios.get(`/custom/find/${id}`); //파람스로받아와야함
+    const response = await tokenInstance.get(`/custom/find/${id}`);
     return response.data;
   };
 
@@ -141,41 +141,44 @@ const CocktailEdit = () => {
   };
 
   interface NewRecipe {
-    name: string;
     description: string;
-    recipe: string;
     ingredient: string;
+    name: string;
+    recipe: string;
   }
-
-  const postCustomRecipe = async (data: NewRecipe) => {
-    const content = JSON.stringify(data);
-    try {
-      const response = await tokenInstance.post(
-        "/custom/submit/content",
-        content,
-      );
-      console.log(response);
-      return response.data.data.recipeId;
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   interface NewImage {
     id: number;
     formData: FormData;
   }
+  const postCustomRecipe = async (data: NewRecipe) => {
+    try {
+      console.log("data", data);
+      const content = JSON.stringify(data);
+      const response = await tokenInstance.patch(
+        `/custom/update/content/${id}`,
+        content,
+      );
+      console.log("콘텐트패치response", response);
+      return response.data;
+    } catch {
+      console.log("콘텐트 패치실패");
+    }
+  };
+
   const postCustomImage = async (data: NewImage) => {
     try {
+      console.log("이미지 data", data);
+      console.log("이미지formData", data.formData);
       const response = await tokenInstance.post(
         `/custom/submit/image/${data.id}`,
         data.formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
-      console.log(response);
+      console.log("이미지response", response);
       return response.data;
-    } catch (error) {
-      console.error(error);
+    } catch {
+      console.log("이미지포스트실패");
     }
   };
 
@@ -199,22 +202,41 @@ const CocktailEdit = () => {
       ingredient: totalData,
     };
 
-    recipeMutation.mutate(customRecipeCreateDto, {
-      onSuccess: (data) => {
-        const formData: FormData = new FormData();
-        formData.append("image", selectedImage);
-        const input = {
-          id: data,
-          formData: formData,
-        };
-        imageMutation.mutate(input, {
-          onSuccess: (data) => {
-            console.log(data);
-            navigate("/custom");
-          },
-        });
-      },
-    });
+    try {
+      const { data: recipeId } = await recipeMutation.mutateAsync(
+        customRecipeCreateDto,
+      );
+
+      const formData = new FormData();
+      formData.append("image", selectedImage);
+      const imageInput = {
+        id: recipeId,
+        formData: formData,
+      };
+
+      await imageMutation.mutateAsync(imageInput);
+
+      navigate("/custom");
+    } catch (error) {
+      console.error("PATCH 요청 에러:", error);
+      // 에러 처리 로직 추가
+    }
+    // recipeMutation.mutate(customRecipeCreateDto, {
+    //   onSuccess: (data) => {
+    //     const formData: FormData = new FormData();
+    //     formData.append("image", selectedImage);
+    //     const input = {
+    //       id: data,
+    //       formData: formData,
+    //     };
+    //     imageMutation.mutate(input, {
+    //       onSuccess: (data) => {
+    //         console.log(data);
+    //         navigate("/custom");
+    //       },
+    //     });
+    //   },
+    // });
   };
 
   return (
