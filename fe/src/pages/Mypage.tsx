@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { tokenInstance } from "../utils/tokeninstance";
 import MyRecipes from "../components/myPage/MyRecipes";
+import IsNotLogin from "../components/errorFallback/IsNotLogin";
 
 const Container = styled.div`
   display: flex;
@@ -43,6 +44,7 @@ export default function Mypage() {
 
   return (
     <Container>
+      {!data && <IsNotLogin />}
       <MenuBar page={page} setPage={setPage} />
       {page === "myInfo" && (
         <>
