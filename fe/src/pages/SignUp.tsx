@@ -10,7 +10,7 @@ import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 
 const Signup = () => {
   //이름 유효성검사
-  const [showErrorMessage, setShowErrorMessage] = useState(false); //특수문자오류
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showLengthError, setShowLengthError] = useState(false); //길이오류
   const [showEmailError, setShowEmailError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -22,10 +22,10 @@ const Signup = () => {
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
-    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(e.target.value);
+    const hasSpecialChars = /^[a-zA-Z가-힣0-9]{2,12}$/.test(e.target.value);
     const lengthMatch = e.target.value.length < 2;
 
-    setShowErrorMessage(hasSpecialChars);
+    setShowErrorMessage(!hasSpecialChars);
     setShowLengthError(lengthMatch);
   };
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ const Signup = () => {
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&^#])[A-Za-z\d@$!%*?&^#-]{6,24}$/.test(
         e.target.value,
       );
     setShowPasswordError(!passwordRegex);
@@ -87,7 +87,8 @@ const Signup = () => {
 
     mutation.mutate(userData, {
       onSuccess: (data) => {
-        navigate("/signin");
+        console.log(data);
+        navigate("signin");
       },
       onError: (error) => {
         console.error(error);

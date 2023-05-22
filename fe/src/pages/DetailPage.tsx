@@ -8,7 +8,6 @@ export default function DetailPage() {
   const { category, id } = useParams();
 
   const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
