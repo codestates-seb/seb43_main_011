@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
@@ -34,15 +35,20 @@ public class RegularRecipeService {
         RegularRecipe regularRecipe = regularRecipeRepository.findById(id)
                 .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR400));
 
-        Long memberId = memberService.getLoginMember().getId();
+        boolean checkMember = memberService.CheckMember();
 
+
+        if (!checkMember) {
+            return RegularRecipeGetResponseDto.of(regularRecipe);
+        }
+        Long memberId = memberService.getLoginMember().getId();
         Optional<Bookmark> bookmark = regularRecipeRepository.findBookmarkById(memberId, regularRecipe.getId(), Bookmark.RecipeType.REGULAR_RECIPE);
 
         boolean check = false;
 
         if(bookmark.isPresent()) check = true;
 
-        return RegularRecipeGetResponseDto.of(regularRecipe, check);
+        return RegularRecipeGetResponseDto.bookmarkof(regularRecipe, check);
     }
 
     public MultiResponseDto<RegularSearchResponseDto> searchRecipes(String keyword, int page, int size) {

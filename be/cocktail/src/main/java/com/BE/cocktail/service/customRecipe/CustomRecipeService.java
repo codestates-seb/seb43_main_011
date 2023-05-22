@@ -2,6 +2,7 @@ package com.BE.cocktail.service.customRecipe;
 
 import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
 import com.BE.cocktail.dto.customRecipe.*;
+import com.BE.cocktail.dto.regularRecipe.RegularRecipeGetResponseDto;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.persistence.domain.bookmark.Bookmark;
@@ -95,11 +96,14 @@ public class CustomRecipeService {
     }
 
     public CustomRecipeGetResponseDto find(Long id) {
+
         CustomRecipe customRecipe = customRecipeRepository.findById(id)
                 .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR405));
 
-        if (customRecipe.isDeleted() != false) {
-            throw new CocktailException(CocktailRtnConsts.ERR404);
+        boolean checkMember = memberService.CheckMember();
+
+        if (!checkMember) {
+            return CustomRecipeGetResponseDto.of(customRecipe);
         }
 
         Long memberId = memberService.getLoginMember().getId();
@@ -109,7 +113,7 @@ public class CustomRecipeService {
 
         if(bookmark.isPresent()) check = true;
 
-        return CustomRecipeGetResponseDto.of(customRecipe, check);
+        return CustomRecipeGetResponseDto.bookmarkOf(customRecipe, check);
     }
 
     public CustomRecipeIdResponseDto saveContentCustomRecipe(CustomRecipeCreateDto customRecipeCreateDto) {

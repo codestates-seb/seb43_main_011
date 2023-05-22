@@ -20,7 +20,19 @@ public class CustomRecipeGetResponseDto {
 
     private boolean wishList;
 
-    public static CustomRecipeGetResponseDto of(CustomRecipe customRecipe, boolean check) {
+    //로그인 하지 않았을때 조회할시 wishList 무조건 false
+    public static CustomRecipeGetResponseDto of(CustomRecipe customRecipe) {
+        return new CustomRecipeGetResponseDto(
+                customRecipe.getId(),
+                customRecipe.getName(),
+                customRecipe.getIngredient(),
+                customRecipe.getRecipe(),
+                customRecipe.getDescription(),
+                customRecipe.getImageUrl(),
+                false);
+    }
+// 상세조회시에 로그인 되었을때 본인이 북마크 한 레시피면 true로 반환
+    public static CustomRecipeGetResponseDto bookmarkOf(CustomRecipe customRecipe, boolean check) {
         return new CustomRecipeGetResponseDto(
                 customRecipe.getId(),
                 customRecipe.getName(),

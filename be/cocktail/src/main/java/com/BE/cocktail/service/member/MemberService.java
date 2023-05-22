@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,8 @@ public class MemberService {
 
     private final S3Uploader s3Uploader;
 
+    private final HttpServletRequest request;
+
     public void saveMember(SignUpDto sign) {
 
         String encryptedPassword = passwordEncoder.encode(sign.getPassword());
@@ -51,6 +54,12 @@ public class MemberService {
         findMember.orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR401));
         Member member = findMember.get();
         return member;
+    }
+// 로그인 유무 확인하는 메서드
+    public boolean CheckMember() {
+        if (request.getHeader("Authorization").isEmpty()) return false ;
+
+        return true;
     }
 
     public MemberInfoResponseDto findMyPageInfo() {

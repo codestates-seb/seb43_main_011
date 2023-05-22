@@ -22,8 +22,20 @@ public class RegularRecipeGetResponseDto {
     private String imageUrl;
 
     private boolean wishList;
+// 로그인 하지 않았을시 반환하는 메서드 무조건 false
+    public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe) {
 
-    public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe, boolean check) {
+        return new RegularRecipeGetResponseDto(
+                regularRecipe.getId(),
+                regularRecipe.getName(),
+                regularRecipe.getIngredient(),
+                regularRecipe.getDescription(),
+                regularRecipe.getRecipe(),
+                regularRecipe.getImageUrl(),
+                false);
+    }
+// 로그인 했을때 본인이 북마크 한 레시피이면 true 아니면 false
+    public static RegularRecipeGetResponseDto bookmarkof(RegularRecipe regularRecipe, boolean check) {
 
         return new RegularRecipeGetResponseDto(
                 regularRecipe.getId(),
