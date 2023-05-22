@@ -71,3 +71,10 @@ export const getMyRecipe = async (path: string, size: number, page: number) => {
     await tokenInstance.get(`/custom/find/${path}?page=${page}&size=${size}`);
   return response.data.data;
 };
+
+export interface Line {
+  id: number;
+  stuff: string;
+  amount: string;
+  selectOption: string;
+}
