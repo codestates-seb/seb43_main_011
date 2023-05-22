@@ -7,9 +7,11 @@ import ImageUpload from "../components/imageupload/ImageUpload";
 import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import { tokenInstance } from "../utils/tokeninstance";
+import IsNotLogin from "../components/errorFallback/IsNotLogin";
 
 const CocktailRegistration = () => {
   const navigate = useNavigate();
+  const isLogin = sessionStorage.getItem("UTK") !== null;
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -132,114 +134,117 @@ const CocktailRegistration = () => {
 
   return (
     <Container>
-      <EditForm>
-        <TopInfo>
-          <ImageUpload onImageUpload={handleImageUpload} />
-          <TopCocktailSummary>
-            <LabelName>이름을 알려주세요</LabelName>
-            <InputName
-              placeholder=" 롱 아일랜드 아이스티"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <LabelSummary>이 칵테일을 한줄로 표현해주세요</LabelSummary>
-            <InputSummary
-              placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </TopCocktailSummary>
-        </TopInfo>
+      {!isLogin && <IsNotLogin />}
+      {isLogin && (
+        <EditForm>
+          <TopInfo>
+            <ImageUpload onImageUpload={handleImageUpload} />
+            <TopCocktailSummary>
+              <LabelName>이름을 알려주세요</LabelName>
+              <InputName
+                placeholder=" 롱 아일랜드 아이스티"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <LabelSummary>이 칵테일을 한줄로 표현해주세요</LabelSummary>
+              <InputSummary
+                placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </TopCocktailSummary>
+          </TopInfo>
 
-        <BottomInfo>
-          <IngredientLabel>재료 목록</IngredientLabel>
+          <BottomInfo>
+            <IngredientLabel>재료 목록</IngredientLabel>
 
-          {selectLines.map((line) => (
-            <React.Fragment key={line.id}>
-              <SelectList>
-                <SelectLine>
-                  <ListType>종류 :</ListType>
-                  <InputType
-                    placeholder=" 종류를 선택해주세요"
-                    value={line.stuff}
-                    onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
-                        item.id === line.id
-                          ? { ...item, stuff: e.target.value }
-                          : item,
-                      );
-                      setSelectLines(newSelectLines);
-                    }}
-                  />
-                  <DeleteButton
-                    onClick={() => handleDeleteSelectLine(line.id)}
-                  />
-                </SelectLine>
-                <SelectLine>
-                  <ListAmount>수량 :</ListAmount>
-                  <InputAmount
-                    placeholder=" 수량을 입력해주세요"
-                    value={line.amount}
-                    onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
-                        item.id === line.id
-                          ? { ...item, amount: e.target.value }
-                          : item,
-                      );
-                      setSelectLines(newSelectLines);
-                    }}
-                  />
-                  <UnitSelector
-                    value={line.selectOption}
-                    onChange={(e) => {
-                      const newSelectLines = selectLines.map((item) =>
-                        item.id === line.id
-                          ? { ...item, selectOption: e.target.value }
-                          : item,
-                      );
-                      setSelectLines(newSelectLines);
-                    }}
-                  >
-                    <option value="ml">ml</option>
-                    <option value="개">개</option>
-                    <option value="spoon">spoon</option>
-                    <option value="drops">drops</option>
-                    <option value="slice">slice</option>
-                    <option value="leaves">leaves</option>
-                    <option value="peel">peel</option>
-                    <option value="dash">dash</option>
-                    <option value="gram">gram</option>
-                  </UnitSelector>
-                </SelectLine>
-              </SelectList>
-            </React.Fragment>
-          ))}
+            {selectLines.map((line) => (
+              <React.Fragment key={line.id}>
+                <SelectList>
+                  <SelectLine>
+                    <ListType>종류 :</ListType>
+                    <InputType
+                      placeholder=" 종류를 선택해주세요"
+                      value={line.stuff}
+                      onChange={(e) => {
+                        const newSelectLines = selectLines.map((item) =>
+                          item.id === line.id
+                            ? { ...item, stuff: e.target.value }
+                            : item,
+                        );
+                        setSelectLines(newSelectLines);
+                      }}
+                    />
+                    <DeleteButton
+                      onClick={() => handleDeleteSelectLine(line.id)}
+                    />
+                  </SelectLine>
+                  <SelectLine>
+                    <ListAmount>수량 :</ListAmount>
+                    <InputAmount
+                      placeholder=" 수량을 입력해주세요"
+                      value={line.amount}
+                      onChange={(e) => {
+                        const newSelectLines = selectLines.map((item) =>
+                          item.id === line.id
+                            ? { ...item, amount: e.target.value }
+                            : item,
+                        );
+                        setSelectLines(newSelectLines);
+                      }}
+                    />
+                    <UnitSelector
+                      value={line.selectOption}
+                      onChange={(e) => {
+                        const newSelectLines = selectLines.map((item) =>
+                          item.id === line.id
+                            ? { ...item, selectOption: e.target.value }
+                            : item,
+                        );
+                        setSelectLines(newSelectLines);
+                      }}
+                    >
+                      <option value="ml">ml</option>
+                      <option value="개">개</option>
+                      <option value="spoon">spoon</option>
+                      <option value="drops">drops</option>
+                      <option value="slice">slice</option>
+                      <option value="leaves">leaves</option>
+                      <option value="peel">peel</option>
+                      <option value="dash">dash</option>
+                      <option value="gram">gram</option>
+                    </UnitSelector>
+                  </SelectLine>
+                </SelectList>
+              </React.Fragment>
+            ))}
 
-          <DivisionLine>
-            <IconContainer
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleAddSelectLine}
-            >
-              {isHovered ? <FillIcon /> : <OutIcon />}
-            </IconContainer>
-          </DivisionLine>
+            <DivisionLine>
+              <IconContainer
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleAddSelectLine}
+              >
+                {isHovered ? <FillIcon /> : <OutIcon />}
+              </IconContainer>
+            </DivisionLine>
 
-          <RecipeLabel>레시피를 단계별로 설명해 주세요</RecipeLabel>
-          <RecipeStep
-            placeholder="ex)
+            <RecipeLabel>레시피를 단계별로 설명해 주세요</RecipeLabel>
+            <RecipeStep
+              placeholder="ex)
 1.유리잔 테두리에 소금을 바른다.
 2.얼음을 채운 셰이커에 데킬라 블랑코 50ml, 쿠앵트로(혹은 트리플 섹) 20ml을 붓는다.
 3.라임 주스 15ml를 넣는다.
 4.잘 흔들어 마가리타 잔에 따른다."
-            value={recipeStep}
-            onChange={(e) => setRecipeStep(e.target.value)}
-          />
-        </BottomInfo>
-        <SubmitButton type="submit" onClick={handleSubmitData}>
-          SUBMIT
-        </SubmitButton>
-      </EditForm>
+              value={recipeStep}
+              onChange={(e) => setRecipeStep(e.target.value)}
+            />
+          </BottomInfo>
+          <SubmitButton type="submit" onClick={handleSubmitData}>
+            SUBMIT
+          </SubmitButton>
+        </EditForm>
+      )}
     </Container>
   );
 };
