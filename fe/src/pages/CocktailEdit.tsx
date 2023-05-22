@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import { Line } from "../utils/query";
-import axios from "axios";
 import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { useQuery, useMutation } from "react-query";
 import FormData from "form-data";
@@ -30,20 +29,6 @@ const CocktailEdit = () => {
   if (error) {
     navigate("/error");
   }
-
-  //분리
-  // interface NewRecipe {
-  //   id: number;
-  //   name: string;
-  //   description: string;
-  //   recipe: string;
-  //   ingredient: string;
-  // }
-
-  // interface NewImage {
-  //   id: number;
-  //   formData: FormData;
-  // }
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -85,7 +70,6 @@ const CocktailEdit = () => {
           if (num) arr.push(num[0]);
           return arr;
         });
-      console.log(myStuff);
       const initialSelectLines: Line[] = myStuff.map(
         (item: string, index: number) => ({
           id: index,
@@ -153,33 +137,27 @@ const CocktailEdit = () => {
   }
   const postCustomRecipe = async (data: NewRecipe) => {
     try {
-      console.log("data", data);
       const content = JSON.stringify(data);
+
       const response = await tokenInstance.patch(
         `/custom/update/content/${id}`,
         content,
       );
-      console.log("콘텐트패치response", response);
+
       return response.data;
-    } catch {
-      console.log("콘텐트 패치실패");
-    }
+    } catch {}
   };
 
   const postCustomImage = async (data: NewImage) => {
     try {
-      console.log("이미지 data", data);
-      console.log("이미지formData", data.formData);
       const response = await tokenInstance.post(
         `/custom/submit/image/${data.id}`,
         data.formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
-      console.log("이미지response", response);
+
       return response.data;
-    } catch {
-      console.log("이미지포스트실패");
-    }
+    } catch {}
   };
 
   const recipeMutation = useMutation(postCustomRecipe);
@@ -192,8 +170,6 @@ const CocktailEdit = () => {
         return line.stuff + line.amount + line.selectOption;
       })
       .join("\n");
-    console.log("토탈데이터", totalData);
-    console.log("셀렉라인즈", selectLines);
 
     const customRecipeCreateDto = {
       name: editName,
@@ -219,7 +195,6 @@ const CocktailEdit = () => {
       navigate("/custom");
     } catch (error) {
       console.error("PATCH 요청 에러:", error);
-      // 에러 처리 로직 추가
     }
     // recipeMutation.mutate(customRecipeCreateDto, {
     //   onSuccess: (data) => {
