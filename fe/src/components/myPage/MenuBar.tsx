@@ -49,8 +49,8 @@ export default function MenuBar({ page, setPage }: MenuBarProps) {
       </MenuItem>
       <VerticalBar />
       <MenuItem
-        onClick={() => setPage("bookMark")}
-        style={{ color: page === "bookMark" ? "#6879f2" : "black" }}
+        onClick={() => setPage("wishList")}
+        style={{ color: page === "wishList" ? "#6879f2" : "black" }}
       >
         찜 목록
       </MenuItem>
