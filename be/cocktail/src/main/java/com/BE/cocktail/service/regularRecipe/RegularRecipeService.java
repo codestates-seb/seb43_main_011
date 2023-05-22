@@ -8,8 +8,10 @@ import com.BE.cocktail.dto.regularRecipe.RegularSearchResponseDto;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.dto.utils.PageInfo;
 import com.BE.cocktail.exception.CocktailException;
+import com.BE.cocktail.persistence.domain.bookmark.Bookmark;
 import com.BE.cocktail.persistence.domain.regularRecipe.RegularRecipe;
 import com.BE.cocktail.persistence.repository.regularRecipe.RegularRecipeRepository;
+import com.BE.cocktail.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,12 +27,22 @@ public class RegularRecipeService {
 
     private final RegularRecipeRepository regularRecipeRepository;
 
+    private final MemberService memberService;
+
     public RegularRecipeGetResponseDto find(Long id) {
 
         RegularRecipe regularRecipe = regularRecipeRepository.findById(id)
                 .orElseThrow(() -> new CocktailException(CocktailRtnConsts.ERR400));
 
-        return RegularRecipeGetResponseDto.of(regularRecipe);
+        Long memberId = memberService.getLoginMember().getId();
+
+        Optional<Bookmark> bookmark = regularRecipeRepository.findBookmarkById(memberId, regularRecipe.getId(), Bookmark.RecipeType.REGULAR_RECIPE);
+
+        boolean check = false;
+
+        if(bookmark.isPresent()) check = true;
+
+        return RegularRecipeGetResponseDto.of(regularRecipe, check);
     }
 
     public MultiResponseDto<RegularSearchResponseDto> searchRecipes(String keyword, int page, int size) {

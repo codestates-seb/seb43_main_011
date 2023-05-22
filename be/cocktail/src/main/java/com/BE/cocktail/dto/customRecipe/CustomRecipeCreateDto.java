@@ -16,7 +16,7 @@ public class CustomRecipeCreateDto {
     private String name;
 
     @Pattern(regexp = "^([가-힣a-zA-Z0-9.!\\(\\)\\{\\}\\[\\]]+\\s*)*$")
-    @Size(min=3, max=255)
+    @Size(min=1, max=255)
     @NotBlank
     private String description;
 

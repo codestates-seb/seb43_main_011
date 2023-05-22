@@ -18,14 +18,17 @@ public class CustomRecipeGetResponseDto {
     private String description;
     private String imageUrl;
 
-    public static CustomRecipeGetResponseDto of(CustomRecipe customRecipe) {
+    private boolean wishList;
+
+    public static CustomRecipeGetResponseDto of(CustomRecipe customRecipe, boolean check) {
         return new CustomRecipeGetResponseDto(
                 customRecipe.getId(),
                 customRecipe.getName(),
                 customRecipe.getIngredient(),
                 customRecipe.getRecipe(),
                 customRecipe.getDescription(),
-                customRecipe.getImageUrl());
+                customRecipe.getImageUrl(),
+                check);
     }
 
 

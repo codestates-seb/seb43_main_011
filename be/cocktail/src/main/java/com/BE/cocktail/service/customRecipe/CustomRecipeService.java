@@ -4,6 +4,7 @@ import com.BE.cocktail.dto.apiResponse.CocktailRtnConsts;
 import com.BE.cocktail.dto.customRecipe.*;
 import com.BE.cocktail.dto.utils.MultiResponseDto;
 import com.BE.cocktail.dto.utils.PageInfo;
+import com.BE.cocktail.persistence.domain.bookmark.Bookmark;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
 import com.BE.cocktail.persistence.repository.customRecipe.CustomRecipeRepository;
 import com.BE.cocktail.exception.CocktailException;
@@ -21,6 +22,7 @@ import java.io.CharConversionException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class CustomRecipeService {
     private final S3Uploader s3Uploader;
 
     private final MemberService memberService;
+
 
     @Transactional
     public CustomRecipeResponseDto updateCustomRecipe(Long id, CustomUpdateDto customUpdateDto) {
@@ -99,7 +102,14 @@ public class CustomRecipeService {
             throw new CocktailException(CocktailRtnConsts.ERR404);
         }
 
-        return CustomRecipeGetResponseDto.of(customRecipe);
+        Long memberId = memberService.getLoginMember().getId();
+        Optional<Bookmark> bookmark = customRecipeRepository.findBookmarkById(memberId, customRecipe.getId(), Bookmark.RecipeType.CUSTOM_RECIPE);
+
+        boolean check = false;
+
+        if(bookmark.isPresent()) check = true;
+
+        return CustomRecipeGetResponseDto.of(customRecipe, check);
     }
 
     public CustomRecipeIdResponseDto saveContentCustomRecipe(CustomRecipeCreateDto customRecipeCreateDto) {

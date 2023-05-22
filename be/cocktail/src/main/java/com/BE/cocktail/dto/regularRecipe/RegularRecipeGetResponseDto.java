@@ -15,12 +15,23 @@ public class RegularRecipeGetResponseDto {
 
     private String ingredient;
 
+    private String description;
+
     private String recipe;
 
     private String imageUrl;
 
-    public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe) {
+    private boolean wishList;
 
-        return new RegularRecipeGetResponseDto(regularRecipe.getId(), regularRecipe.getName(), regularRecipe.getIngredient(), regularRecipe.getRecipe(), regularRecipe.getImageUrl());
+    public static RegularRecipeGetResponseDto of(RegularRecipe regularRecipe, boolean check) {
+
+        return new RegularRecipeGetResponseDto(
+                regularRecipe.getId(),
+                regularRecipe.getName(),
+                regularRecipe.getIngredient(),
+                regularRecipe.getDescription(),
+                regularRecipe.getRecipe(),
+                regularRecipe.getImageUrl(),
+                check);
     }
 }

@@ -1,5 +1,6 @@
 package com.BE.cocktail.persistence.repository.customRecipe;
 
+import com.BE.cocktail.persistence.domain.bookmark.Bookmark;
 import com.BE.cocktail.persistence.domain.customRecipe.CustomRecipe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,4 +20,6 @@ public interface CustomRecipeRepository extends JpaRepository<CustomRecipe, Long
     @Query("SELECT r FROM CustomRecipe r WHERE r.memberId = :memberId AND r.deleted = false")
     Page<CustomRecipe> findByMemberId(Long memberId, PageRequest pageRequest);
 
+    @Query("SELECT b FROM Bookmark b WHERE b.memberId = :memberId AND b.recipeId = :id AND b.recipeType = :recipeType AND b.deleted = false")
+    Optional<Bookmark> findBookmarkById(Long memberId, Long id, Bookmark.RecipeType recipeType);
 }

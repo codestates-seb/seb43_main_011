@@ -19,7 +19,7 @@ public class CustomRecipeResponseDto {
 
     private String description;
 
-
+    private String category = "CUSTOM_RECIPE";
 
     public static CustomRecipeResponseDto of(CustomRecipe customRecipe) {
         CustomRecipeResponseDto customRecipeResponseDto = new CustomRecipeResponseDto();

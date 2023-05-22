@@ -11,7 +11,7 @@ public class MemberUpdateDto {
     @Pattern(regexp = "^[a-zA-Z가-힣0-9-_.]{2,12}$")
     private String nickname;
 
-    @Size(min=3, max=255)
+    @Size(min=1, max=255)
     private String statusMessage;
 
 }

@@ -20,6 +20,15 @@ public class RegularSearchResponseDto {
 
     private String ingredient;
 
+    private String category = "REGULAR_RECIPE";
+
+    public RegularSearchResponseDto(Long id, String name, String imageUrl, String ingredient) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.ingredient = ingredient;
+    }
+
     public static RegularSearchResponseDto of(RegularRecipe recipe) {
 
         RegularSearchResponseDto response = new RegularSearchResponseDto(recipe.getId(), recipe.getName(), recipe.getImageUrl(), recipe.getIngredient());
