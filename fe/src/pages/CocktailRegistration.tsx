@@ -12,16 +12,21 @@ import IsNotLogin from "../components/errorFallback/IsNotLogin";
 const CocktailRegistration = () => {
   const navigate = useNavigate();
   const isLogin = sessionStorage.getItem("UTK") !== null;
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [recipeStep, setRecipeStep] = useState<string>("");
+  const [isHovered, setIsHovered] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [recipeStep, setRecipeStep] = useState("");
   const [selectedImage, setSelectedImage] = useState<File>();
-  const [selectLineId, setSelectLineId] = useState<number>(-1);
+  const [selectLineId, setSelectLineId] = useState(-1);
   const [selectLines, setSelectLines] = useState([
     { id: 0, stuff: "", amount: "", selectOption: "ml" },
   ]);
-
+  const [isNotOk, setIsNotOk] = useState({
+    name: false,
+    description: false,
+    recipeStep: false,
+    selectLines: [{ id: 0, stuff: false, amount: false, selectOption: false }],
+  });
   interface NewRecipe {
     name: string;
     description: string;
@@ -31,16 +36,11 @@ const CocktailRegistration = () => {
 
   const postCustomRecipe = async (data: NewRecipe) => {
     const content = JSON.stringify(data);
-    try {
-      const response = await tokenInstance.post(
-        "/custom/submit/content",
-        content,
-      );
-      console.log(response);
-      return response.data.data.recipeId;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await tokenInstance.post(
+      "/custom/submit/content",
+      content,
+    );
+    return response.data.data.recipeId;
   };
 
   interface NewImage {
@@ -48,17 +48,13 @@ const CocktailRegistration = () => {
     formData: FormData;
   }
   const postCustomImage = async (data: NewImage) => {
-    try {
-      const response = await tokenInstance.post(
-        `/custom/submit/image/${data.id}`,
-        data.formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
-      );
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await tokenInstance.post(
+      `/custom/submit/image/${data.id}`,
+      data.formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+
+    return response.data;
   };
 
   const recipeMutation = useMutation(postCustomRecipe);
@@ -99,39 +95,54 @@ const CocktailRegistration = () => {
   const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line) => {
-        return line.stuff + line.amount + line.selectOption;
+        const isNot = isNotOk.selectLines.filter((e) => e.id === line.id)[0];
+        if (!isNot.amount || !isNot.selectOption || !isNot.stuff) {
+          return line.stuff + line.amount + line.selectOption;
+        }
       })
       .join("\n");
-
     const customRecipeCreateDto = {
-      name: name,
       description: description,
-      recipe: recipeStep,
       ingredient: totalData,
+      name: name,
+      recipe: recipeStep,
     };
-
-    recipeMutation.mutate(customRecipeCreateDto, {
-      onSuccess: (data) => {
-        const formData: FormData = new FormData();
-        formData.append("image", selectedImage);
-        const input = {
-          id: data,
-          formData: formData,
-        };
-        imageMutation.mutate(input, {
-          onSuccess: (data) => {
-            console.log(data);
-            navigate("/custom");
-          },
-        });
-      },
-    });
+    if (isNotOk.description || isNotOk.name || isNotOk.recipeStep) {
+      window.alert("안돼");
+    } else {
+      recipeMutation.mutate(customRecipeCreateDto, {
+        onSuccess: (data) => {
+          const formData: FormData = new FormData();
+          formData.append("image", selectedImage);
+          const input = {
+            id: data,
+            formData: formData,
+          };
+          imageMutation.mutate(input, {
+            onSuccess: (data) => {
+              navigate("/custom");
+            },
+            onError: () => {
+              window.alert("이미지 등록실패");
+            },
+          });
+        },
+        onError: () => {
+          window.alert(`레시피 등록실패
+          레시피 양식을 다시 확인해 주세요`);
+        },
+      });
+    }
   };
 
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
   };
-
+  const descriptionRegex = /[가-힣a-zA-Z]{3,}/;
+  const nameRegex = /^[가-힣]+$/;
+  const stuffRegex = /^[가-힣a-zA-Z]+$/;
+  const amountRegex = /^\d+$/;
+  const recipeStepRegex = /^[^ㄱ-ㅎ]*$/u;
   return (
     <Container>
       {!isLogin && <IsNotLogin />}
@@ -144,13 +155,27 @@ const CocktailRegistration = () => {
               <InputName
                 placeholder=" 롱 아일랜드 아이스티"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setIsNotOk((prevState) => ({
+                    ...prevState,
+                    name: !nameRegex.test(e.target.value),
+                  }));
+                }}
+                isNotOk={isNotOk.name}
               />
               <LabelSummary>이 칵테일을 한줄로 표현해주세요</LabelSummary>
               <InputSummary
                 placeholder=" 술기운이 오래가는 콜라, 레몬이 섞인 묘한 맛!"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  setIsNotOk((prevState) => ({
+                    ...prevState,
+                    description: !descriptionRegex.test(e.target.value),
+                  }));
+                }}
+                isNotOk={isNotOk.description}
               />
             </TopCocktailSummary>
           </TopInfo>
@@ -173,7 +198,22 @@ const CocktailRegistration = () => {
                             : item,
                         );
                         setSelectLines(newSelectLines);
+                        setIsNotOk((prevState) => ({
+                          ...prevState,
+                          selectLines: prevState.selectLines.map((item) =>
+                            item.id === line.id
+                              ? {
+                                  ...item,
+                                  stuff: !stuffRegex.test(e.target.value),
+                                }
+                              : item,
+                          ),
+                        }));
                       }}
+                      isNotOk={
+                        isNotOk.selectLines.filter((e) => e.id === line.id)[0]
+                          .stuff
+                      }
                     />
                     <DeleteButton
                       onClick={() => handleDeleteSelectLine(line.id)}
@@ -191,7 +231,22 @@ const CocktailRegistration = () => {
                             : item,
                         );
                         setSelectLines(newSelectLines);
+                        setIsNotOk((prevState) => ({
+                          ...prevState,
+                          selectLines: prevState.selectLines.map((item) =>
+                            item.id === line.id
+                              ? {
+                                  ...item,
+                                  amount: !amountRegex.test(e.target.value),
+                                }
+                              : item,
+                          ),
+                        }));
                       }}
+                      isNotOk={
+                        isNotOk.selectLines.filter((e) => e.id === line.id)[0]
+                          .amount
+                      }
                     />
                     <UnitSelector
                       value={line.selectOption}
@@ -237,7 +292,14 @@ const CocktailRegistration = () => {
 3.라임 주스 15ml를 넣는다.
 4.잘 흔들어 마가리타 잔에 따른다."
               value={recipeStep}
-              onChange={(e) => setRecipeStep(e.target.value)}
+              onChange={(e) => {
+                setRecipeStep(e.target.value);
+                setIsNotOk((prevState) => ({
+                  ...prevState,
+                  recipeStep: !recipeStepRegex.test(e.target.value),
+                }));
+              }}
+              isNotOk={isNotOk.recipeStep}
             />
           </BottomInfo>
           <SubmitButton type="submit" onClick={handleSubmitData}>
@@ -250,6 +312,10 @@ const CocktailRegistration = () => {
 };
 
 export default CocktailRegistration;
+
+interface IsNotOkProps {
+  isNotOk: boolean;
+}
 
 const BottomInfo = styled.div`
   text-align: center;
@@ -275,12 +341,12 @@ const DivisionLine = styled.div`
   border-top: 1px solid gray;
 `;
 
-const RecipeStep = styled.textarea`
+const RecipeStep = styled.textarea<IsNotOkProps>`
   width: 50rem;
   height: 8rem;
   border-radius: 5px;
   padding: 10px;
-  border: 0.5px solid gray;
+  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
@@ -314,49 +380,49 @@ const TopCocktailSummary = styled.div`
   margin-left: 1rem;
 `;
 
-const InputName = styled.input`
+const InputName = styled.input<IsNotOkProps>`
   width: 32rem;
   height: 2rem;
   padding: 5px;
   border-radius: 5px;
-  border: 0.5px solid gray;
+  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
   }
 `;
 
-const InputType = styled.input`
+const InputType = styled.input<IsNotOkProps>`
   margin: 0;
   padding: 5px;
   width: 39.5rem;
   margin-right: 1rem;
   height: 1.5rem;
-  border: 0.5px solid gray;
+  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
   border-radius: 5px;
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
   }
 `;
 
-const InputAmount = styled.input`
+const InputAmount = styled.input<IsNotOkProps>`
   margin-right: 1rem;
   padding: 5px;
   width: 33.5rem;
   height: 1.5rem;
-  border: 0.5px solid gray;
+  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
   border-radius: 5px;
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
   }
 `;
 
-const InputSummary = styled.input`
+const InputSummary = styled.input<IsNotOkProps>`
   width: 32rem;
   height: 8rem;
   padding: 5px;
   border-radius: 5px;
-  border: 0.5px solid gray;
+  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */

@@ -50,21 +50,17 @@ const Signup = () => {
   }
 
   const postUserData = async (userData: UserData) => {
-    try {
-      const response = await axios.post(
-        "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/signup",
-        userData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Authorization Key",
-          },
+    const response = await axios.post(
+      "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/signup",
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Authorization Key",
         },
-      );
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+      },
+    );
+    return response.data;
   };
 
   const mutation = useMutation(postUserData, {
