@@ -56,15 +56,7 @@ export default function SearchResults() {
       )}
       <CardListArea>
         {data?.data.map((card, i) => {
-          return (
-            <SearchedRecipe
-              key={i}
-              name={card.name}
-              image={card.imageUrl}
-              ingredient={card.ingredient.split("\n")}
-              id={i}
-            />
-          );
+          return <SearchedRecipe key={i} recipe={card} category={path} />;
         })}
       </CardListArea>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
