@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 interface CardProps {
   recipe: { name: string; imageUrl: string; description: string; id: number };
-  category: string;
+  category?: string;
 }
 const Card = ({ recipe, category }: CardProps) => {
   const navigate = useNavigate();
-  // console.log(name, image);
   return (
     <Container onClick={() => navigate(`/detail/${category}/${recipe.id}`)}>
       <Image url={recipe.imageUrl}>

@@ -12,19 +12,24 @@ const ContentAeaa = styled.div`
   display: grid;
   gap: 30px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  place-items: center;
+  padding: 80px 30px;
 `;
 
 export default function MyWishList() {
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
     useMainPagination("bookmark", getCustomCards);
-  console.log(data);
   return (
     <WishListContainer>
       {isLoading && <LoadingComponent />}
       <ContentAeaa>
         {data?.data.map((recipe) => (
-          <Card key={recipe.id} recipe={recipe} category={"몰루?"} />
+          <Card
+            key={recipe.id}
+            recipe={recipe}
+            category={recipe.category?.split("_")[0].toLocaleLowerCase()}
+          />
         ))}
       </ContentAeaa>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (

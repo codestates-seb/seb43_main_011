@@ -15,7 +15,7 @@ export const useMainPagination = (
   const listSize = useMemo(() => {
     switch (path) {
       case "bookmark":
-        return 20;
+        return 16;
       case "custom":
         return 20;
       case "30":

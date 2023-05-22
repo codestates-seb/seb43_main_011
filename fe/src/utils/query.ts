@@ -10,6 +10,7 @@ export interface RecipeCard {
   name: string;
   description: string;
   id: number;
+  category?: string;
 }
 
 export interface PageInfo {
