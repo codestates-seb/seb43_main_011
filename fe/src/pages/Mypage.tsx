@@ -29,6 +29,7 @@ export interface MyInfoData {
 export default function Mypage() {
   const [page, setPage] = useState("myInfo");
   const [isUserEdit, setIsUserEdit] = useState(false);
+  const isNotLogin = sessionStorage.getItem("UTK") === null;
   const ToggleMyInfo = () => {
     setIsUserEdit((edit) => !edit);
   };
@@ -45,7 +46,7 @@ export default function Mypage() {
 
   return (
     <Container>
-      {!data && <IsNotLogin />}
+      {isNotLogin && <IsNotLogin />}
       <MenuBar page={page} setPage={setPage} />
       {page === "myInfo" && (
         <>
