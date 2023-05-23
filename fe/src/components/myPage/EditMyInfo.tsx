@@ -161,7 +161,7 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
           <ImageUpload
             onImageUpload={handleImageUpload}
             isEmpty={imageFile === null}
-            initailImage={infoData?.imageUrl}
+            initialImage={infoData?.imageUrl}
           />
         </MyPhoto>
       </MyPhotoWrapper>
