@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { tokenInstance } from "../utils/tokeninstance";
 import MyRecipes from "../components/myPage/MyRecipes";
 import IsNotLogin from "../components/errorFallback/IsNotLogin";
+import MyWishList from "../components/myPage/MyWishList";
 
 const Container = styled.div`
   display: flex;
@@ -56,9 +57,12 @@ export default function Mypage() {
               ToggleEditHandle={ToggleMyInfo}
             />
           )}
-          {isUserEdit && <EditMyInfo ToggleEditHandle={ToggleMyInfo} />}
+          {isUserEdit && (
+            <EditMyInfo infoData={data} ToggleEditHandle={ToggleMyInfo} />
+          )}
         </>
       )}
+      {page === "wishList" && <MyWishList />}
       {page === "myRecipe" && <MyRecipes />}
     </Container>
   );

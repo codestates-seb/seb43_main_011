@@ -5,7 +5,7 @@ import Card from "../components/card/Card";
 import { getCustomCards } from "../utils/query";
 import { useMainPagination } from "../hooks/useMainPagination";
 import RecipePagination from "../components/card/RecipePagination";
-import LoadingComponent from "../components/card/LoadingComponent";
+import LoadingComponent from "../components/loading/LoadingComponent";
 const CustomGuide = styled.div`
   display: flex;
 `;

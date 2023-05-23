@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import { tokenInstance } from "../utils/tokeninstance";
 import IsNotLogin from "../components/errorFallback/IsNotLogin";
+import { useDeleteRecipe } from "../hooks/useDeleteRecipe";
 
 const CocktailRegistration = () => {
   const navigate = useNavigate();
@@ -25,8 +26,12 @@ const CocktailRegistration = () => {
     name: false,
     description: false,
     recipeStep: false,
-    selectLines: [{ id: 0, stuff: false, amount: false, selectOption: false }],
   });
+  const descriptionRegex = /[가-힣a-zA-Z0-9\s.()!]{3,}/;
+  const nameRegex = /^[가-힣\s()]+$/;
+  const recipeStepRegex = /^[가-힣a-zA-Z\s\n]*$/u;
+  const stuffRegex = /^[가-힣a-zA-Z\s]+$/;
+  const amountRegex = /^\d+$/;
   interface NewRecipe {
     name: string;
     description: string;
@@ -53,12 +58,12 @@ const CocktailRegistration = () => {
       data.formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
-
     return response.data;
   };
 
   const recipeMutation = useMutation(postCustomRecipe);
   const imageMutation = useMutation(postCustomImage);
+  const deleteMutation = useDeleteRecipe();
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -94,9 +99,10 @@ const CocktailRegistration = () => {
   };
   const handleSubmitData = async () => {
     const totalData = selectLines
-      .map((line) => {
-        const isNot = isNotOk.selectLines.filter((e) => e.id === line.id)[0];
-        if (!isNot.amount || !isNot.selectOption || !isNot.stuff) {
+      .map((line, i) => {
+        if (!amountRegex.test(line.amount) || !stuffRegex.test(line.stuff)) {
+          window.alert(`${i + 1}번째 재료가 잘못 입력되었습니다.`);
+        } else {
           return line.stuff + line.amount + line.selectOption;
         }
       })
@@ -107,8 +113,13 @@ const CocktailRegistration = () => {
       name: name,
       recipe: recipeStep,
     };
-    if (isNotOk.description || isNotOk.name || isNotOk.recipeStep) {
-      window.alert("안돼");
+    if (
+      isNotOk.description ||
+      isNotOk.name ||
+      isNotOk.recipeStep ||
+      !selectedImage
+    ) {
+      window.alert("입력 양식에 맞지 않는 요소가 있습니다.");
     } else {
       recipeMutation.mutate(customRecipeCreateDto, {
         onSuccess: (data) => {
@@ -119,11 +130,20 @@ const CocktailRegistration = () => {
             formData: formData,
           };
           imageMutation.mutate(input, {
-            onSuccess: (data) => {
+            onSuccess: () => {
               navigate("/custom");
             },
             onError: () => {
-              window.alert("이미지 등록실패");
+              window.alert("이미지 등록실패, 이미지의 크기가 너무 큽니다");
+              deleteMutation.mutateAsync(data);
+              setName("");
+              setDescription("");
+              setRecipeStep("");
+              setSelectedImage(undefined);
+              setSelectLineId(-1);
+              setSelectLines([
+                { id: 0, stuff: "", amount: "", selectOption: "ml" },
+              ]);
             },
           });
         },
@@ -138,18 +158,16 @@ const CocktailRegistration = () => {
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
   };
-  const descriptionRegex = /[가-힣a-zA-Z0-9\s.()!]{3,}/;
-  const nameRegex = /^[가-힣\s()]+$/;
-  const recipeStepRegex = /^[^ㄱ-ㅎ\s]*$/u;
-  const stuffRegex = /^[가-힣a-zA-Z\s]+$/;
-  const amountRegex = /^\d+$/;
   return (
     <Container>
       {!isLogin && <IsNotLogin />}
       {isLogin && (
         <EditForm>
           <TopInfo>
-            <ImageUpload onImageUpload={handleImageUpload} />
+            <ImageUpload
+              onImageUpload={handleImageUpload}
+              isEmpty={typeof selectedImage === "undefined"}
+            />
             <TopCocktailSummary>
               <LabelName>이름을 알려주세요</LabelName>
               <InputName
@@ -198,22 +216,7 @@ const CocktailRegistration = () => {
                             : item,
                         );
                         setSelectLines(newSelectLines);
-                        setIsNotOk((prevState) => ({
-                          ...prevState,
-                          selectLines: prevState.selectLines.map((item) =>
-                            item.id === line.id
-                              ? {
-                                  ...item,
-                                  stuff: !stuffRegex.test(e.target.value),
-                                }
-                              : item,
-                          ),
-                        }));
                       }}
-                      isNotOk={
-                        isNotOk.selectLines.filter((e) => e.id === line.id)[0]
-                          .stuff
-                      }
                     />
                     <DeleteButton
                       onClick={() => handleDeleteSelectLine(line.id)}
@@ -231,22 +234,7 @@ const CocktailRegistration = () => {
                             : item,
                         );
                         setSelectLines(newSelectLines);
-                        setIsNotOk((prevState) => ({
-                          ...prevState,
-                          selectLines: prevState.selectLines.map((item) =>
-                            item.id === line.id
-                              ? {
-                                  ...item,
-                                  amount: !amountRegex.test(e.target.value),
-                                }
-                              : item,
-                          ),
-                        }));
                       }}
-                      isNotOk={
-                        isNotOk.selectLines.filter((e) => e.id === line.id)[0]
-                          .amount
-                      }
                     />
                     <UnitSelector
                       value={line.selectOption}
@@ -358,6 +346,7 @@ const Container = styled.div`
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const IngredientLabel = styled.div`
@@ -392,25 +381,25 @@ const InputName = styled.input<IsNotOkProps>`
   }
 `;
 
-const InputType = styled.input<IsNotOkProps>`
+const InputType = styled.input`
   margin: 0;
   padding: 5px;
   width: 39.5rem;
   margin-right: 1rem;
   height: 1.5rem;
-  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
+  border: 0.5px solid gray;
   border-radius: 5px;
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
   }
 `;
 
-const InputAmount = styled.input<IsNotOkProps>`
+const InputAmount = styled.input`
   margin-right: 1rem;
   padding: 5px;
   width: 33.5rem;
   height: 1.5rem;
-  border: 0.5px solid ${({ isNotOk }) => (isNotOk ? "red" : "gray")};
+  border: 0.5px solid gray;
   border-radius: 5px;
   ::placeholder {
     color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */

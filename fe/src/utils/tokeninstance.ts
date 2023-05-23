@@ -13,7 +13,7 @@ tokenInstance.interceptors.request.use(function (config) {
   if (token) {
     config.headers.Authorization = token;
   } else {
-    throw Error("로그인 상태가 아닙니다.");
+    config.headers.Authorization = "";
   }
   return config;
 });

@@ -4,7 +4,7 @@ import Card from "./Card";
 import RecipePagination from "./RecipePagination";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getCards } from "../../utils/query";
-import LoadingComponent from "./LoadingComponent";
+import LoadingComponent from "../loading/LoadingComponent";
 
 const CardsContainer = styled.div`
   width: 100%;

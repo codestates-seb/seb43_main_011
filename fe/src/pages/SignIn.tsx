@@ -42,7 +42,6 @@ const Signup = () => {
         const token = response.headers["authorization"];
         if (token) {
           sessionStorage.setItem("UTK", token);
-          console.log(token);
         }
         return response;
       });
@@ -60,17 +59,26 @@ const Signup = () => {
     };
     loginMutate.mutate(loginInfo, {
       onSuccess: () => {
-        console.log("로그인 성공");
         setEmail("");
         setPassword("");
         navigate("/");
       },
+      onError: () => {
+        window.alert("이메일 혹은 비밀번호가 일치하지 않습니다");
+        setEmail("");
+        setPassword("");
+      },
     });
   };
+
+  const handlePasswordKeyup = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter" && email && password) {
+      handlelogin();
+    }
+  };
+
   return (
     <Container>
-      {/* <BlankFrom></BlankFrom> */}
-      {/* 오른쪽으로 입력폼을 위치하려면 위의 주석 해제 */}
       <SignupForm>
         <Link to="/">
           <Logo src={logo} alt="logo"></Logo>
@@ -93,6 +101,7 @@ const Signup = () => {
             placeholder="비밀번호"
             value={password}
             onChange={handlePassword}
+            onKeyUp={handlePasswordKeyup}
           ></InputArea>
           {showPasswordError && (
             <ErrorMessage>

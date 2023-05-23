@@ -3,7 +3,6 @@ import { FcGoogle } from "react-icons/fc";
 
 const GoogleSignIn = () => {
   const handleGoogleLogin = () => {
-    console.log("구글로그인 버튼클릭");
     //oauth구글로그인 처리
   };
 

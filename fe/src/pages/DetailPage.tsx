@@ -1,47 +1,68 @@
 import styled from "styled-components";
-import { BsBookmarkStar } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
-import { useFetchRecipe } from "../hooks/useFetchRecipe";
+import { BsBookmarkStar, BsBookmarkStarFill } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import {
+  useFetchRecipe,
+  useAddWish,
+  useDeleteWish,
+} from "../hooks/useFetchRecipe";
+import { useQueryClient } from "react-query";
+import LoadingComponent from "../components/loading/LoadingComponent";
 
 export default function DetailPage() {
-  const navigate = useNavigate();
   const { category, id } = useParams();
-
-  const { data, isLoading, error } = useFetchRecipe(category || "", id || "");
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    navigate("/Error");
-  }
-
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useFetchRecipe(category || "", id || "");
   const separator = new RegExp(`${"\n|\\\\n"}`);
+  const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
+  const propsData = { type: rcpType, recipeId: id };
+  const deleteWishMutation = useDeleteWish(propsData);
+  const addWishMutation = useAddWish(propsData);
+  const widhClickHandle = async () => {
+    if (data?.data.wishList) {
+      await deleteWishMutation.mutateAsync();
+      queryClient.invalidateQueries("recipe");
+    } else {
+      await addWishMutation.mutateAsync();
+      queryClient.invalidateQueries("recipe");
+    }
+  };
 
   return (
     <Container>
       <InfoWrapper>
-        <PhotoArea src={data?.data.imageUrl} />
-        <DetailArea>
-          <TitleArea>
-            <TitleTab>{data?.data.name}</TitleTab>
-            <Bookmarker>
-              <BsBookmarkStar size="30" color="#96A5FF" />
-            </Bookmarker>
-          </TitleArea>
-          <TitleExplanation>{data?.data.description}</TitleExplanation>
-          <IngredientTab>재료</IngredientTab>
-          <Ingredient>
-            {data?.data.ingredient.split(separator).map((el, i) => (
-              <IngredientItems key={i}>{el}</IngredientItems>
-            ))}
-          </Ingredient>
-          <RecipeTab>RECIPE</RecipeTab>
-          <Recipe>
-            {data?.data.recipe.split(separator).map((el, i) => (
-              <RecipeItems key={i}>{el}</RecipeItems>
-            ))}
-          </Recipe>
-        </DetailArea>
+        {isLoading && <LoadingComponent />}
+        {data && (
+          <>
+            <PhotoArea src={data?.data.imageUrl} />
+            <DetailArea>
+              <TitleArea>
+                <TitleTab>{data?.data.name}</TitleTab>
+                <Bookmarker onClick={widhClickHandle}>
+                  {data?.data.wishList && (
+                    <BsBookmarkStarFill size="30" color="#96A5FF" />
+                  )}
+                  {!data?.data.wishList && (
+                    <BsBookmarkStar size="30" color="#96A5FF" />
+                  )}
+                </Bookmarker>
+              </TitleArea>
+              <TitleExplanation>{data?.data.description}</TitleExplanation>
+              <IngredientTab>재료</IngredientTab>
+              <Ingredient>
+                {data?.data.ingredient.split(separator).map((el, i) => (
+                  <IngredientItems key={i}>{el}</IngredientItems>
+                ))}
+              </Ingredient>
+              <RecipeTab>RECIPE</RecipeTab>
+              <Recipe>
+                {data?.data.recipe.split(separator).map((el, i) => (
+                  <RecipeItems key={i}>{el}</RecipeItems>
+                ))}
+              </Recipe>
+            </DetailArea>
+          </>
+        )}
       </InfoWrapper>
     </Container>
   );
@@ -63,18 +84,17 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 83vh;
   margin-top: 7rem;
 `;
 
 const InfoWrapper = styled.div`
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   margin-bottom: 2rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 80%;
+  width: 1360px;
   padding: 4rem;
   border: 1px solid gray;
   border-radius: 20px;
@@ -83,6 +103,7 @@ const InfoWrapper = styled.div`
 const PhotoArea = styled.img`
   max-width: 500px;
   min-height: 600px;
+  height: 100%;
   border-radius: 3%;
 `;
 
@@ -92,7 +113,7 @@ const DetailArea = styled.div`
   margin-left: 7rem;
   width: 470px;
   min-height: 665px;
-  padding: 20px;
+  padding: 0 20px 20px;
   border-radius: 3%;
 `;
 

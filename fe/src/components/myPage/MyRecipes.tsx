@@ -3,7 +3,7 @@ import Card from "../card/Card";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getMyRecipe } from "../../utils/query";
 import RecipePagination from "../card/RecipePagination";
-import LoadingComponent from "../card/LoadingComponent";
+import LoadingComponent from "../loading/LoadingComponent";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiEdit2Line } from "react-icons/ri";
@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { GoGear, GoCheck } from "react-icons/go";
 import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
 
-const MyRecipesContainer = styled.div`
+export const MyRecipesContainer = styled.div`
   width: 1300px;
   background: #ffffff;
   box-shadow: 2px 2px 13px -1px rgba(93, 93, 93, 0.7);
