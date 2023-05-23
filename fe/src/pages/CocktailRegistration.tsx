@@ -29,7 +29,7 @@ const CocktailRegistration = () => {
   });
   const descriptionRegex = /[가-힣a-zA-Z0-9\s.()!]{3,}/;
   const nameRegex = /^[가-힣\s()]+$/;
-  const recipeStepRegex = /^[^ㄱ-ㅎ\s]*$/u;
+  const recipeStepRegex = /^[가-힣a-zA-Z\s\n]*$/u;
   const stuffRegex = /^[가-힣a-zA-Z\s]+$/;
   const amountRegex = /^\d+$/;
   interface NewRecipe {
@@ -346,6 +346,7 @@ const Container = styled.div`
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const IngredientLabel = styled.div`
