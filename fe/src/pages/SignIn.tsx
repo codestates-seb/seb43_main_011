@@ -59,7 +59,6 @@ const Signup = () => {
     };
     loginMutate.mutate(loginInfo, {
       onSuccess: () => {
-        console.log("로그인 성공");
         setEmail("");
         setPassword("");
         navigate("/");

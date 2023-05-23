@@ -50,33 +50,15 @@ const Signup = () => {
   }
 
   const postUserData = async (userData: UserData) => {
-    const response = await axios.post(
-      "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/signup",
-      userData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Authorization Key",
-        },
+    const response = await axios.post("/signup", userData, {
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
     return response.data;
   };
 
-  const mutation = useMutation(postUserData, {
-    onMutate: (variable) => {
-      console.log("onMutate", variable);
-    },
-    onError: (error) => {
-      console.log("뮤테이션 에러", error);
-    }, //variable, context
-    onSuccess: (data, variables, context) => {
-      console.log("뮤테이션 성공", data, variables, context);
-    },
-    onSettled: () => {
-      console.log("뮤테이션 끝");
-    },
-  });
+  const mutation = useMutation(postUserData);
 
   const handleSubmit = () => {
     const userData = {
@@ -86,12 +68,8 @@ const Signup = () => {
     };
 
     mutation.mutate(userData, {
-      onSuccess: (data) => {
-        console.log(data);
-        navigate("signin");
-      },
-      onError: (error) => {
-        console.error(error);
+      onSuccess: () => {
+        navigate("/signin");
       },
     });
   };
@@ -101,8 +79,6 @@ const Signup = () => {
   };
   return (
     <Container>
-      {/* <BlankFrom></BlankFrom> */}
-      {/* 오른쪽으로 입력폼이 오려면 위의 주석 해제 */}
       <SignupForm>
         <Link to="/">
           <Logo src={logo} alt="logo"></Logo>
