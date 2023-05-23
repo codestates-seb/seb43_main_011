@@ -51,6 +51,11 @@ const SearchInput = styled.input`
   outline: none;
   margin-right: 10px;
   font-size: 1.3rem;
+  &:focus {
+    outline: none;
+    border: 1px solid #96a5ff;
+    box-shadow: 0 0 5px 1px #abb7fc;
+  }
 `;
 const SearchIcon = styled(HiMagnifyingGlass)`
   font-size: 1.5rem;
@@ -88,6 +93,7 @@ const Header = () => {
   const searchOnSumbitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchText !== "") {
       navigate(`/search?value=${searchText}`);
+      setSearchText("");
     }
   };
 
