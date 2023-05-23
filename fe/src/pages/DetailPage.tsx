@@ -7,11 +7,12 @@ import {
   useDeleteWish,
 } from "../hooks/useFetchRecipe";
 import { useQueryClient } from "react-query";
+import LoadingComponent from "../components/loading/LoadingComponent";
 
 export default function DetailPage() {
   const { category, id } = useParams();
   const queryClient = useQueryClient();
-  const { data } = useFetchRecipe(category || "", id || "");
+  const { data, isLoading } = useFetchRecipe(category || "", id || "");
   const separator = new RegExp(`${"\n|\\\\n"}`);
   const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
   const propsData = { type: rcpType, recipeId: id };
@@ -30,33 +31,38 @@ export default function DetailPage() {
   return (
     <Container>
       <InfoWrapper>
-        <PhotoArea src={data?.data.imageUrl} />
-        <DetailArea>
-          <TitleArea>
-            <TitleTab>{data?.data.name}</TitleTab>
-            <Bookmarker onClick={widhClickHandle}>
-              {data?.data.wishList && (
-                <BsBookmarkStarFill size="30" color="#96A5FF" />
-              )}
-              {!data?.data.wishList && (
-                <BsBookmarkStar size="30" color="#96A5FF" />
-              )}
-            </Bookmarker>
-          </TitleArea>
-          <TitleExplanation>{data?.data.description}</TitleExplanation>
-          <IngredientTab>재료</IngredientTab>
-          <Ingredient>
-            {data?.data.ingredient.split(separator).map((el, i) => (
-              <IngredientItems key={i}>{el}</IngredientItems>
-            ))}
-          </Ingredient>
-          <RecipeTab>RECIPE</RecipeTab>
-          <Recipe>
-            {data?.data.recipe.split(separator).map((el, i) => (
-              <RecipeItems key={i}>{el}</RecipeItems>
-            ))}
-          </Recipe>
-        </DetailArea>
+        {isLoading && <LoadingComponent />}
+        {data && (
+          <>
+            <PhotoArea src={data?.data.imageUrl} />
+            <DetailArea>
+              <TitleArea>
+                <TitleTab>{data?.data.name}</TitleTab>
+                <Bookmarker onClick={widhClickHandle}>
+                  {data?.data.wishList && (
+                    <BsBookmarkStarFill size="30" color="#96A5FF" />
+                  )}
+                  {!data?.data.wishList && (
+                    <BsBookmarkStar size="30" color="#96A5FF" />
+                  )}
+                </Bookmarker>
+              </TitleArea>
+              <TitleExplanation>{data?.data.description}</TitleExplanation>
+              <IngredientTab>재료</IngredientTab>
+              <Ingredient>
+                {data?.data.ingredient.split(separator).map((el, i) => (
+                  <IngredientItems key={i}>{el}</IngredientItems>
+                ))}
+              </Ingredient>
+              <RecipeTab>RECIPE</RecipeTab>
+              <Recipe>
+                {data?.data.recipe.split(separator).map((el, i) => (
+                  <RecipeItems key={i}>{el}</RecipeItems>
+                ))}
+              </Recipe>
+            </DetailArea>
+          </>
+        )}
       </InfoWrapper>
     </Container>
   );

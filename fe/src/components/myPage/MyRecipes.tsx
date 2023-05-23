@@ -3,7 +3,7 @@ import Card from "../card/Card";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getMyRecipe } from "../../utils/query";
 import RecipePagination from "../card/RecipePagination";
-import LoadingComponent from "../card/LoadingComponent";
+import LoadingComponent from "../loading/LoadingComponent";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiEdit2Line } from "react-icons/ri";

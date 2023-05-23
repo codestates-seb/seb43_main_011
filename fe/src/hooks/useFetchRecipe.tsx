@@ -24,14 +24,14 @@ export const useFetchRecipe = (category: string, id: string) => {
   if (category === "" && id === "") {
     navigate("/error");
   }
-  const { data } = useQuery<RecipeData>(
+  const { data, isLoading } = useQuery<RecipeData>(
     ["recipe", id],
     () => fetchRecipe(category, id),
     {
       retry: 0,
     },
   );
-  return { data };
+  return { data, isLoading };
 };
 interface propsData {
   type: string;

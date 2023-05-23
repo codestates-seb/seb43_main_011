@@ -3,7 +3,7 @@ import { MyRecipesContainer } from "./MyRecipes";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getCustomCards } from "../../utils/query";
 import RecipePagination from "../card/RecipePagination";
-import LoadingComponent from "../card/LoadingComponent";
+import LoadingComponent from "../loading/LoadingComponent";
 import Card from "../card/Card";
 
 const WishListContainer = styled(MyRecipesContainer)``;
