@@ -9,7 +9,7 @@ import { useState } from "react";
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
   background-color: #ffff;
-  transition: all 0.45s ease-out;
+  transition: all 0.3s ease;
   ${(props) =>
     props.isNavOpen
       ? ""

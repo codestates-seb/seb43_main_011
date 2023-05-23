@@ -7,10 +7,9 @@ import { useAppSelector } from "../../redux/hooks";
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
   background-color: white;
-
-  transition: 0.5s ease;
+  transition: 0.3s ease;
   z-index: 2;
-  top: ${(props) => (props.isNavOpen ? "85px" : "-100%")};
+  top: ${(props) => (props.isNavOpen ? "85px" : "-85px")};
   width: 100%;
   box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
 `;
