@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import { tokenInstance } from "../utils/tokeninstance";
 import IsNotLogin from "../components/errorFallback/IsNotLogin";
+import { useDeleteRecipe } from "../hooks/useDeleteRecipe";
 
 const CocktailRegistration = () => {
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ const CocktailRegistration = () => {
 
   const recipeMutation = useMutation(postCustomRecipe);
   const imageMutation = useMutation(postCustomImage);
+  const deleteMutation = useDeleteRecipe();
 
   // 버튼효과
   const handleMouseEnter = () => {
@@ -112,7 +114,12 @@ const CocktailRegistration = () => {
       name: name,
       recipe: recipeStep,
     };
-    if (isNotOk.description || isNotOk.name || isNotOk.recipeStep) {
+    if (
+      isNotOk.description ||
+      isNotOk.name ||
+      isNotOk.recipeStep ||
+      !selectedImage
+    ) {
       window.alert("입력 양식에 맞지 않는 요소가 있습니다.");
     } else {
       recipeMutation.mutate(customRecipeCreateDto, {
@@ -128,7 +135,16 @@ const CocktailRegistration = () => {
               navigate("/custom");
             },
             onError: () => {
-              window.alert("이미지 등록실패");
+              window.alert("이미지 등록실패, 이미지의 크기가 너무 큽니다");
+              deleteMutation.mutateAsync(data);
+              setName("");
+              setDescription("");
+              setRecipeStep("");
+              setSelectedImage(undefined);
+              setSelectLineId(-1);
+              setSelectLines([
+                { id: 0, stuff: "", amount: "", selectOption: "ml" },
+              ]);
             },
           });
         },
@@ -143,14 +159,16 @@ const CocktailRegistration = () => {
   const handleImageUpload = (image: File) => {
     setSelectedImage(image);
   };
-
   return (
     <Container>
       {!isLogin && <IsNotLogin />}
       {isLogin && (
         <EditForm>
           <TopInfo>
-            <ImageUpload onImageUpload={handleImageUpload} />
+            <ImageUpload
+              onImageUpload={handleImageUpload}
+              isEmpty={typeof selectedImage === "undefined"}
+            />
             <TopCocktailSummary>
               <LabelName>이름을 알려주세요</LabelName>
               <InputName

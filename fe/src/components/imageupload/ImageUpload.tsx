@@ -1,15 +1,20 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FcEditImage } from "react-icons/fc";
-
-const ImageUpload = ({
-  onImageUpload,
-}: {
+interface ImageUploadPeops {
   onImageUpload: (file: File) => void;
-}) => {
+  isEmpty?: boolean;
+}
+const ImageUpload = ({ onImageUpload, isEmpty }: ImageUploadPeops) => {
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isEmpty) {
+      setPreviewImage("");
+    }
+  }, [isEmpty]);
 
   const handleUploadImage = () => {
     // 파일 선택(input) 요소를 클릭하여 이미지 선택 다이얼로그 표시

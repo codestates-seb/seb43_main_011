@@ -184,7 +184,7 @@ const CocktailEdit = () => {
       );
 
       const formData = new FormData();
-      formData.append("image", selectedImage);
+      formData.append("image", selectedImage || null);
       const imageInput = {
         id: recipeId,
         formData: formData,
@@ -196,22 +196,6 @@ const CocktailEdit = () => {
     } catch (error) {
       console.error("PATCH 요청 에러:", error);
     }
-    // recipeMutation.mutate(customRecipeCreateDto, {
-    //   onSuccess: (data) => {
-    //     const formData: FormData = new FormData();
-    //     formData.append("image", selectedImage);
-    //     const input = {
-    //       id: data,
-    //       formData: formData,
-    //     };
-    //     imageMutation.mutate(input, {
-    //       onSuccess: (data) => {
-    //         console.log(data);
-    //         navigate("/custom");
-    //       },
-    //     });
-    //   },
-    // });
   };
 
   return (
