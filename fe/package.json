@@ -31,7 +31,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync ./build s3://resevilleage-bukit --profile=rosevilleage",
+    "inivalidate": "aws cloudfront create-invalidation --profile=rosevilleage --distribution-id E1M2GT6FU0ZHWD --paths /*"
   },
   "eslintConfig": {
     "extends": [
@@ -60,6 +62,5 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.8"
-  },
-  "proxy": "http://ec2-15-165-108-106.ap-northeast-2.compute.amazonaws.com:8080/"
+  }
 }

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { tokenInstance } from "./tokeninstance";
+axios.defaults.baseURL = process.env.REACT_APP_URL;
 
 export interface Recipes {
   [key: string]: RecipeCard[];
