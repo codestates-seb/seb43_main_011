@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { FcEditImage } from "react-icons/fc";
-interface ImageUploadPeops {
+interface ImageUploadProps {
   onImageUpload: (file: File) => void;
   isEmpty?: boolean;
   initailImage?: string;
@@ -10,7 +10,7 @@ const ImageUpload = ({
   onImageUpload,
   isEmpty,
   initailImage,
-}: ImageUploadPeops) => {
+}: ImageUploadProps) => {
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
