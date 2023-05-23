@@ -94,7 +94,7 @@ const InfoWrapper = styled.div`
   align-items: start;
   margin-bottom: 2rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 80%;
+  width: 1360px;
   padding: 4rem;
   border: 1px solid gray;
   border-radius: 20px;
