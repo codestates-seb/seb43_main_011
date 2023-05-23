@@ -84,7 +84,7 @@ export default function EditMyInfo({
 }) {
   const [nickname, setNickname] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
-  const [imageFile, setImageFile] = useState<File>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const contentMutation = useMutation(
     (data: { nickname: string; statusMessage: string }) =>
@@ -94,18 +94,32 @@ export default function EditMyInfo({
   );
 
   const imageMutation = useMutation(
-    async (image: File) => {
-      const formData = new FormData();
-      formData.append("image", image);
-      return await tokenInstance
-        .patch("/member/update/image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((response) => response.data);
+    async (image: File | null) => {
+      if (image) {
+        const formData = new FormData();
+        formData.append("image", image);
+        return await tokenInstance
+          .patch("/member/update/image", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+          .then((response) => response.data);
+      } else {
+        return null;
+      }
     },
     {
+      onSuccess: () => {
+        QueryClient.invalidateQueries("userInfo");
+        setNickname("");
+        setStatusMessage("");
+        setImageFile(null);
+        ToggleEditHandle();
+      },
       onError: () => {
-        window.alert("이미지 업로드에 실패했습니다.");
+        window.alert("이미지가 너무 커 업로드에 실패했습니다.");
+        setNickname("");
+        setStatusMessage("");
+        setImageFile(null);
       },
     },
   );
@@ -133,17 +147,7 @@ export default function EditMyInfo({
       };
       contentMutation.mutate(data, {
         onSuccess: () => {
-          if (imageFile) {
-            imageMutation.mutate(imageFile, {
-              onSuccess: () => {
-                QueryClient.invalidateQueries("userInfo");
-                setNickname("");
-                setStatusMessage("");
-                setImageFile(undefined);
-                ToggleEditHandle();
-              },
-            });
-          }
+          imageMutation.mutate(imageFile);
         },
       });
     }
