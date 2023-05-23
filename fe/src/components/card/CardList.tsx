@@ -8,7 +8,6 @@ import LoadingComponent from "../loading/LoadingComponent";
 
 const CardsContainer = styled.div`
   width: 100%;
-  padding-bottom: 30px;
 `;
 
 const CategoryBox = styled.div`
