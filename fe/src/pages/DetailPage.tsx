@@ -78,24 +78,20 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  height: 100%;
+  min-height: 83vh;
   margin-top: 7rem;
 `;
 
 const InfoWrapper = styled.div`
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
-  box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.25);
+  align-items: start;
+  margin-bottom: 2rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 80%;
-  height: 100%;
   padding: 4rem;
-  border-radius: 20px 20px 0 0;
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
+  border: 1px solid gray;
+  border-radius: 20px;
 `;
 
 const PhotoArea = styled.img`
@@ -103,8 +99,6 @@ const PhotoArea = styled.img`
   min-height: 600px;
   height: 100%;
   border-radius: 3%;
-  justify-self: start;
-  align-self: start;
 `;
 
 const DetailArea = styled.div`
