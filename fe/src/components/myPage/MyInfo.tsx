@@ -112,7 +112,9 @@ export default function MyInfo({
         </InputWrapper>
         <InputWrapper>
           <Title>Status Message</Title>
-          <Content>{data.description || "상태메세지를 넣어주세요."}</Content>
+          <Content>
+            {data.description || "나의 상태 메세지를 추가 해주세요"}
+          </Content>
         </InputWrapper>
         <ButtonRow>
           <Button

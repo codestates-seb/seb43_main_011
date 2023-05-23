@@ -57,7 +57,9 @@ export default function Mypage() {
               ToggleEditHandle={ToggleMyInfo}
             />
           )}
-          {isUserEdit && <EditMyInfo ToggleEditHandle={ToggleMyInfo} />}
+          {isUserEdit && (
+            <EditMyInfo infoData={data} ToggleEditHandle={ToggleMyInfo} />
+          )}
         </>
       )}
       {page === "wishList" && <MyWishList />}

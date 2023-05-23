@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import ImageUpload from "../imageupload/ImageUpload";
 import { tokenInstance } from "../../utils/tokeninstance";
+import { MyInfoData } from "../../pages/Mypage";
 
 const Container = styled.div`
   display: flex;
@@ -77,17 +78,21 @@ const Button = styled.button`
   margin-left: auto;
 `;
 
-export default function EditMyInfo({
-  ToggleEditHandle,
-}: {
+interface EditProps {
+  infoData: MyInfoData | undefined;
   ToggleEditHandle: () => void;
-}) {
-  const [nickname, setNickname] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
+}
+
+export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
+  const [nickname, setNickname] = useState(infoData?.nickName);
+  const [statusMessage, setStatusMessage] = useState(infoData?.description);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const contentMutation = useMutation(
-    (data: { nickname: string; statusMessage: string }) =>
+    (data: {
+      nickname: string | undefined;
+      statusMessage: string | undefined;
+    }) =>
       tokenInstance
         .patch("/member/update/content", data)
         .then((response) => response.data),
@@ -110,9 +115,6 @@ export default function EditMyInfo({
     {
       onSuccess: () => {
         QueryClient.invalidateQueries("userInfo");
-        setNickname("");
-        setStatusMessage("");
-        setImageFile(null);
         ToggleEditHandle();
       },
       onError: () => {
@@ -138,7 +140,7 @@ export default function EditMyInfo({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (nickname === "") {
+    if (nickname === "" || nickname === undefined) {
       window.alert("이름은 비울수 없습니다.");
     } else {
       const data = {
@@ -156,7 +158,11 @@ export default function EditMyInfo({
     <Container>
       <MyPhotoWrapper>
         <MyPhoto>
-          <ImageUpload onImageUpload={handleImageUpload} />
+          <ImageUpload
+            onImageUpload={handleImageUpload}
+            isEmpty={imageFile === null}
+            initailImage={infoData?.imageUrl}
+          />
         </MyPhoto>
       </MyPhotoWrapper>
       <InfoWrapper>

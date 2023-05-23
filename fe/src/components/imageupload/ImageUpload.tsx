@@ -4,14 +4,21 @@ import { FcEditImage } from "react-icons/fc";
 interface ImageUploadPeops {
   onImageUpload: (file: File) => void;
   isEmpty?: boolean;
+  initailImage?: string;
 }
-const ImageUpload = ({ onImageUpload, isEmpty }: ImageUploadPeops) => {
+const ImageUpload = ({
+  onImageUpload,
+  isEmpty,
+  initailImage,
+}: ImageUploadPeops) => {
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (isEmpty) {
+    if (isEmpty && initailImage) {
+      setPreviewImage(initailImage);
+    } else if (isEmpty && !initailImage) {
       setPreviewImage("");
     }
   }, [isEmpty]);
