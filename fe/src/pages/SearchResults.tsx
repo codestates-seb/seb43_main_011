@@ -1,14 +1,13 @@
 import { RecipesContainer } from "./Main";
 import { useSearchParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "react-query";
-import { getSearchResults, SearchResponse } from "../utils/query";
 import SearchResultTab from "../components/card/SearchResultsTab";
 import styled from "styled-components";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import SearchedRecipe from "../components/card/SearchedRecipe";
 import RecipePagination from "../components/card/RecipePagination";
-import loadingImg from "./../images/loading.gif";
 import { useSearchedPagination } from "../hooks/useSearchedPagination";
+import LoadingComponent from "../components/loading/LoadingComponent";
+
 const CardListArea = styled.div`
   margin: 30px 0;
   display: grid;
@@ -16,18 +15,6 @@ const CardListArea = styled.div`
   grid-template-rows: repeat(4, 1fr);
   grid-gap: 30px;
   place-items: center;
-`;
-const LoadingContainer = styled.div`
-  width: 100%;
-  height: 70vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const LoadingImage = styled.img`
-  width: 35%;
-  height: 50%;
-  margin: auto;
 `;
 
 export default function SearchResults() {
@@ -41,11 +28,7 @@ export default function SearchResults() {
   return (
     <RecipesContainer>
       <SearchResultTab tabs={category} path={path} setPath={setPath} />
-      {isLoading && (
-        <LoadingContainer>
-          <LoadingImage src={loadingImg} />
-        </LoadingContainer>
-      )}
+      {isLoading && <LoadingComponent />}
       <CardListArea>
         {data?.data.map((card, i) => {
           return <SearchedRecipe key={i} recipe={card} category={path} />;
