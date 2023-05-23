@@ -31,9 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "aws s3 sync ./build s3://resevilleage-bukit --profile=rosevilleage",
-    "inivalidate": "aws cloudfront create-invalidation --profile=rosevilleage --distribution-id E1M2GT6FU0ZHWD --paths /*"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
