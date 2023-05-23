@@ -79,7 +79,7 @@ const Button = styled.button`
 `;
 
 interface EditProps {
-  infoData: MyInfoData | undefined;
+  infoData?: MyInfoData;
   ToggleEditHandle: () => void;
 }
 
@@ -140,7 +140,7 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (nickname === "" || nickname === undefined) {
+    if (!nickname) {
       window.alert("이름은 비울수 없습니다.");
     } else {
       const data = {
@@ -160,7 +160,7 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
         <MyPhoto>
           <ImageUpload
             onImageUpload={handleImageUpload}
-            isEmpty={imageFile === null}
+            isEmpty={!imageFile}
             initialImage={infoData?.imageUrl}
           />
         </MyPhoto>

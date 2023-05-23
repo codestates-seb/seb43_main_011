@@ -166,7 +166,7 @@ const CocktailRegistration = () => {
           <TopInfo>
             <ImageUpload
               onImageUpload={handleImageUpload}
-              isEmpty={typeof selectedImage === "undefined"}
+              isEmpty={!selectedImage}
             />
             <TopCocktailSummary>
               <LabelName>이름을 알려주세요</LabelName>
