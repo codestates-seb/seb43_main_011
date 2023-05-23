@@ -6,10 +6,14 @@ interface CardProps {
 }
 const Card = ({ recipe, category }: CardProps) => {
   const navigate = useNavigate();
+  const hiddenText =
+    recipe.description.length > 40
+      ? `${recipe.description.slice(0, 37)}...`
+      : recipe.description;
   return (
     <Container onClick={() => navigate(`/detail/${category}/${recipe.id}`)}>
       <Image url={recipe.imageUrl}>
-        <HiddenText className="hidden-text">{recipe.description}</HiddenText>
+        <HiddenText className="hidden-text">{hiddenText}</HiddenText>
       </Image>
       <Menuname>{recipe.name}</Menuname>
     </Container>
