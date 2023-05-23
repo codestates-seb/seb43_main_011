@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { toogle } from "../../redux/slices/NavSlice";
 
 const ControllButton = styled.button<{ isNavOpen: boolean }>`
-  width: 70px;
+  width: 45px;
   height: 30px;
   border: none;
   color: #657cff;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../../images/logo.png";
+import logo from "../../images/headerlogo1.png";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,10 +28,12 @@ const ItemArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  > .logo {
-    margin-left: -60px;
-    margin-top: 5px;
-    overflow: hidden;
+`;
+
+const LogoWrapper = styled.div`
+  margin-right: 20px;
+  > img {
+    height: 80px;
   }
 `;
 
@@ -109,9 +111,9 @@ const Header = () => {
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
         <Link to={"/"}>
-          <div className="logo">
+          <LogoWrapper>
             <img src={logo} alt="Logo" />
-          </div>
+          </LogoWrapper>
         </Link>
         <SearchContainer isFocus={isFocus}>
           <p>
