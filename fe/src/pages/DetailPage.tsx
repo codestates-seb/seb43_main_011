@@ -78,7 +78,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+
+  height: 100%;
   margin-top: 7rem;
 `;
 
@@ -87,18 +88,23 @@ const InfoWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.25);
   width: 80%;
+  height: 100%;
   padding: 4rem;
-  border: 1px solid gray;
-  border-radius: 20px;
+  border-radius: 20px 20px 0 0;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
 `;
 
 const PhotoArea = styled.img`
   max-width: 500px;
   min-height: 600px;
+  height: 100%;
   border-radius: 3%;
+  justify-self: start;
+  align-self: start;
 `;
 
 const DetailArea = styled.div`
@@ -107,7 +113,7 @@ const DetailArea = styled.div`
   margin-left: 7rem;
   width: 470px;
   min-height: 665px;
-  padding: 20px;
+  padding: 0 20px 20px;
   border-radius: 3%;
 `;
 
