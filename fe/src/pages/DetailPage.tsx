@@ -8,6 +8,7 @@ import {
 } from "../hooks/useFetchRecipe";
 import { useQueryClient } from "react-query";
 import LoadingComponent from "../components/loading/LoadingComponent";
+import { useEffect } from "react";
 
 export default function DetailPage() {
   const { category, id } = useParams();
@@ -27,6 +28,10 @@ export default function DetailPage() {
       queryClient.invalidateQueries("recipe");
     }
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <Container>
