@@ -61,6 +61,7 @@ const HiddenText = styled.p`
   margin: 5px;
   text-align: end;
   transition: all 0.35s;
+  line-height: 1.5rem;
 `;
 
 const Menuname = styled.div`
