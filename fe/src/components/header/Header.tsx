@@ -35,7 +35,11 @@ const ItemArea = styled.div`
   }
 `;
 
-const SearchContainer = styled.div`
+interface SearchInputFocus {
+  isFocus: boolean;
+}
+
+const SearchContainer = styled.div<SearchInputFocus>`
   display: flex;
   align-items: center;
   width: 100%;
@@ -44,6 +48,11 @@ const SearchContainer = styled.div`
   padding: 0.5rem;
   border: 1px solid #d5d4d4;
   border-radius: 10px;
+  ${({ isFocus }) =>
+    isFocus &&
+    `outline: none;
+    border: 1px solid #96a5ff;
+    box-shadow: 0 0 5px 1px #abb7fc;`}
 `;
 const SearchInput = styled.input`
   border: none;
@@ -51,15 +60,11 @@ const SearchInput = styled.input`
   outline: none;
   margin-right: 10px;
   font-size: 1.3rem;
-  &:focus {
-    outline: none;
-    border: 1px solid #96a5ff;
-    box-shadow: 0 0 5px 1px #abb7fc;
-  }
 `;
-const SearchIcon = styled(HiMagnifyingGlass)`
+const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   font-size: 1.5rem;
   margin: 0 1rem 0 0.2rem;
+  ${({ isFocus }) => isFocus && `color: #96a5ff;`}
 `;
 const Menu = styled.nav`
   display: flex;
@@ -77,7 +82,7 @@ const MenuItem = styled(Link)`
   text-decoration: none;
   &:hover {
     cursor: pointer;
-    background-color: #96a5ff;
+    background-color: #8092f6;
     color: #ffff;
   }
 `;
@@ -86,6 +91,7 @@ const Header = () => {
   const navigate = useNavigate();
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
   const isLogin = sessionStorage.getItem("UTK") !== null;
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
@@ -107,9 +113,9 @@ const Header = () => {
             <img src={logo} alt="Logo" />
           </div>
         </Link>
-        <SearchContainer>
+        <SearchContainer isFocus={isFocus}>
           <p>
-            <SearchIcon />
+            <SearchIcon isFocus={isFocus} />
           </p>
           <SearchInput
             type="text"
@@ -117,6 +123,8 @@ const Header = () => {
             onChange={searchOnChangeHandle}
             onKeyUp={searchOnSumbitHandle}
             value={searchText}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
           />
         </SearchContainer>
 
