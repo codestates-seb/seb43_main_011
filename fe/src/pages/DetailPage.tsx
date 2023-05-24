@@ -8,6 +8,7 @@ import {
 } from "../hooks/useFetchRecipe";
 import { useQueryClient } from "react-query";
 import LoadingComponent from "../components/loading/LoadingComponent";
+import { useEffect } from "react";
 
 export default function DetailPage() {
   const { category, id } = useParams();
@@ -16,17 +17,26 @@ export default function DetailPage() {
   const separator = new RegExp(`${"\n|\\\\n"}`);
   const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
   const propsData = { type: rcpType, recipeId: id };
+  const isNotLogin = sessionStorage.getItem("UTK") === null;
   const deleteWishMutation = useDeleteWish(propsData);
   const addWishMutation = useAddWish(propsData);
   const widhClickHandle = async () => {
-    if (data?.data.wishList) {
-      await deleteWishMutation.mutateAsync();
-      queryClient.invalidateQueries("recipe");
+    if (isNotLogin) {
+      window.alert("찜하기는 로그인 후 이용하실 수 있습니다.");
     } else {
-      await addWishMutation.mutateAsync();
-      queryClient.invalidateQueries("recipe");
+      if (data?.data.wishList) {
+        await deleteWishMutation.mutateAsync();
+        queryClient.invalidateQueries("recipe");
+      } else {
+        await addWishMutation.mutateAsync();
+        queryClient.invalidateQueries("recipe");
+      }
     }
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <Container>

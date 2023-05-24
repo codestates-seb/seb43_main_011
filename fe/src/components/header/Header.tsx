@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../../images/logo.png";
+import logo from "../../images/headerlogo1.png";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useState } from "react";
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
   background-color: #ffff;
-  transition: all 0.45s ease-out;
+  transition: all 0.3s ease;
   ${(props) =>
     props.isNavOpen
       ? ""
@@ -28,14 +28,20 @@ const ItemArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  > .logo {
-    margin-left: -60px;
-    margin-top: 5px;
-    overflow: hidden;
+`;
+
+const LogoWrapper = styled.div`
+  margin-right: 20px;
+  > img {
+    height: 80px;
   }
 `;
 
-const SearchContainer = styled.div`
+interface SearchInputFocus {
+  isFocus: boolean;
+}
+
+const SearchContainer = styled.div<SearchInputFocus>`
   display: flex;
   align-items: center;
   width: 100%;
@@ -44,6 +50,11 @@ const SearchContainer = styled.div`
   padding: 0.5rem;
   border: 1px solid #d5d4d4;
   border-radius: 10px;
+  ${({ isFocus }) =>
+    isFocus &&
+    `outline: none;
+    border: 1px solid #96a5ff;
+    box-shadow: 0 0 5px 1px #abb7fc;`}
 `;
 const SearchInput = styled.input`
   border: none;
@@ -52,9 +63,10 @@ const SearchInput = styled.input`
   margin-right: 10px;
   font-size: 1.3rem;
 `;
-const SearchIcon = styled(HiMagnifyingGlass)`
+const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   font-size: 1.5rem;
   margin: 0 1rem 0 0.2rem;
+  ${({ isFocus }) => isFocus && `color: #96a5ff;`}
 `;
 const Menu = styled.nav`
   display: flex;
@@ -72,7 +84,7 @@ const MenuItem = styled(Link)`
   text-decoration: none;
   &:hover {
     cursor: pointer;
-    background-color: #96a5ff;
+    background-color: #8092f6;
     color: #ffff;
   }
 `;
@@ -81,6 +93,7 @@ const Header = () => {
   const navigate = useNavigate();
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
   const isLogin = sessionStorage.getItem("UTK") !== null;
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
@@ -88,6 +101,7 @@ const Header = () => {
   const searchOnSumbitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchText !== "") {
       navigate(`/search?value=${searchText}`);
+      setSearchText("");
     }
   };
 
@@ -97,13 +111,13 @@ const Header = () => {
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
         <Link to={"/"}>
-          <div className="logo">
+          <LogoWrapper>
             <img src={logo} alt="Logo" />
-          </div>
+          </LogoWrapper>
         </Link>
-        <SearchContainer>
+        <SearchContainer isFocus={isFocus}>
           <p>
-            <SearchIcon />
+            <SearchIcon isFocus={isFocus} />
           </p>
           <SearchInput
             type="text"
@@ -111,6 +125,8 @@ const Header = () => {
             onChange={searchOnChangeHandle}
             onKeyUp={searchOnSumbitHandle}
             value={searchText}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
           />
         </SearchContainer>
 

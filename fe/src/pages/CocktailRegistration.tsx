@@ -29,7 +29,7 @@ const CocktailRegistration = () => {
   });
   const descriptionRegex = /[가-힣a-zA-Z0-9\s.()!]{3,}/;
   const nameRegex = /^[가-힣\s()]+$/;
-  const recipeStepRegex = /^[가-힣a-zA-Z\s\n]*$/u;
+  const recipeStepRegex = /^[ㄱ-ㅎ가-힣]*([a-zA-Z0-9\n() ,.!]*[ㄱ-ㅎ가-힣]*)*$/;
   const stuffRegex = /^[가-힣a-zA-Z\s]+$/;
   const amountRegex = /^\d+$/;
   interface NewRecipe {
@@ -166,7 +166,7 @@ const CocktailRegistration = () => {
           <TopInfo>
             <ImageUpload
               onImageUpload={handleImageUpload}
-              isEmpty={typeof selectedImage === "undefined"}
+              isEmpty={!selectedImage}
             />
             <TopCocktailSummary>
               <LabelName>이름을 알려주세요</LabelName>

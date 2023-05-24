@@ -77,6 +77,13 @@ const Signup = () => {
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const passwordEnterHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && password) {
+      handleSubmit();
+    }
+  };
+
   return (
     <Container>
       <SignupForm>
@@ -107,6 +114,7 @@ const Signup = () => {
               value={password}
               onChange={handlePassword}
               type={showPassword ? "password" : "text"}
+              onKeyUp={passwordEnterHandle}
             ></InputArea>
             <VisibilityIcon onClick={handleTogglePassword}>
               {showPassword ? <MdVisibilityOff /> : <MdVisibility />}

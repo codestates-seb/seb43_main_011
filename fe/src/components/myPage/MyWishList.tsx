@@ -8,7 +8,7 @@ import Card from "../card/Card";
 
 const WishListContainer = styled(MyRecipesContainer)``;
 
-const ContentAeaa = styled.div`
+const ContentArea = styled.div`
   display: grid;
   gap: 30px;
   grid-template-columns: repeat(4, 1fr);
@@ -23,7 +23,7 @@ export default function MyWishList() {
   return (
     <WishListContainer>
       {isLoading && <LoadingComponent />}
-      <ContentAeaa>
+      <ContentArea>
         {data?.data.map((recipe) => (
           <Card
             key={recipe.id}
@@ -31,7 +31,7 @@ export default function MyWishList() {
             category={recipe.category?.split("_")[0].toLocaleLowerCase()}
           />
         ))}
-      </ContentAeaa>
+      </ContentArea>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
         <RecipePagination
           pageInfo={data?.pageInfo}
