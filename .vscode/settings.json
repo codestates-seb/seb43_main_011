@@ -1,0 +1,8 @@
+{
+	"editor.formatOnSave": true,
+	"eslint.workingDirectories": [
+    "./../fe"
+	],
+	"editor.formatOnType": true,
+	"editor.formatOnPaste": true
+}
