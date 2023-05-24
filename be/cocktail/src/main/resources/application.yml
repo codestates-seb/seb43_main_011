@@ -1,0 +1,75 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cocktail?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password:
+
+# swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  springfox:
+    documentation:
+      swagger-ui:
+        host: localhost:8080
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.Mysql8Dialect
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/ddl/ddl.sql
+      data-locations: classpath:/dml/dml.sql
+
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+
+logging:
+  level:
+    com:
+      tutorial:
+        spring-boot: DEBUG
+  path: logs
+
+#JWT
+mail:
+  address:
+    admin: admin@gmail.com
+jwt:
+  key: "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK"
+  access-token-expiration-minutes: 40
+  refresh-token-expiration-minutes: 420
+
+#s3
+cloud:
+  aws:
+    s3:
+      bucket:
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey:
+      secretKey:
+
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    show-sql: true
