@@ -71,13 +71,12 @@ public class Member {
 
         if(updateDto.getNickname() != null) {
             this.nickname = updateDto.getNickname();
+            this.modifiedAt = LocalDateTime.now();
         }
 
         if(updateDto.getStatusMessage() != null) {
             this.statusMessage = updateDto.getStatusMessage();
+            this.modifiedAt = LocalDateTime.now();
         }
-
-        this.modifiedAt = LocalDateTime.now();
-
     }
 }

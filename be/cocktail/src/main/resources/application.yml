@@ -30,14 +30,10 @@ spring:
       schema-locations: classpath:/ddl/ddl.sql
       data-locations: classpath:/dml/dml.sql
 
-  #OAuth
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId:
-            clientSecret:
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
 
 logging:
   level:
