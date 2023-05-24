@@ -44,8 +44,8 @@
 | :--------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: |
 | <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110593432092672120/image.png"> | <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110593791930413127/image.png"> | <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110594318718214165/image.png"> |
 |                                              상세페이지                                              |                                              마이페이지                                              |                                             로그인페이지                                             |
-|                                           :--------------:                                           |                                             :----------:                                             |                                            :-----------:                                             |
-| <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110594510943158382/image.png"> | <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110594775549231174/image.png"> | <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110595051958050816/image.png"> |
+|                                 <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110594510943158382/image.png">                                          |                            <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110594775549231174/image.png">                                           |                <img src="https://cdn.discordapp.com/attachments/1101356615816454204/1110595051958050816/image.png">                                             |
+| |  | |
 
 <br /><br />
 
