@@ -28,7 +28,7 @@ export default function SearchResults() {
     queryClient.clear();
   }, []);
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useSearchedPagination(path, searchValue, 1);
+    useSearchedPagination(path, searchValue);
 
   return (
     <RecipesContainer>

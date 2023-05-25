@@ -2,12 +2,8 @@ import { SearchResponse, getSearchResults } from "../utils/query";
 import { useQuery, useQueryClient } from "react-query";
 import { useState, useEffect } from "react";
 
-export function useSearchedPagination(
-  path: string,
-  searchValue: string,
-  initPage: number,
-) {
-  const [page, setPage] = useState(initPage);
+export function useSearchedPagination(path: string, searchValue: string) {
+  const [page, setPage] = useState(1);
   const [searchState, setSearchState] = useState(searchValue);
   const queryClient = useQueryClient();
   if (searchState !== searchValue) {
