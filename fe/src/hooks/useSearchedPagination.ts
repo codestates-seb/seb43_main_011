@@ -2,16 +2,25 @@ import { SearchResponse, getSearchResults } from "../utils/query";
 import { useQuery, useQueryClient } from "react-query";
 import { useState, useEffect } from "react";
 
-export function useSearchedPagination(path: string, searchValue: string) {
-  const [page, setPage] = useState(1);
+export function useSearchedPagination(
+  path: string,
+  searchValue: string,
+  initPage: number,
+) {
+  const [page, setPage] = useState(initPage);
+  const [searchState, setSearchState] = useState(searchValue);
   const queryClient = useQueryClient();
+  if (searchState !== searchValue) {
+    setPage(1);
+    setSearchState(searchValue);
+  }
   const { data, isFetching, isLoading, isPreviousData } =
     useQuery<SearchResponse>(
-      [`${path}`, searchValue],
-      () => getSearchResults(path, searchValue),
+      [path],
+      () => getSearchResults(path, searchState),
       {
+        retry: 0,
         staleTime: 2000,
-        keepPreviousData: true,
       },
     );
 
@@ -26,10 +35,10 @@ export function useSearchedPagination(path: string, searchValue: string) {
   };
 
   useEffect(() => {
-    getSearchResults(path, searchValue, page).then((responseData) => {
-      queryClient.setQueryData([`${path}`, searchValue], responseData);
+    getSearchResults(path, searchState, page).then((responseData) => {
+      queryClient.setQueryData([path], responseData);
     });
-  }, [path, searchValue, page, queryClient]);
+  }, [searchState, page, queryClient]);
 
   return {
     data,

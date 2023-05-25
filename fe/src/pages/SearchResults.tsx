@@ -2,11 +2,12 @@ import { RecipesContainer } from "./Main";
 import { useSearchParams } from "react-router-dom";
 import SearchResultTab from "../components/card/SearchResultsTab";
 import styled from "styled-components";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SearchedRecipe from "../components/card/SearchedRecipe";
 import RecipePagination from "../components/card/RecipePagination";
 import { useSearchedPagination } from "../hooks/useSearchedPagination";
 import LoadingComponent from "../components/loading/LoadingComponent";
+import { useQueryClient } from "react-query";
 
 const CardListArea = styled.div`
   margin: 30px 0;
@@ -18,23 +19,28 @@ const CardListArea = styled.div`
 `;
 
 export default function SearchResults() {
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("value") ?? "";
   const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
+  useEffect(() => {
+    queryClient.clear();
+  }, []);
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useSearchedPagination(path, searchValue);
+    useSearchedPagination(path, searchValue, 1);
 
   return (
     <RecipesContainer>
       <SearchResultTab tabs={category} path={path} setPath={setPath} />
       {isLoading && <LoadingComponent />}
       <CardListArea>
-        {data?.data.map((card, i) => {
-          return <SearchedRecipe key={i} recipe={card} category={path} />;
-        })}
+        {!isLoading &&
+          data?.data.map((card, i) => {
+            return <SearchedRecipe key={i} recipe={card} category={path} />;
+          })}
       </CardListArea>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {!isLoading && data?.pageInfo && data.pageInfo.totalPage > 1 && (
         <RecipePagination
           pageInfo={data?.pageInfo}
           hasMore={!!hasMore}
