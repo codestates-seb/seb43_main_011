@@ -41,9 +41,21 @@ const NavListItems = styled.li`
 const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: 30px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px 0 10px;
   text-decoration-line: none;
   color: black;
+  > p {
+    margin-left: 15px;
+  }
+  &:hover {
+    background-color: #eef1ff;
+    border-bottom: 5px solid #657bf8;
+  }
   &.active {
     color: #4d68ff;
   }
@@ -61,22 +73,22 @@ export default function NavBar() {
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
-          <NavListItems>
+          <StyledNavLink to={"/"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>정규 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/custom"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>커스텀 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/recommendation"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>레시피 추천</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/registration"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
-          </NavListItems>
+            <p>레시피 등록하기</p>
+          </StyledNavLink>
         </IconContext.Provider>
       </NavLinkList>
     </NavContainer>
