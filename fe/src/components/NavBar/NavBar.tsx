@@ -2,7 +2,10 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { navClose } from "./../../redux/slices/NavSlice";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -38,9 +41,21 @@ const NavListItems = styled.li`
 const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: 30px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px 0 10px;
   text-decoration-line: none;
   color: black;
+  > p {
+    margin-left: 15px;
+  }
+  &:hover {
+    background-color: #eef1ff;
+    border-bottom: 5px solid #657bf8;
+  }
   &.active {
     color: #4d68ff;
   }
@@ -48,26 +63,32 @@ const StyledNavLink = styled(NavLink)`
 
 export default function NavBar() {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(navClose());
+  }, [location.pathname]);
+
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
-          <NavListItems>
+          <StyledNavLink to={"/"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>정규 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/custom"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>커스텀 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/recommendation"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>레시피 추천</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/registration"}>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
-          </NavListItems>
+            <p>레시피 등록하기</p>
+          </StyledNavLink>
         </IconContext.Provider>
       </NavLinkList>
     </NavContainer>
