@@ -2,7 +2,8 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { toggle } from "./../../redux/slices/NavSlice";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -48,25 +49,37 @@ const StyledNavLink = styled(NavLink)`
 
 export default function NavBar() {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
+  const dispatch = useAppDispatch();
+  const onClickHandle = () => {
+    dispatch(toggle());
+  };
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
+            <StyledNavLink to={"/"} onClick={onClickHandle}>
+              정규 레시피
+            </StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
+            <StyledNavLink to={"/custom"} onClick={onClickHandle}>
+              커스텀 레시피
+            </StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
+            <StyledNavLink to={"/recommendation"} onClick={onClickHandle}>
+              레시피 추천
+            </StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
+            <StyledNavLink to={"/registration"} onClick={onClickHandle}>
+              레시피 등록하기
+            </StyledNavLink>
           </NavListItems>
         </IconContext.Provider>
       </NavLinkList>
