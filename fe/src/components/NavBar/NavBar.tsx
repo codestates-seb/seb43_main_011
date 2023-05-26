@@ -73,22 +73,22 @@ export default function NavBar() {
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
-          <NavListItems>
+          <StyledNavLink to={"/"}>
             <IoIosWine />
-            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
-            <IoMdPeople />
-            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>정규 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/custom"}>
             <IoMdHeart />
-            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
-          </NavListItems>
-          <NavListItems>
+            <p>커스텀 레시피</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/recommendation"}>
+            <IoMdPeople />
+            <p>레시피 추천</p>
+          </StyledNavLink>
+          <StyledNavLink to={"/registration"}>
             <IoMdCreate />
-            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
-          </NavListItems>
+            <p>레시피 등록하기</p>
+          </StyledNavLink>
         </IconContext.Provider>
       </NavLinkList>
     </NavContainer>
