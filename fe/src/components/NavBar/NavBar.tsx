@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { FaGlassWhiskey } from "react-icons/fa";
 import { IoIosWine, IoMdHeart, IoMdPeople, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
