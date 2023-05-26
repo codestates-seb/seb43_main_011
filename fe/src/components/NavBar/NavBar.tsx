@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
+import { IoIosWine, IoMdHeart, IoMdPeople, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useAppSelector } from "../../redux/hooks";
 
@@ -53,19 +54,19 @@ export default function NavBar() {
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
           <NavListItems>
-            <FaGlassWhiskey />
+            <IoIosWine />
             <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
           </NavListItems>
           <NavListItems>
-            <FaGlassWhiskey />
+            <IoMdPeople />
             <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
           </NavListItems>
           <NavListItems>
-            <FaGlassWhiskey />
+            <IoMdHeart />
             <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
           </NavListItems>
           <NavListItems>
-            <FaGlassWhiskey />
+            <IoMdCreate />
             <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
           </NavListItems>
         </IconContext.Provider>
