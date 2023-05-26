@@ -3,7 +3,10 @@ import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
 import { IoIosWine, IoMdHeart, IoMdPeople, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { navClose } from "./../../redux/slices/NavSlice";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -39,9 +42,21 @@ const NavListItems = styled.li`
 const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: 30px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px 0 10px;
   text-decoration-line: none;
   color: black;
+  > p {
+    margin-left: 15px;
+  }
+  &:hover {
+    background-color: #eef1ff;
+    border-bottom: 5px solid #657bf8;
+  }
   &.active {
     color: #4d68ff;
   }
@@ -49,6 +64,12 @@ const StyledNavLink = styled(NavLink)`
 
 export default function NavBar() {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(navClose());
+  }, [location.pathname]);
+
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>

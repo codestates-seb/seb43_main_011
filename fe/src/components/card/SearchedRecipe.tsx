@@ -9,6 +9,11 @@ const RecipeContainer = styled.div`
   overflow: hidden;
   border: 1px solid #c3c3c3;
   box-shadow: 0 0 4px 1px #c3c3c3;
+  transition: all 0.35s;
+  &:hover {
+    transform: translateY(-15px);
+    box-shadow: 2px 10px 15px 5px #c3c3c3;
+  }
 `;
 
 const RecipeImg = styled.img`
