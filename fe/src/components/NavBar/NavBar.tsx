@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { FaGlassWhiskey } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { toggle } from "./../../redux/slices/NavSlice";
+import { navClose } from "./../../redux/slices/NavSlice";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -50,36 +52,30 @@ const StyledNavLink = styled(NavLink)`
 export default function NavBar() {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const dispatch = useAppDispatch();
-  const onClickHandle = () => {
-    dispatch(toggle());
-  };
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(navClose());
+  }, [location.pathname]);
+
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/"} onClick={onClickHandle}>
-              정규 레시피
-            </StyledNavLink>
+            <StyledNavLink to={"/"}>정규 레시피</StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/custom"} onClick={onClickHandle}>
-              커스텀 레시피
-            </StyledNavLink>
+            <StyledNavLink to={"/custom"}>커스텀 레시피</StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/recommendation"} onClick={onClickHandle}>
-              레시피 추천
-            </StyledNavLink>
+            <StyledNavLink to={"/recommendation"}>레시피 추천</StyledNavLink>
           </NavListItems>
           <NavListItems>
             <FaGlassWhiskey />
-            <StyledNavLink to={"/registration"} onClick={onClickHandle}>
-              레시피 등록하기
-            </StyledNavLink>
+            <StyledNavLink to={"/registration"}>레시피 등록하기</StyledNavLink>
           </NavListItems>
         </IconContext.Provider>
       </NavLinkList>
