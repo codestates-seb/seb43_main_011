@@ -90,13 +90,16 @@ const CocktailRegistration = () => {
   const handleDeleteSelectLine = (id: number) => {
     const isCurrentSelection = id === selectLineId; // 현재 선택된 항목인지 확인
 
-    const newSelectLines = selectLines.filter((line) => line.id !== id);
-    setSelectLines(newSelectLines);
+    if (id > 0) {
+      const newSelectLines = selectLines.filter((line) => line.id !== id);
+      setSelectLines(newSelectLines);
 
-    if (isCurrentSelection) {
-      setSelectLineId(-1);
+      if (isCurrentSelection) {
+        setSelectLineId(-1);
+      }
     }
   };
+
   const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line, i) => {
