@@ -6,13 +6,9 @@ const Footer = () => {
     <Container>
       <ItemArea>
         <Info>
-          <Description>Company Tipple</Description>
+          <Description>made by tippler</Description>
           <Description>
-            ADDRESS 서울특별시 서초구 서초대로 396, 강남빌딩 20층 (스파크플러스
-            강남2호점)
-          </Description>
-          <Description>
-            Copyright by Tippler 2023 All rights reserved
+            Copyright©2023 SideQuest.All rights reserved.
           </Description>
         </Info>
         <Logo>
@@ -24,13 +20,15 @@ const Footer = () => {
 };
 
 const Container = styled.div`
-  height: 7.5rem;
+  height: 5rem;
   width: 100%;
   border: 1px solid lightgray;
   display: flex;
   justify-content: space-around;
   align-items: center;
   box-sizing: border-box;
+  padding: 0 10px;
+  margin-top: 50px;
 `;
 
 const ItemArea = styled.div`

@@ -7,8 +7,8 @@ interface CardProps {
 const Card = ({ recipe, category }: CardProps) => {
   const navigate = useNavigate();
   const hiddenText =
-    recipe.description.length > 40
-      ? `${recipe.description.slice(0, 37)}...`
+    recipe.description && recipe.description.length > 40
+      ? `${recipe.description.slice(0, 37)}..`
       : recipe.description;
   return (
     <Container onClick={() => navigate(`/detail/${category}/${recipe.id}`)}>

@@ -90,13 +90,16 @@ const CocktailRegistration = () => {
   const handleDeleteSelectLine = (id: number) => {
     const isCurrentSelection = id === selectLineId; // 현재 선택된 항목인지 확인
 
-    const newSelectLines = selectLines.filter((line) => line.id !== id);
-    setSelectLines(newSelectLines);
+    if (id > 0) {
+      const newSelectLines = selectLines.filter((line) => line.id !== id);
+      setSelectLines(newSelectLines);
 
-    if (isCurrentSelection) {
-      setSelectLineId(-1);
+      if (isCurrentSelection) {
+        setSelectLineId(-1);
+      }
     }
   };
+
   const handleSubmitData = async () => {
     const totalData = selectLines
       .map((line, i) => {
@@ -113,13 +116,16 @@ const CocktailRegistration = () => {
       name: name,
       recipe: recipeStep,
     };
-    if (
-      isNotOk.description ||
-      isNotOk.name ||
-      isNotOk.recipeStep ||
-      !selectedImage
-    ) {
-      window.alert("입력 양식에 맞지 않는 요소가 있습니다.");
+    if (isNotOk.name) {
+      window.alert("레시피 이름은 한글로만 작성 가능합니다.");
+    } else if (isNotOk.description) {
+      window.alert(
+        "칵테일 소개는 최소 3글자 이상의 한줄로 작성해 주세요 특수문자는 !(). 만 가능합니다.",
+      );
+    } else if (isNotOk.recipeStep) {
+      window.alert(
+        "레시피 양식을 토대로 다시 작성해 주세요. (),.! 외의 특수문자는 허용하지 않습니다",
+      );
     } else {
       recipeMutation.mutate(customRecipeCreateDto, {
         onSuccess: (data) => {
@@ -146,10 +152,6 @@ const CocktailRegistration = () => {
               ]);
             },
           });
-        },
-        onError: () => {
-          window.alert(`레시피 등록실패
-          레시피 양식을 다시 확인해 주세요`);
         },
       });
     }

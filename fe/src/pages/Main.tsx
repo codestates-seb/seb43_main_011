@@ -9,7 +9,7 @@ export const RecipesContainer = styled.div`
   min-height: 100vh;
   height: 100%;
   width: 1360px;
-  margin: 85px auto 0;
+  margin: 80px auto 0;
   position: relative;
   padding: 60px 0 20px;
 `;
