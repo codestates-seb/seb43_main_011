@@ -58,14 +58,16 @@ const Image = styled.div<ImageProps>`
 `;
 
 const HiddenText = styled.p`
+  width: 100%;
   font-size: 1.1rem;
   font-weight: bold;
   opacity: 0;
   color: white;
   margin: 5px;
-  text-align: end;
+  text-align: start;
   transition: all 0.35s;
-  line-height: 1.5rem;
+  line-height: 1.8rem;
+  letter-spacing: 2px;
 `;
 
 const Menuname = styled.div`
