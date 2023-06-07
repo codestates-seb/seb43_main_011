@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import styled from "styled-components";
 import { IoIosWine, IoMdHeart, IoMdPeople, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { navClose } from "./../../redux/slices/NavSlice";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -38,7 +39,7 @@ const NavListItems = styled.li`
   }
 `;
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(Link)`
   font-size: 1.5rem;
   font-weight: bold;
   flex-grow: 1;
@@ -64,28 +65,28 @@ const StyledNavLink = styled(NavLink)`
 export default function NavBar() {
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const dispatch = useAppDispatch();
-  const location = useLocation();
+  const router = useRouter();
   useEffect(() => {
     dispatch(navClose());
-  }, [location.pathname]);
+  }, [router.pathname]);
 
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
         <IconContext.Provider value={{ size: "2rem" }}>
-          <StyledNavLink to={"/"}>
+          <StyledNavLink href={"/"}>
             <IoIosWine />
             <p>정규 레시피</p>
           </StyledNavLink>
-          <StyledNavLink to={"/custom"}>
+          <StyledNavLink href={"/custom"}>
             <IoMdHeart />
             <p>커스텀 레시피</p>
           </StyledNavLink>
-          <StyledNavLink to={"/recommendation"}>
+          <StyledNavLink href={"/recommendation"}>
             <IoMdPeople />
             <p>레시피 추천</p>
           </StyledNavLink>
-          <StyledNavLink to={"/registration"}>
+          <StyledNavLink href={"/registration"}>
             <IoMdCreate />
             <p>레시피 등록하기</p>
           </StyledNavLink>

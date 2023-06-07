@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import logo from "../../images/headerlogo1.png";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
 import NavController from "./NavController";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
@@ -38,7 +38,7 @@ const LogoWrapper = styled.div`
 `;
 
 interface SearchInputFocus {
-  isFocus: boolean;
+  isfocus: boolean;
 }
 
 const SearchContainer = styled.div<SearchInputFocus>`
@@ -50,8 +50,8 @@ const SearchContainer = styled.div<SearchInputFocus>`
   padding: 0.5rem;
   border: 1px solid #d5d4d4;
   border-radius: 10px;
-  ${({ isFocus }) =>
-    isFocus &&
+  ${({ isfocus }) =>
+    isfocus &&
     `outline: none;
     border: 1px solid #96a5ff;
     box-shadow: 0 0 5px 1px #abb7fc;`}
@@ -66,7 +66,7 @@ const SearchInput = styled.input`
 const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   font-size: 1.5rem;
   margin: 0 1rem 0 0.2rem;
-  ${({ isFocus }) => isFocus && `color: #96a5ff;`}
+  ${({ isfocus }) => isfocus && `color: #96a5ff;`}
 `;
 const Menu = styled.nav`
   display: flex;
@@ -90,17 +90,20 @@ const MenuItem = styled(Link)`
 `;
 
 const Header = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const isNavOpen = useAppSelector((state) => state.NavOpen.value);
   const [searchText, setSearchText] = useState("");
   const [isFocus, setIsFocus] = useState(false);
-  const isLogin = sessionStorage.getItem("UTK") !== null;
+  let isLogin = false;
+  if (typeof sessionStorage !== "undefined") {
+    isLogin = true;
+  }
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
 
   const searchOnSumbitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchText !== "") {
-      navigate(`/search?value=${searchText}`);
+      router.push(`/search?value=${searchText}`);
       setSearchText("");
     }
   };
@@ -110,14 +113,14 @@ const Header = () => {
   return (
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
-        <Link to={"/"}>
+        <Link href={"/"}>
           <LogoWrapper>
-            <img src={logo} alt="Logo" />
+            <img src="../../images/headerlogo1.png" alt="Logo" />
           </LogoWrapper>
         </Link>
-        <SearchContainer isFocus={isFocus}>
+        <SearchContainer isfocus={isFocus}>
           <p>
-            <SearchIcon isFocus={isFocus} />
+            <SearchIcon isfocus={isFocus} />
           </p>
           <SearchInput
             type="text"
@@ -133,13 +136,13 @@ const Header = () => {
         <Menu>
           {!isLogin && (
             <>
-              <MenuItem to={endPoind}>로그인</MenuItem>
-              <MenuItem to={"/signup"}>회원가입</MenuItem>
+              <MenuItem href={endPoind}>로그인</MenuItem>
+              <MenuItem href={"/signup"}>회원가입</MenuItem>
             </>
           )}
           {isLogin && (
             <>
-              <MenuItem to={endPoind}>마이페이지</MenuItem>
+              <MenuItem href={endPoind}>마이페이지</MenuItem>
             </>
           )}
         </Menu>

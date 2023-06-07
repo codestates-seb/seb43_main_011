@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+
 import { tokenInstance } from "../utils/tokeninstance";
+import { useRouter } from "next/router";
 
 export interface RecipeData {
   data: {
@@ -19,23 +20,29 @@ const fetchRecipe = async (category: string, id: string) => {
   return response.data;
 };
 
-export const useFetchRecipe = (category: string, id: string) => {
-  const navigate = useNavigate();
-  if (category === "" && id === "") {
-    navigate("/error");
+export const useFetchRecipe = (
+  category: string | string[],
+  id: string | string[],
+) => {
+  const router = useRouter();
+  if (typeof category === "string" && typeof id === "string") {
+    if (category === "" && id === "") {
+      router.push("/error");
+    }
+    const { data, isLoading } = useQuery<RecipeData>(
+      ["recipe", id],
+      () => fetchRecipe(category, id),
+      {
+        retry: 0,
+      },
+    );
+    return { data, isLoading };
   }
-  const { data, isLoading } = useQuery<RecipeData>(
-    ["recipe", id],
-    () => fetchRecipe(category, id),
-    {
-      retry: 0,
-    },
-  );
-  return { data, isLoading };
+  return { data: undefined, isLoading: undefined };
 };
 interface propsData {
   type: string;
-  recipeId: string | undefined;
+  recipeId: string | string[] | undefined;
 }
 export const useAddWish = (propsData: propsData) => {
   const addWishList = async () => {

@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import signup from "../images/enter1.jpg";
-import logo from "../images/logo.png";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useMutation } from "react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
+import { useRouter } from "next/router";
 
 const Signup = () => {
   //이름 유효성검사
@@ -18,7 +16,7 @@ const Signup = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -69,7 +67,7 @@ const Signup = () => {
 
     mutation.mutate(userData, {
       onSuccess: () => {
-        navigate("/signin");
+        router.push("/signin");
       },
     });
   };
@@ -87,8 +85,8 @@ const Signup = () => {
   return (
     <Container>
       <SignupForm>
-        <Link to="/">
-          <Logo src={logo} alt="logo"></Logo>
+        <Link href="/">
+          <Logo src="../images/logo.png" alt="logo"></Logo>
         </Link>
         <NicknameForm>
           <Label>Nickname</Label>
@@ -205,7 +203,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.4),
       rgba(255, 255, 255, 0.4)
     ),
-    url(${signup});
+    url("../images/enter1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

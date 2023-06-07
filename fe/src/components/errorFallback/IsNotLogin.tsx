@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import styled from "styled-components";
-import mascot from "./../../images/mascot.png";
 
 const NotLoginContainer = styled.div`
   width: 100%;
@@ -42,15 +41,15 @@ const MascotImg = styled.img`
 `;
 
 export default function IsNotLogin() {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <NotLoginContainer>
-      <MascotImg src={mascot} />
+      <MascotImg src="./../../images/mascot.png" />
       <GuideMessageTitle>로그인이 필요한 서비스 입니다.</GuideMessageTitle>
       <GuideMessageContent>
         로그인 후 알딸딸에 나만의 레시피를 공유해 보세요
       </GuideMessageContent>
-      <ToLoginPage onClick={() => navigate("/signin")}>
+      <ToLoginPage onClick={() => router.push("/signin")}>
         로그인 페이지로 이동
       </ToLoginPage>
     </NotLoginContainer>

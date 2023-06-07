@@ -1,17 +1,17 @@
+import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 interface CardProps {
   recipe: { name: string; imageUrl: string; description: string; id: number };
   category?: string;
 }
 const Card = ({ recipe, category }: CardProps) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const hiddenText =
     recipe.description && recipe.description.length > 40
       ? `${recipe.description.slice(0, 37)}..`
       : recipe.description;
   return (
-    <Container onClick={() => navigate(`/detail/${category}/${recipe.id}`)}>
+    <Container onClick={() => router.push(`/detail/${category}/${recipe.id}`)}>
       <Image url={recipe.imageUrl}>
         <HiddenText className="hidden-text">{hiddenText}</HiddenText>
       </Image>
@@ -58,14 +58,16 @@ const Image = styled.div<ImageProps>`
 `;
 
 const HiddenText = styled.p`
+  width: 100%;
   font-size: 1.1rem;
   font-weight: bold;
   opacity: 0;
   color: white;
   margin: 5px;
-  text-align: end;
+  text-align: start;
   transition: all 0.35s;
-  line-height: 1.5rem;
+  line-height: 1.8rem;
+  letter-spacing: 2px;
 `;
 
 const Menuname = styled.div`

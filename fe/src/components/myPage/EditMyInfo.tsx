@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import ImageUpload from "../imageupload/ImageUpload";
 import { tokenInstance } from "../../utils/tokeninstance";
-import { MyInfoData } from "../../pages/Mypage";
+import { MyInfoData } from "../../pages/mypage";
 
 const Container = styled.div`
   display: flex;
