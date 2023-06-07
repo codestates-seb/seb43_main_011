@@ -1,10 +1,17 @@
+"use-client";
+
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import styled from "styled-components";
 import { useMemo } from "react";
 import Card from "./Card";
 import RecipePagination from "./RecipePagination";
 import { useMainPagination } from "../../hooks/useMainPagination";
-import { getCards } from "../../utils/query";
+import { RegularResponseData, getCards } from "../../utils/query";
 import LoadingComponent from "../loading/LoadingComponent";
+
+import store from "../../redux/store";
+import { wrapper } from "../../redux/store";
+import { ParsedUrlQuery } from "querystring";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -52,51 +59,28 @@ const CardsRow = styled.div<RowInterface>`
   place-items: center;
 `;
 
-interface ListProps {
-  path: string;
-}
-
-export default function CardList({ path }: ListProps) {
+export default function CardList({ initialData }: ListProps) {
   const {
     data,
-    isLoading,
-    isFetching,
     isPreviousData,
     hasMore,
     showCardLength,
     onNextClick,
     onPrevClick,
-  } = useMainPagination(path, getCards);
-
-  const boundary = useMemo(() => {
-    switch (path) {
-      case "0":
-        return "무알콜";
-      case "1":
-        return "1 ~ 9도";
-      case "30":
-        return "30도 이상";
-      default:
-        return `${path} ~ ${Number(path) + 9}도`;
-    }
-  }, [path]);
+    boundary,
+  } = initialData;
 
   return (
     <CardsContainer>
       <CategoryBox>
-        <div className="boundary">{`${boundary}`}</div>
+        <div className="boundary">{boundary}</div>
         <div className="slash"></div>
         <div className="divider"></div>
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {isLoading && <LoadingComponent />}
-        {data?.data?.[0] &&
-          data?.data.map((recipe, i) => {
-            return <Card recipe={recipe} key={i} category="regular" />;
-          })}
-        {!isFetching && data?.data?.[0] === undefined && (
-          <div>레시피가 존재하지 않습니다</div>
-        )}
+        {data?.data.map((recipe, i) => {
+          return <Card recipe={recipe} key={i} category="regular" />;
+        })}
       </CardsRow>
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
         <RecipePagination
@@ -109,4 +93,16 @@ export default function CardList({ path }: ListProps) {
       )}
     </CardsContainer>
   );
+}
+
+export interface ListProps {
+  initialData: {
+    data: RegularResponseData | undefined;
+    isPreviousData: boolean;
+    hasMore: boolean | 0 | undefined;
+    showCardLength: number | undefined;
+    onNextClick: () => void;
+    onPrevClick: () => void;
+    boundary: string;
+  };
 }

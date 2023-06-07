@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import signup from "../images/enter3.jpg";
-import logo from "../images/logo.png";
 import { useState } from "react";
 import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
-import { Link, useNavigate } from "react-router-dom";
+
 import { useMutation } from "react-query";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface UserData {
   email: string;
@@ -16,7 +16,8 @@ const Signup = () => {
   //이메일(아이디) 유효성검사
   const [email, setEmail] = useState("");
   const [showEmailError, setShowEmailError] = useState(false);
-  const navigate = useNavigate();
+
+  const router = useRouter();
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -61,7 +62,7 @@ const Signup = () => {
       onSuccess: () => {
         setEmail("");
         setPassword("");
-        navigate("/");
+        router.push("/");
       },
       onError: () => {
         window.alert("이메일 혹은 비밀번호가 일치하지 않습니다");
@@ -80,8 +81,8 @@ const Signup = () => {
   return (
     <Container>
       <SignupForm>
-        <Link to="/">
-          <Logo src={logo} alt="logo"></Logo>
+        <Link href="/">
+          <Logo src="../images/logo.png" alt="logo"></Logo>
         </Link>
         <EmailForm>
           <Label>E-mail</Label>
@@ -111,7 +112,7 @@ const Signup = () => {
         </PasswordForm>
         <GooogleSignInButton />
         <SignupButton onClick={handlelogin}>로그인</SignupButton>
-        <NavSignup to={"/signup"}>회원가입</NavSignup>
+        <NavSignup href={"/signup"}>회원가입</NavSignup>
       </SignupForm>
     </Container>
   );
@@ -171,7 +172,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.4),
       rgba(255, 255, 255, 0.4)
     ),
-    url(${signup});
+    url("../images/enter3.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

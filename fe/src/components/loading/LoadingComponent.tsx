@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import LoadingImage from "./../../images/loading.gif";
 
 const LoadingContainer = styled.div`
   width: 1360px;
@@ -18,7 +17,7 @@ const LoadingImg = styled.img`
 export default function LoadingComponent() {
   return (
     <LoadingContainer>
-      <LoadingImg src={LoadingImage} />
+      <LoadingImg src="./../../images/loading.gif" />
     </LoadingContainer>
   );
 }

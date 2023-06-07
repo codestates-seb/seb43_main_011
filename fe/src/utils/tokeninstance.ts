@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const tokenInstance = axios.create({
-  baseURL: process.env.REACT_APP_URL,
+  // baseURL: process.env.REACT_APP_URL,
   headers: {
     "content-type": "application/json",
     accept: "application/json",

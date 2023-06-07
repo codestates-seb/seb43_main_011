@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MyInfoData } from "../../pages/Mypage";
+import { MyInfoData } from "../../pages/mypage";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`

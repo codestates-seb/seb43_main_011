@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { tokenInstance } from "./tokeninstance";
-axios.defaults.baseURL = process.env.REACT_APP_URL;
+// axios.defaults.baseURL = process.env.REACT_APP_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.headers["Content-Type"] = "application/json; charset=utf-8";
 
