@@ -28,7 +28,11 @@ export interface RegularResponseData {
   pageInfo: PageInfo;
 }
 
-export const getCards = async (alcohol: string, size: number, page: number) => {
+export const getCards = async (
+  alcohol: string,
+  size: number,
+  page?: number,
+) => {
   const response: AxiosResponse<{ data: RegularResponseData }> =
     await axios.get(`/regular/findAll/${alcohol}?page=${page}&size=${size}`);
   return response.data.data;

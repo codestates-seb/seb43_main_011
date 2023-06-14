@@ -1,8 +1,6 @@
-"use-client";
-
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import styled from "styled-components";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "./Card";
 import RecipePagination from "./RecipePagination";
 import { useMainPagination } from "../../hooks/useMainPagination";
@@ -12,6 +10,7 @@ import LoadingComponent from "../loading/LoadingComponent";
 import store from "../../redux/store";
 import { wrapper } from "../../redux/store";
 import { ParsedUrlQuery } from "querystring";
+import { useQueryClient } from "react-query";
 
 const CardsContainer = styled.div`
   width: 100%;
@@ -59,50 +58,73 @@ const CardsRow = styled.div<RowInterface>`
   place-items: center;
 `;
 
-export default function CardList({ initialData }: ListProps) {
-  const {
-    data,
-    isPreviousData,
-    hasMore,
-    showCardLength,
-    onNextClick,
-    onPrevClick,
-    boundary,
-  } = initialData;
-
-  return (
-    <CardsContainer>
-      <CategoryBox>
-        <div className="boundary">{boundary}</div>
-        <div className="slash"></div>
-        <div className="divider"></div>
-      </CategoryBox>
-      <CardsRow isTwo={showCardLength === 5 ? false : true}>
-        {data?.data.map((recipe, i) => {
-          return <Card recipe={recipe} key={i} category="regular" />;
-        })}
-      </CardsRow>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
-        <RecipePagination
-          pageInfo={data?.pageInfo}
-          hasMore={!!hasMore}
-          isPreviousData={isPreviousData}
-          onNextClick={onNextClick}
-          onPrevClick={onPrevClick}
-        />
-      )}
-    </CardsContainer>
-  );
-}
-
 export interface ListProps {
   initialData: {
     data: RegularResponseData | undefined;
-    isPreviousData: boolean;
-    hasMore: boolean | 0 | undefined;
-    showCardLength: number | undefined;
-    onNextClick: () => void;
-    onPrevClick: () => void;
-    boundary: string;
+    alcohol: string;
   };
+}
+
+export default function CardList({ initialData }: ListProps) {
+  const { data, alcohol } = initialData;
+  const [page, setPage] = useState(1);
+  const [boundary, setBoundary] = useState("");
+  useEffect(() => {
+    switch (alcohol) {
+      case "0":
+        setBoundary("무알콜");
+        break;
+      case "1":
+        setBoundary("1 ~ 9도");
+        break;
+      case "30":
+        setBoundary("30도 이상");
+        break;
+      default:
+        setBoundary(`${alcohol} ~ ${Number(alcohol) + 9}도`);
+        break;
+    }
+  }, [alcohol]);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    getCards(alcohol, 5, page).then((responseData) => {
+      queryClient.setQueryData([alcohol, "5"], responseData);
+    });
+  }, [page, alcohol, queryClient]);
+
+  if (data) {
+    const hasMore = data.pageInfo.totalPage > page;
+
+    const onNextClick = () => {
+      setPage((page) => (hasMore ? page + 1 : page));
+    };
+    const onPrevClick = () => {
+      setPage((page) => Math.max(page - 1, 1));
+    };
+    return (
+      <CardsContainer>
+        <CategoryBox>
+          <div className="boundary">{boundary}</div>
+          <div className="slash"></div>
+          <div className="divider"></div>
+        </CategoryBox>
+        <CardsRow isTwo={data.pageInfo.size === 5 ? false : true}>
+          {data.data.map((recipe, i) => {
+            return <Card recipe={recipe} key={i} category="regular" />;
+          })}
+        </CardsRow>
+        <RecipePagination
+          pageInfo={data.pageInfo}
+          hasMore={hasMore}
+          isPreviousData={data.pageInfo.totalPage > page}
+          onNextClick={onNextClick}
+          onPrevClick={onPrevClick}
+        />
+      </CardsContainer>
+    );
+  } else {
+    return null;
+  }
 }

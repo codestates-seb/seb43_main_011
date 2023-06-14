@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 interface CardProps {
   recipe: { name: string; imageUrl: string; description: string; id: number };
@@ -6,10 +7,13 @@ interface CardProps {
 }
 const Card = ({ recipe, category }: CardProps) => {
   const router = useRouter();
-  const hiddenText =
-    recipe.description && recipe.description.length > 40
-      ? `${recipe.description.slice(0, 37)}..`
-      : recipe.description;
+  const [hiddenText, setHiddenText] = useState(recipe.description);
+
+  useEffect(() => {
+    if (recipe.description.length > 40) {
+      setHiddenText(`${recipe.description.slice(0, 37)}..`);
+    }
+  }, [recipe.description]);
   return (
     <Container onClick={() => router.push(`/detail/${category}/${recipe.id}`)}>
       <Image url={recipe.imageUrl}>
