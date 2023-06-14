@@ -86,7 +86,7 @@ export default function Main() {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const alclholLevel = ["0", "1", "10", "20", "30"];
   const queryClient = new QueryClient();
 
