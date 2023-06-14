@@ -1,13 +1,24 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CardListFallback from "../components/errorFallback/CardListFallback";
-import { useQueryErrorResetBoundary } from "react-query";
+
+import {
+  QueryClient,
+  dehydrate,
+  useQueries,
+  useQuery,
+  useQueryClient,
+  useQueryErrorResetBoundary,
+} from "react-query";
 import LoadingComponent from "../components/loading/LoadingComponent";
 import { useMainPagination } from "../hooks/useMainPagination";
 import { RegularResponseData, getCards } from "../utils/query";
 import { ListProps } from "../components/card/CardList";
+import { GetServerSidePropsContext } from "next";
+import { ParsedUrlQuery } from "querystring";
+import axios, { AxiosResponse } from "axios";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;
@@ -25,91 +36,138 @@ const GuideText = styled.div`
   font-size: 1.2rem;
 `;
 
+interface FetchData {
+  data: RegularResponseData | undefined;
+  isPreviousData: boolean;
+  hasMore: boolean | 0 | undefined;
+  showCardLength: number;
+  onNextClick: () => void;
+  onPrevClick: () => void;
+  alcohol: string;
+  listSize: number;
+  boundary: string;
+}
+
 export default function Main() {
   const { reset } = useQueryErrorResetBoundary();
-  const alclholLevel = useMemo(() => {
-    return ["0", "1", "10", "20", "30"];
-  }, []);
+  const alclholLevel = ["0", "1", "10", "20", "30"];
+  const totalData = alclholLevel.map(
+    (alcohol) =>
+      useQuery<RegularResponseData>(
+        [alcohol, "5"],
+        async () => await getCards(alcohol, 5, 1),
+      ),
+    // {
+    //     return {
+    //       queryKey: [alcohol, "5"],
+    //       queryFn: async () => await getCards(alcohol, 5, 1),
+    //     };
+    //   },
+  );
 
-  // 여기서 요청 5개를 동시에 보내고
-  // 그거를 배열에 담아서 data1, data2, ...
-  // map 돌리는 걸로 변경 totalData = [data1, data2, ...].map()
-  // serverSideProps에서 totalData를 리턴
-  interface FetchData {
-    data: RegularResponseData | undefined;
-    isPreviousData: boolean;
-    hasMore: boolean | 0 | undefined;
-    showCardLength: number | undefined;
-    onNextClick: () => void;
-    onPrevClick: () => void;
-    boundary: string;
-  }
-  const totalData = [];
-  for (const alcohol of alclholLevel) {
-    const datas = useMainPagination(alcohol, getCards);
-    const boundary = useMemo(() => {
-      switch (alcohol) {
-        case "0":
-          return "무알콜";
-        case "1":
-          return "1 ~ 9도";
-        case "30":
-          return "30도 이상";
-        default:
-          return `${alcohol} ~ ${Number(alcohol) + 9}도`;
-      }
-    }, [alcohol]);
-    const initialData = {
-      ...datas,
-      boundary,
-    };
-    totalData.push(initialData);
-  }
   return (
     <>
       <RecipesContainer>
         <GuideText>정규 레시피</GuideText>
-        {totalData.map((initialData, i) => {
-          return (
-            <ErrorBoundary
-              key={i}
-              FallbackComponent={CardListFallback}
-              onReset={reset}
-            >
-              <Suspense key={`alcohol${i}`} fallback={<LoadingComponent />}>
-                <CardList key={i} initialData={initialData} />
-              </Suspense>
-            </ErrorBoundary>
-          );
-        })}
+        <ErrorBoundary FallbackComponent={CardListFallback} onReset={reset}>
+          {totalData &&
+            totalData.map((initialData, i) => {
+              if (initialData.data) {
+                const datas = {
+                  data: initialData.data,
+                  alcohol: alclholLevel[i],
+                };
+                return <CardList key={datas.alcohol} initialData={datas} />;
+              }
+            })}
+        </ErrorBoundary>
       </RecipesContainer>
     </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const alclholLevel = ["0", "1", "10", "20", "30"];
+  const queryClient = new QueryClient();
 
-  const totalData = [];
-  for (const alcohol of alclholLevel) {
-    const datas = useMainPagination(alcohol, getCards);
-    const boundary = useMemo(() => {
-      switch (alcohol) {
-        case "0":
-          return "무알콜";
-        case "1":
-          return "1 ~ 9도";
-        case "30":
-          return "30도 이상";
-        default:
-          return `${alcohol} ~ ${Number(alcohol) + 9}도`;
-      }
-    }, [alcohol]);
-    const initialData = {
-      ...datas,
-      boundary,
-    };
-    totalData.push(initialData);
-  }
-  return totalData;
+  await Promise.all(
+    alclholLevel.map((alcohol) => {
+      return queryClient.prefetchQuery(
+        [alcohol, 5],
+        async () => await getCards(alcohol, 5, 1),
+      );
+    }),
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+
+  // const queryClient = new QueryClient();
+
+  // for (const alcohol of alclholLevel) {
+  //   let page = 1;
+  //   let listSize = 5;
+
+  //   await queryClient.prefetchQuery<RegularResponseData>(
+  //     [alcohol, listSize],
+  //     () => getCards(alcohol, listSize, page),
+  //   );
+
+  //   const data = queryClient.getQueryData<RegularResponseData>([
+  //     alcohol,
+  //     listSize,
+  //   ]);
+  //   const maxPage = data?.pageInfo.totalPage;
+  //   const hasMore = maxPage && maxPage > page;
+
+  //   const onNextClick = () => {
+  //     page += 1;
+  //   };
+  //   const onPrevClick = () => {
+  //     page += 1;
+  //   };
+  //   let isPreviousData = false;
+  //   let datas: FetchData;
+  //   let boundary = "";
+
+  //   switch (alcohol) {
+  //     case "0":
+  //       boundary = "무알콜";
+  //       break;
+  //     case "1":
+  //       boundary = "1 ~ 9도";
+  //       break;
+  //     case "30":
+  //       boundary = "30도 이상";
+  //       break;
+  //     default:
+  //       boundary = `${alcohol} ~ ${Number(alcohol) + 9}도`;
+  //       break;
+  //   }
+  //   if (data) {
+  //     data?.pageInfo.totalPage > data?.pageInfo.page;
+  //     datas = {
+  //       data: data,
+  //       isPreviousData,
+  //       hasMore: hasMore,
+  //       showCardLength: data?.pageInfo.size,
+  //       onNextClick: onNextClick,
+  //       onPrevClick: onPrevClick,
+  //       alcohol,
+  //       listSize,
+  //       boundary,
+  //     };
+  //     totalData.push(datas);
+  //   }
+  // }
+
+  // return {
+  //   props: {
+  //     totalData,
+  //     dehydratedState: dehydrate(queryClient),
+  //   },
+  // };
 }

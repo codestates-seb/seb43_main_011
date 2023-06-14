@@ -7,9 +7,16 @@ import { wrapper } from "../redux/store";
 import theme from "../components/style/theme";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "../components/style/GlobalStyles";
+import { Suspense } from "react";
+import LoadingComponent from "../components/loading/LoadingComponent";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
+  // const queryClientRef = useRef<QueryClient>();
+
+  // if (!queryClientRef.current) {
+  //   queryClientRef.current = new QueryClient();
+  // }
 
   return (
     <>
@@ -26,7 +33,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <Layout>
-              <Component {...pageProps} />
+              <Suspense fallback={<LoadingComponent />}>
+                <Component {...pageProps} />
+              </Suspense>
             </Layout>
           </Hydrate>
         </QueryClientProvider>

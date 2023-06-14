@@ -7,7 +7,7 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-class MyDocument extends Document {
+export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
@@ -32,19 +32,19 @@ class MyDocument extends Document {
       sheet.seal();
     }
   }
-  render() {
-    return (
-      <Html lang="ko">
-        <Head>
-          <meta charSet="utf-8" />
-          <meta name="theme-color" content="#000000" />
-          <meta name="description" content="나만의 카테일 공유" />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+  // render() {
+  //   return (
+  //     <Html lang="ko">
+  //       <Head>
+  //         <meta charSet="utf-8" />
+  //         <meta name="theme-color" content="#000000" />
+  //         <meta name="description" content="나만의 카테일 공유" />
+  //       </Head>
+  //       <body>
+  //         <Main />
+  //         <NextScript />
+  //       </body>
+  //     </Html>
+  //   );
+  // }
 }

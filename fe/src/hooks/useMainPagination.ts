@@ -12,32 +12,27 @@ export const useMainPagination = (
 ) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
-  const listSize = useMemo(() => {
+  let listSize = useMemo(() => {
     switch (path) {
       case "bookmark":
         return 16;
       case "custom":
         return 20;
-      case "30":
-        return 10;
-      case "40":
-        return 10;
       default:
         return 5;
     }
   }, [path]);
 
-  const { data, isLoading, isFetching, isPreviousData } =
-    useQuery<RegularResponseData>(
-      [`${path}`, listSize],
-      () => getFunction(path, listSize, page),
-      {
-        useErrorBoundary: true,
-        retry: 0,
-        staleTime: 2000,
-        keepPreviousData: true,
-      },
-    );
+  const { data, isPreviousData } = useQuery<RegularResponseData>(
+    [path, listSize],
+    () => getFunction(path, listSize, page),
+    {
+      useErrorBoundary: true,
+      retry: 0,
+      staleTime: 2000,
+      keepPreviousData: true,
+    },
+  );
 
   const maxPage = data?.pageInfo.totalPage;
   const hasMore = maxPage && maxPage > page;
@@ -57,8 +52,6 @@ export const useMainPagination = (
 
   return {
     data,
-    isLoading,
-    isFetching,
     isPreviousData,
     hasMore,
     showCardLength: data?.pageInfo?.size,
