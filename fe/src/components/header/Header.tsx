@@ -95,9 +95,14 @@ const Header = () => {
   const [searchText, setSearchText] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   let isLogin = false;
-  if (typeof sessionStorage !== "undefined") {
+  const token =
+    typeof window !== "undefined"
+      ? sessionStorage.getItem("accessToken")
+      : null;
+  if (token) {
     isLogin = true;
   }
+
   const searchOnChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
 

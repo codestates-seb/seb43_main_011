@@ -46,14 +46,10 @@ interface RowInterface {
   isTwo: boolean;
   isSearch?: boolean;
 }
-const CardsRow = styled.div<RowInterface>`
+const CardsRow = styled.div`
   margin: 20px 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(
-    ${(props: RowInterface) => (props.isTwo ? 2 : 1)},
-    1fr
-  );
   grid-gap: 30px;
   place-items: center;
 `;
@@ -110,7 +106,7 @@ export default function CardList({ initialData }: ListProps) {
           <div className="slash"></div>
           <div className="divider"></div>
         </CategoryBox>
-        <CardsRow isTwo={data.pageInfo.size === 5 ? false : true}>
+        <CardsRow>
           {data.data.map((recipe, i) => {
             return <Card recipe={recipe} key={i} category="regular" />;
           })}
