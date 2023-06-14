@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import tippler from "../../images/tippler.png";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -12,7 +12,7 @@ const Footer = () => {
           </Description>
         </Info>
         <Logo>
-          <img src={tippler} alt="logo" />
+          <Image src="/images/tippler.png" alt="logo" width={100} height={50} />
         </Logo>
       </ItemArea>
     </Container>

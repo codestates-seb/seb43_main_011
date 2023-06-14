@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavController from "./NavController";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
@@ -65,7 +66,7 @@ const SearchInput = styled.input`
 `;
 const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   font-size: 1.5rem;
-  margin: 0 1rem 0 0.2rem;
+  margin: 0 1rem 0 0;
   ${({ isfocus }) => isfocus && `color: #96a5ff;`}
 `;
 const Menu = styled.nav`
@@ -119,9 +120,7 @@ const Header = () => {
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
         <Link href={"/"}>
-          <LogoWrapper>
-            <img src="../../images/headerlogo1.png" alt="Logo" />
-          </LogoWrapper>
+          <Image src="/images/logo.png" alt="Logo" width={170} height={90} />
         </Link>
         <SearchContainer isfocus={isFocus}>
           <p>
