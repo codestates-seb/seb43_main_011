@@ -109,7 +109,7 @@ const Signup = () => {
             </ErrorMessage>
           )}
         </PasswordForm>
-        <GooogleSignInButton />
+        {/* <GooogleSignInButton /> */}
         <SignupButton onClick={handlelogin}>로그인</SignupButton>
         <NavSignup to={"/signup"}>회원가입</NavSignup>
       </SignupForm>
