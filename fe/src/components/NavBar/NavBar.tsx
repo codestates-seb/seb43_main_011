@@ -81,10 +81,10 @@ export default function NavBar() {
             <IoMdHeart />
             <p>커스텀 레시피</p>
           </StyledNavLink>
-          <StyledNavLink to={"/recommendation"}>
+          {/* <StyledNavLink to={"/recommendation"}>
             <IoMdPeople />
             <p>레시피 추천</p>
-          </StyledNavLink>
+          </StyledNavLink> */}
           <StyledNavLink to={"/registration"}>
             <IoMdCreate />
             <p>레시피 등록하기</p>
