@@ -101,7 +101,7 @@ export default function CardList({ path }: ListProps) {
       {data?.pageInfo && data.pageInfo.totalPage > 1 && (
         <RecipePagination
           pageInfo={data?.pageInfo}
-          hasMore={!!hasMore}
+          hasMore={hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}
           onPrevClick={onPrevClick}

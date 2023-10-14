@@ -46,7 +46,7 @@ export default function RecipePagination({
         <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
       </CardsPageNationButton>
       <CardsPageNationDisplay>{`${pageInfo.page} / ${pageInfo.totalPage}`}</CardsPageNationDisplay>
-      <CardsPageNationButton disabled={isPreviousData || hasMore}>
+      <CardsPageNationButton disabled={isPreviousData || !hasMore}>
         <GrNext onClick={onNextClick} size={"1.1rem"} />
       </CardsPageNationButton>
     </CardsPageNationContainer>

@@ -29,7 +29,7 @@ export const useMainPagination = (
 
   const { data, isLoading, isFetching, isPreviousData } =
     useQuery<RegularResponseData>(
-      [`${path}`, listSize],
+      [path, listSize],
       () => getFunction(path, listSize, page),
       {
         useErrorBoundary: true,
@@ -43,7 +43,7 @@ export const useMainPagination = (
   const hasMore = maxPage && maxPage > page;
 
   const onNextClick = () => {
-    setPage((page) => (!!hasMore ? page + 1 : page));
+    setPage(!!hasMore ? page + 1 : page);
   };
   const onPrevClick = () => {
     setPage((page) => Math.max(page - 1, 1));
@@ -51,7 +51,7 @@ export const useMainPagination = (
 
   useEffect(() => {
     getFunction(path, listSize, page).then((responseData) => {
-      queryClient.setQueryData([`${path}`, listSize], responseData);
+      queryClient.setQueryData([path, listSize], responseData);
     });
   }, [path, listSize, page, queryClient]);
 
@@ -60,7 +60,7 @@ export const useMainPagination = (
     isLoading,
     isFetching,
     isPreviousData,
-    hasMore,
+    hasMore: !!hasMore,
     showCardLength: data?.pageInfo?.size,
     onNextClick,
     onPrevClick,
