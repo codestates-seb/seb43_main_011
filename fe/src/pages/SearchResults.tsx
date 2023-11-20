@@ -14,9 +14,12 @@ const CardListArea = styled.div`
   margin: 30px 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: auto;
   grid-gap: 30px;
   place-items: center;
+  @media screen and (max-width: 740px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const NoneSearchedBox = styled.div`
