@@ -22,7 +22,6 @@ const Card = ({ recipe, category }: CardProps) => {
 
 const Container = styled.div`
   height: 16rem;
-  width: 13rem;
   overflow: hidden;
   border: 1px solid lightgray;
   border-radius: 15px;
@@ -32,13 +31,17 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    height: 20rem;
+  }
 `;
 interface ImageProps {
   url: string;
 }
 const Image = styled.div<ImageProps>`
   flex: 5;
-  width: 13rem;
+  width: 100%;
   display: flex;
   align-items: end;
   justify-content: center;
@@ -69,9 +72,10 @@ const HiddenText = styled.p`
 `;
 
 const Menuname = styled.div`
-  flex: 1;
-  width: 10rem;
+  height: 2.5rem;
   display: flex;
+  width: 100%;
+  justify-content: center;
   align-items: center;
   font-weight: bold;
   color: #5e5e5e;
