@@ -32,7 +32,8 @@ const Container = styled.div`
 `;
 
 const ItemArea = styled.div`
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
