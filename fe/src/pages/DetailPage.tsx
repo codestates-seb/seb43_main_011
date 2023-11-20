@@ -96,6 +96,10 @@ const Container = styled.div`
   justify-content: center;
   min-height: 83vh;
   margin-top: 7rem;
+  width: 100%;
+  @media screen and (max-width: 980px) {
+    margin-top: 3rem;
+  }
 `;
 
 const InfoWrapper = styled.div`
@@ -104,27 +108,41 @@ const InfoWrapper = styled.div`
   align-items: start;
   margin-bottom: 2rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   padding: 4rem;
   border: 1px solid gray;
   border-radius: 20px;
+  @media screen and (max-width: 980px) {
+    flex-direction: column;
+    border: none;
+    padding: 4rem 1rem 1rem;
+  }
 `;
 
 const PhotoArea = styled.img`
   max-width: 500px;
+  width: 100%;
   min-height: 600px;
   height: 100%;
   border-radius: 3%;
+  @media screen and (max-width: 980px) {
+    margin: 0 auto 50px;
+  }
 `;
 
 const DetailArea = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 7rem;
-  width: 470px;
+  max-width: 470px;
+  width: 100%;
   min-height: 665px;
   padding: 0 20px 20px;
   border-radius: 3%;
+  @media screen and (max-width: 980px) {
+    margin: 0 auto;
+  }
 `;
 
 const TitleArea = styled.div`
