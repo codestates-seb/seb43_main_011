@@ -91,7 +91,6 @@ export default function CardList({ path }: ListProps) {
     isFetching,
     isPreviousData,
     hasMore,
-    showCardLength,
     onNextClick,
     onPrevClick,
   } = useMainPagination(path, getCards);
