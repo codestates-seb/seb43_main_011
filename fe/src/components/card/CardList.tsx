@@ -60,11 +60,7 @@ const CategoryBox = styled.div`
   }
 `;
 
-interface RowInterface {
-  isTwo: boolean;
-  isSearch?: boolean;
-}
-const CardsRow = styled.div<RowInterface>`
+export const CardsRow = styled.div`
   margin: 20px 0;
   display: grid;
   width: 100%;
@@ -131,7 +127,7 @@ export default function CardList({ path }: ListProps) {
           )}
         </div>
       </CategoryBox>
-      <CardsRow isTwo={showCardLength === 5 ? false : true}>
+      <CardsRow>
         {isLoading && <LoadingComponent />}
         {data?.[0] &&
           data.map((recipe, i) => {

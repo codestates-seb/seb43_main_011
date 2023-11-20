@@ -6,6 +6,8 @@ import { getCustomCards } from "../utils/query";
 import { useMainPagination } from "../hooks/useMainPagination";
 import RecipePagination from "../components/card/RecipePagination";
 import LoadingComponent from "../components/loading/LoadingComponent";
+import { CardsRow } from "../components/card/CardList";
+
 const CustomGuide = styled.div`
   display: flex;
 `;
@@ -31,15 +33,6 @@ const GuideText = styled.div`
   font-size: 1.2rem;
 `;
 
-const CardsRow = styled.div`
-  margin: 20px 0;
-  padding-bottom: 30px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 30px;
-  place-items: center;
-`;
-
 export default function CustomRecipes() {
   const path = "custom";
   const {
@@ -60,6 +53,7 @@ export default function CustomRecipes() {
           레시피 등록하기
         </RegistrationLink>
       </CustomGuide>
+
       <CardsRow>
         {isLoading && <LoadingComponent />}
         {data?.map((recipe) => {
