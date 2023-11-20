@@ -8,7 +8,7 @@ const CardsPageNationContainer = styled.div`
   align-items: center;
   margin: 20px 0 10px;
   @media screen and (max-width: 640px) {
-    margin: 0;
+    margin: 0 auto;
   }
 `;
 
