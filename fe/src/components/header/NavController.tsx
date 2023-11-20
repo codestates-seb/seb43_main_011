@@ -33,7 +33,7 @@ const ControllButton = styled.button<{ isNavOpen: boolean }>`
         : "bottom: 0;"}
   }
   @media screen and (max-width: 640px) {
-    margin-left: 10px;
+    margin: 0 10px;
   }
 `;
 

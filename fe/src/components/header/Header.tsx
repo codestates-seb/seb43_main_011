@@ -74,6 +74,9 @@ export const Menu = styled.nav`
   display: flex;
   gap: 20px;
   margin: 22px;
+  @media screen and (max-width: 640px) {
+    margin: 0%;
+  }
 `;
 export const MenuItem = styled(Link)`
   color: #5a5a5a;
@@ -88,6 +91,14 @@ export const MenuItem = styled(Link)`
     cursor: pointer;
     background-color: #8092f6;
     color: #ffff;
+  }
+  @media screen and (max-width: 640px) {
+    background-color: #8092f6;
+    color: #ffff;
+    &:hover {
+      background-color: #6379f4;
+      color: #ffff;
+    }
   }
 `;
 
