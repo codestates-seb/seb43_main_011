@@ -4,7 +4,8 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import NavController from "./NavController";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MobileViewContext } from "../../pages/Layout";
 
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
@@ -22,7 +23,8 @@ const Container = styled.header<{ isNavOpen: boolean }>`
 `;
 
 const ItemArea = styled.div`
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -44,7 +46,7 @@ interface SearchInputFocus {
 const SearchContainer = styled.div<SearchInputFocus>`
   display: flex;
   align-items: center;
-  width: 100%;
+  flex: 2 2;
   max-width: 900px;
   margin-left: 0.5rem;
   padding: 0.5rem;
@@ -58,7 +60,7 @@ const SearchContainer = styled.div<SearchInputFocus>`
 `;
 const SearchInput = styled.input`
   border: none;
-  width: 95%;
+  width: 90%;
   outline: none;
   margin-right: 10px;
   font-size: 1.3rem;
@@ -107,6 +109,7 @@ const Header = () => {
 
   const endPoind = isLogin ? "/myPage" : "/signin";
 
+  const isMobile = useContext(MobileViewContext);
   return (
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
@@ -121,7 +124,7 @@ const Header = () => {
           </p>
           <SearchInput
             type="text"
-            placeholder="오늘의 칵테일은?"
+            placeholder={isMobile ? "" : "오늘의 칵테일은?"}
             onChange={searchOnChangeHandle}
             onKeyUp={searchOnSumbitHandle}
             value={searchText}
@@ -134,7 +137,7 @@ const Header = () => {
           {!isLogin && (
             <>
               <MenuItem to={endPoind}>로그인</MenuItem>
-              <MenuItem to={"/signup"}>회원가입</MenuItem>
+              {!isMobile && <MenuItem to={"/signup"}>회원가입</MenuItem>}
             </>
           )}
           {isLogin && (

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { IoIosWine, IoMdHeart, IoMdPeople, IoMdCreate } from "react-icons/io";
+import { IoIosWine, IoMdHeart, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { navClose } from "./../../redux/slices/NavSlice";
@@ -15,15 +15,29 @@ const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   top: ${(props) => (props.isNavOpen ? "85px" : "-85px")};
   width: 100%;
   box-shadow: 0px 5px 20px rgba(152, 152, 152, 0.24);
+  @media screen and (max-width: 640px) {
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    right: ${(props) => (props.isNavOpen ? "0" : "-300px")};
+  }
 `;
 
 const NavLinkList = styled.div`
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   height: 85px;
   margin: 0 auto;
   display: flex;
   align-items: end;
   list-style: none;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+    padding-top: 85px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
 `;
 
 const NavListItems = styled.li`
@@ -58,6 +72,14 @@ const StyledNavLink = styled(NavLink)`
   }
   &.active {
     color: #4d68ff;
+  }
+  @media screen and (max-width: 640px) {
+    flex: none;
+    font-size: 1rem;
+    justify-content: start;
+    padding: 10px 0 10px 20px;
+    width: 100%;
+    height: 15%;
   }
 `;
 
