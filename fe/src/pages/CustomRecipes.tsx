@@ -42,8 +42,15 @@ const CardsRow = styled.div`
 
 export default function CustomRecipes() {
   const path = "custom";
-  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useMainPagination(path, getCustomCards);
+  const {
+    data,
+    pageInfo,
+    isLoading,
+    isPreviousData,
+    hasMore,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination(path, getCustomCards);
 
   return (
     <RecipesContainer>
@@ -55,13 +62,13 @@ export default function CustomRecipes() {
       </CustomGuide>
       <CardsRow>
         {isLoading && <LoadingComponent />}
-        {data?.data.map((recipe) => {
+        {data?.map((recipe) => {
           return <Card key={recipe.id} recipe={recipe} category="custom" />;
         })}
       </CardsRow>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
+          pageInfo={pageInfo}
           hasMore={!!hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}

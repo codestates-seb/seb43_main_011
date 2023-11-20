@@ -18,13 +18,20 @@ const ContentArea = styled.div`
 `;
 
 export default function MyWishList() {
-  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useMainPagination("bookmark", getCustomCards);
+  const {
+    data,
+    pageInfo,
+    isLoading,
+    isPreviousData,
+    hasMore,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination("bookmark", getCustomCards);
   return (
     <WishListContainer>
       {isLoading && <LoadingComponent />}
       <ContentArea>
-        {data?.data.map((recipe) => (
+        {data?.map((recipe) => (
           <Card
             key={recipe.id}
             recipe={recipe}
@@ -32,9 +39,9 @@ export default function MyWishList() {
           />
         ))}
       </ContentArea>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
+          pageInfo={pageInfo}
           hasMore={!!hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}

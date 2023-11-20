@@ -56,7 +56,8 @@ export const useMainPagination = (
   }, [path, listSize, page, queryClient]);
 
   return {
-    data,
+    data: data?.data,
+    pageInfo: data?.pageInfo,
     isLoading,
     isFetching,
     isPreviousData,

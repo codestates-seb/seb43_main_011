@@ -90,6 +90,7 @@ interface ListProps {
 export default function CardList({ path }: ListProps) {
   const {
     data,
+    pageInfo,
     isLoading,
     isFetching,
     isPreviousData,
@@ -119,9 +120,9 @@ export default function CardList({ path }: ListProps) {
         <div className="boundary">{`${boundary}`}</div>
         <div className="slash"></div>
         <div className="divider">
-          {isMobile && data?.pageInfo && data.pageInfo.totalPage > 1 && (
+          {isMobile && pageInfo && pageInfo.totalPage > 1 && (
             <RecipePagination
-              pageInfo={data?.pageInfo}
+              pageInfo={pageInfo}
               hasMore={hasMore}
               isPreviousData={isPreviousData}
               onNextClick={onNextClick}
@@ -132,17 +133,17 @@ export default function CardList({ path }: ListProps) {
       </CategoryBox>
       <CardsRow isTwo={showCardLength === 5 ? false : true}>
         {isLoading && <LoadingComponent />}
-        {data?.data?.[0] &&
-          data?.data.map((recipe, i) => {
+        {data?.[0] &&
+          data.map((recipe, i) => {
             return <Card recipe={recipe} key={i} category="regular" />;
           })}
-        {!isFetching && data?.data?.[0] === undefined && (
+        {!isFetching && data?.[0] === undefined && (
           <div>레시피가 존재하지 않습니다</div>
         )}
       </CardsRow>
-      {!isMobile && data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {!isMobile && pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
+          pageInfo={pageInfo}
           hasMore={hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}

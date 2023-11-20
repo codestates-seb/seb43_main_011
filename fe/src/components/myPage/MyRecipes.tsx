@@ -144,8 +144,15 @@ const RecipeEdit = styled(RiEdit2Line)`
 export default function MyRecipes() {
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
-  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useMainPagination("myRecipe", getMyRecipe);
+  const {
+    data,
+    pageInfo,
+    isLoading,
+    isPreviousData,
+    hasMore,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination("myRecipe", getMyRecipe);
 
   const [deleteQueue, setDeleteQueue] = useState<number[]>([]);
   const addToDeleteQueue = (id: number) => {
@@ -183,7 +190,7 @@ export default function MyRecipes() {
       </ButtonArea>
       <CardContainer>
         {isLoading && <LoadingComponent />}
-        {data?.data.map((recipe) => (
+        {data?.map((recipe) => (
           <CardWrapper key={recipe.id}>
             <CardMover isEdit={isEdit}>
               {deleteQueue.includes(recipe.id) && (
@@ -203,9 +210,9 @@ export default function MyRecipes() {
           </CardWrapper>
         ))}
       </CardContainer>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
+          pageInfo={pageInfo}
           hasMore={!!hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}
