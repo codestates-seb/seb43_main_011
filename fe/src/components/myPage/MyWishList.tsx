@@ -12,9 +12,16 @@ const ContentArea = styled.div`
   display: grid;
   gap: 30px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: auto;
   place-items: center;
   padding: 80px 30px;
+  @media screen and (max-width: 860px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
 `;
 
 export default function MyWishList() {

@@ -12,10 +12,15 @@ import { GoGear, GoCheck } from "react-icons/go";
 import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
 
 export const MyRecipesContainer = styled.div`
-  width: 1300px;
+  max-width: 1300px;
+  width: 100%;
   background: #ffffff;
   box-shadow: 2px 2px 13px -1px rgba(93, 93, 93, 0.7);
   border-radius: 30px;
+  @media screen and (max-width: 860px) {
+    min-height: 100vh;
+    height: 100%;
+  }
 `;
 
 const ButtonArea = styled.div`
@@ -46,9 +51,16 @@ const CardContainer = styled.div`
   padding: 50px 30px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: auto;
   row-gap: 50px;
   place-items: center;
+  @media screen and (max-width: 860px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
 `;
 
 const CardWrapper = styled.div`
@@ -56,6 +68,10 @@ const CardWrapper = styled.div`
   display: flex;
   height: 16rem;
   width: 13rem;
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    height: 320px;
+  }
 `;
 
 interface EditProps {
@@ -71,6 +87,9 @@ const CardMover = styled.div<EditProps>`
   position: absolute;
   left: ${({ isEdit }) => (isEdit ? "-5%" : "0")};
   transition: all 0.3s;
+  @media screen and (max-width: 640px) {
+    left: ${({ isEdit }) => (isEdit ? "-3%" : "0")};
+  }
 `;
 
 const DeleteChecked = styled.div`
@@ -113,6 +132,10 @@ const EditSpace = styled.div<EditProps>`
   justify-content: start;
   align-items: end;
   padding: 10px 10px 0 0;
+  @media screen and (max-width: 640px) {
+    right: ${({ isEdit }) => (isEdit ? "-4%" : "0")};
+    height: 100%;
+  }
 `;
 
 const RecipeDelete = styled(IoMdClose)`

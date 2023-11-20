@@ -4,40 +4,12 @@ import styled from "styled-components";
 import ImageUpload from "../imageupload/ImageUpload";
 import { tokenInstance } from "../../utils/tokeninstance";
 import { MyInfoData } from "../../pages/Mypage";
+import { InfoWrapper, MyInfoContainer } from "./MyInfo";
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1052px;
-  height: 420px;
-  background: #ffffff;
-  box-shadow: 2px 2px 13px -1px rgba(93, 93, 93, 0.7);
-  border-radius: 30px;
-  padding: 100px;
-`;
-
-const MyPhotoWrapper = styled.div`
-  margin-right: 100px;
-  margin-bottom: 100px;
-  overflow: hidden;
-`;
-
-const MyPhoto = styled.div`
-  margin: 0px 100px 50px 0px;
-  width: 230px;
-  height: 230px;
+const EditMyPhoto = styled.div`
+  margin: -80px auto 0px;
   background-color: #ffffff;
   border-radius: 10px;
-`;
-
-const InfoWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex-direction: column;
-  background-color: #ffffff;
 `;
 
 const Title = styled.h2`
@@ -49,7 +21,7 @@ const Title = styled.h2`
 
 const Input = styled.input`
   padding: 5px;
-  margin: 10px 50px 10px 0;
+  margin: 10px auto;
 
   border-radius: 5px;
   border: 1.5px solid #828282;
@@ -155,16 +127,14 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
     }
   };
   return (
-    <Container>
-      <MyPhotoWrapper>
-        <MyPhoto>
-          <ImageUpload
-            onImageUpload={handleImageUpload}
-            isEmpty={!imageFile}
-            initialImage={infoData?.imageUrl}
-          />
-        </MyPhoto>
-      </MyPhotoWrapper>
+    <MyInfoContainer>
+      <EditMyPhoto>
+        <ImageUpload
+          onImageUpload={handleImageUpload}
+          isEmpty={!imageFile}
+          initialImage={infoData?.imageUrl}
+        />
+      </EditMyPhoto>
       <InfoWrapper>
         <Title>Nickname</Title>
         <Input
@@ -182,6 +152,6 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
         />
         <Button onClick={handleSubmit}>save</Button>
       </InfoWrapper>
-    </Container>
+    </MyInfoContainer>
   );
 }

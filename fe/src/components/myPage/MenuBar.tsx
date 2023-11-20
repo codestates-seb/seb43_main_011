@@ -11,7 +11,8 @@ const Menu = styled.div`
   margin: 40px;
   background-color: #ffffff;
   height: 45px;
-  width: 500px;
+  max-width: 500px;
+  width: 90%;
 
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
