@@ -4,8 +4,10 @@ import { IoIosWine, IoMdHeart, IoMdCreate } from "react-icons/io";
 import { IconContext } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { navClose } from "./../../redux/slices/NavSlice";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { MobileViewContext } from "../../pages/Layout";
+import { Menu, MenuItem } from "../header/Header";
 
 const NavContainer = styled.nav<{ isNavOpen: boolean }>`
   position: fixed;
@@ -90,10 +92,27 @@ export default function NavBar() {
   useEffect(() => {
     dispatch(navClose());
   }, [location.pathname]);
-
+  const isMobile = useContext(MobileViewContext);
+  const isLogin = sessionStorage.getItem("UTK") !== null;
+  const endPoind = isLogin ? "/myPage" : "/signin";
   return (
     <NavContainer isNavOpen={isNavOpen}>
       <NavLinkList>
+        {isMobile && (
+          <Menu>
+            {!isLogin && (
+              <>
+                <MenuItem to={endPoind}>로그인</MenuItem>
+                <MenuItem to={"/signup"}>회원가입</MenuItem>
+              </>
+            )}
+            {isLogin && (
+              <>
+                <MenuItem to={endPoind}>마이페이지</MenuItem>
+              </>
+            )}
+          </Menu>
+        )}
         <IconContext.Provider value={{ size: "2rem" }}>
           <StyledNavLink to={"/"}>
             <IoIosWine />

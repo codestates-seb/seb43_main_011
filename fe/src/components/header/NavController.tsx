@@ -32,6 +32,9 @@ const ControllButton = styled.button<{ isNavOpen: boolean }>`
         ? "bottom: calc(50%+2.5px); transform: rotate(-45deg);"
         : "bottom: 0;"}
   }
+  @media screen and (max-width: 640px) {
+    margin-left: 10px;
+  }
 `;
 
 const MovementStick = styled.span`

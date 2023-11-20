@@ -70,12 +70,12 @@ const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   margin: 0 1rem 0 0.2rem;
   ${({ isFocus }) => isFocus && `color: #96a5ff;`}
 `;
-const Menu = styled.nav`
+export const Menu = styled.nav`
   display: flex;
   gap: 20px;
   margin: 22px;
 `;
-const MenuItem = styled(Link)`
+export const MenuItem = styled(Link)`
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
@@ -133,19 +133,21 @@ const Header = () => {
           />
         </SearchContainer>
 
-        <Menu>
-          {!isLogin && (
-            <>
-              <MenuItem to={endPoind}>로그인</MenuItem>
-              {!isMobile && <MenuItem to={"/signup"}>회원가입</MenuItem>}
-            </>
-          )}
-          {isLogin && (
-            <>
-              <MenuItem to={endPoind}>마이페이지</MenuItem>
-            </>
-          )}
-        </Menu>
+        {!isMobile && (
+          <Menu>
+            {!isLogin && (
+              <>
+                <MenuItem to={endPoind}>로그인</MenuItem>
+                <MenuItem to={"/signup"}>회원가입</MenuItem>
+              </>
+            )}
+            {isLogin && (
+              <>
+                <MenuItem to={endPoind}>마이페이지</MenuItem>
+              </>
+            )}
+          </Menu>
+        )}
         <NavController />
       </ItemArea>
     </Container>
