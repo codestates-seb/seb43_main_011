@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import CardList from "../components/card/CardList";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import CardListFallback from "../components/errorFallback/CardListFallback";
 import { useQueryErrorResetBoundary } from "react-query";
-import { MobileViewContext } from "./Layout";
 
 export const RecipesContainer = styled.div`
   min-height: 100vh;
