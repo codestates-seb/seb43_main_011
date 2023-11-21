@@ -42,18 +42,6 @@ const NavLinkList = styled.div`
   }
 `;
 
-const NavListItems = styled.li`
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 10px 0 10px 50px;
-  &:hover {
-    background-color: #eef1ff;
-    border-bottom: 5px solid #657bf8;
-  }
-`;
-
 const StyledNavLink = styled(NavLink)`
   font-size: 1.5rem;
   font-weight: bold;
@@ -122,10 +110,6 @@ export default function NavBar() {
             <IoMdHeart />
             <p>커스텀 레시피</p>
           </StyledNavLink>
-          {/* <StyledNavLink to={"/recommendation"}>
-            <IoMdPeople />
-            <p>레시피 추천</p>
-          </StyledNavLink> */}
           <StyledNavLink to={"/registration"}>
             <IoMdCreate />
             <p>레시피 등록하기</p>

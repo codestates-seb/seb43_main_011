@@ -95,6 +95,8 @@ export const MenuItem = styled(Link)`
   @media screen and (max-width: 640px) {
     background-color: #8092f6;
     color: #ffff;
+    padding: 0.5rem;
+    margin: 0 5px;
     &:hover {
       background-color: #6379f4;
       color: #ffff;
