@@ -9,15 +9,26 @@ const NotLoginContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 85px;
 `;
 
 const GuideMessageTitle = styled.h1`
   margin-top: -10px;
   font-size: 2rem;
+  @media screen and (max-width: 640px) {
+    font-size: 1.5rem;
+    text-align: center;
+  }
 `;
 const GuideMessageContent = styled.p`
   line-height: 5rem;
   font-size: 1.5rem;
+  @media screen and (max-width: 640px) {
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+  }
 `;
 const ToLoginPage = styled.button`
   margin-top: 20px;
@@ -39,6 +50,9 @@ const ToLoginPage = styled.button`
 const MascotImg = styled.img`
   width: 400px;
   margin-top: -100px;
+  @media screen and (max-width: 640px) {
+    width: 300px;
+  }
 `;
 
 export default function IsNotLogin() {
