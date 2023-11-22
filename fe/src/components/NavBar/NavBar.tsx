@@ -65,11 +65,13 @@ const StyledNavLink = styled(NavLink)`
   }
   @media screen and (max-width: 640px) {
     flex: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     justify-content: start;
     padding: 10px 0 10px 20px;
     width: 100%;
-    height: 15%;
+    height: 13%;
+    word-break: keep-all;
+    line-height: 1.5rem;
   }
 `;
 
