@@ -75,7 +75,11 @@ export const Menu = styled.nav`
   gap: 20px;
   margin: 22px;
   @media screen and (max-width: 640px) {
-    margin: 0%;
+    margin: 0 auto;
+    gap: 5px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 `;
 export const MenuItem = styled(Link)`
@@ -97,6 +101,8 @@ export const MenuItem = styled(Link)`
     color: #ffff;
     padding: 0.5rem;
     margin: 0 5px;
+    width: 80%;
+    text-align: center;
     &:hover {
       background-color: #6379f4;
       color: #ffff;
