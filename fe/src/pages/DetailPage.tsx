@@ -1,35 +1,26 @@
 import styled from "styled-components";
 import { BsBookmarkStar, BsBookmarkStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import {
-  useFetchRecipe,
-  useAddWish,
-  useDeleteWish,
-} from "../hooks/useFetchRecipe";
-import { useQueryClient } from "react-query";
+import { useFetchRecipe } from "../hooks/useFetchRecipe";
 import LoadingComponent from "../components/loading/LoadingComponent";
 import { useEffect } from "react";
 
 export default function DetailPage() {
   const { category, id } = useParams();
-  const queryClient = useQueryClient();
-  const { data, isLoading } = useFetchRecipe(category || "", id || "");
+  const { data, isLoading, addWish, deleteWish } = useFetchRecipe(
+    category || "",
+    id || "",
+  );
   const separator = new RegExp(`${"\n|\\\\n"}`);
-  const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
-  const propsData = { type: rcpType, recipeId: id };
   const isNotLogin = sessionStorage.getItem("UTK") === null;
-  const deleteWishMutation = useDeleteWish(propsData);
-  const addWishMutation = useAddWish(propsData);
-  const widhClickHandle = async () => {
+  const widhClickHandle = () => {
     if (isNotLogin) {
       window.alert("찜하기는 로그인 후 이용하실 수 있습니다.");
     } else {
       if (data?.data.wishList) {
-        await deleteWishMutation.mutateAsync();
-        queryClient.invalidateQueries("recipe");
+        deleteWish();
       } else {
-        await addWishMutation.mutateAsync();
-        queryClient.invalidateQueries("recipe");
+        addWish();
       }
     }
   };
