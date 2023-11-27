@@ -35,7 +35,6 @@ export default function Layout() {
       observer.observe(recipeContainerRef.current);
     }
   }, [recipeContainerRef.current]);
-  console.log(isMobile);
   return (
     <MobileViewContext.Provider value={isMobile}>
       <TopContainer ref={recipeContainerRef}>
