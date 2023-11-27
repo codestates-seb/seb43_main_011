@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { tokenInstance } from "../utils/tokeninstance";
+import { queryKeys } from "../utils/queryKeys";
 
 export interface RecipeData {
   data: {
@@ -25,7 +26,7 @@ export const useFetchRecipe = (category: string, id: string) => {
     navigate("/error");
   }
   const { data, isLoading } = useQuery<RecipeData>(
-    ["recipe", id],
+    queryKeys.detail(id, category),
     () => fetchRecipe(category, id),
     {
       retry: 0,

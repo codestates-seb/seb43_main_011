@@ -9,7 +9,6 @@ import { IoMdClose } from "react-icons/io";
 import { RiEdit2Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { GoGear, GoCheck } from "react-icons/go";
-import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
 
 export const MyRecipesContainer = styled.div`
   max-width: 1300px;
@@ -52,7 +51,7 @@ const CardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
-  row-gap: 50px;
+  gap: 50px;
   place-items: center;
   @media screen and (max-width: 860px) {
     grid-template-columns: repeat(3, 1fr);
@@ -175,6 +174,7 @@ export default function MyRecipes() {
     hasMore,
     onNextClick,
     onPrevClick,
+    deleteMyRecipe,
   } = useMainPagination("myRecipe", getMyRecipe);
 
   const [deleteQueue, setDeleteQueue] = useState<number[]>([]);
@@ -186,13 +186,10 @@ export default function MyRecipes() {
     }
   };
 
-  const deleteMutation = useDeleteRecipe();
-
   const recipeDeleteClick = async () => {
-    deleteQueue &&
-      (await Promise.all(
-        deleteQueue.map((id) => deleteMutation.mutateAsync(id)),
-      ));
+    if (deleteMyRecipe && deleteQueue) {
+      await Promise.all(deleteQueue.map((id) => deleteMyRecipe(id)));
+    }
   };
 
   const EditFormChange = async () => {
