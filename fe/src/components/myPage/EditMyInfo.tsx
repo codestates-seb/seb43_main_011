@@ -5,6 +5,7 @@ import ImageUpload from "../imageupload/ImageUpload";
 import { tokenInstance } from "../../utils/tokeninstance";
 import { MyInfoData } from "../../pages/Mypage";
 import { InfoWrapper, MyInfoContainer } from "./MyInfo";
+import { queryKeys } from "../../utils/queryKeys";
 
 const EditMyPhoto = styled.div`
   margin: -80px auto 0px;
@@ -86,7 +87,7 @@ export default function EditMyInfo({ infoData, ToggleEditHandle }: EditProps) {
     },
     {
       onSuccess: () => {
-        QueryClient.invalidateQueries("userInfo");
+        QueryClient.invalidateQueries(queryKeys.myInfo);
         ToggleEditHandle();
       },
       onError: () => {

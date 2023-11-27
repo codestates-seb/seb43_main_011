@@ -19,4 +19,5 @@ export const queryKeys = {
     id,
     category,
   ],
+  myInfo: ["myInfo"] as const,
 };

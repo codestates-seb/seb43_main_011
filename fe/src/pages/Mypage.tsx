@@ -9,6 +9,7 @@ import { tokenInstance } from "../utils/tokeninstance";
 import MyRecipes from "../components/myPage/MyRecipes";
 import IsNotLogin from "../components/errorFallback/IsNotLogin";
 import MyWishList from "../components/myPage/MyWishList";
+import { queryKeys } from "../utils/queryKeys";
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ export default function Mypage() {
   };
 
   const { data, isLoading, isError } = useQuery<MyInfoData>(
-    "userInfo",
+    queryKeys.myInfo,
     fetchUserInfo,
   );
   async function fetchUserInfo() {
