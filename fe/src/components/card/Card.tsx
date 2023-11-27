@@ -22,6 +22,8 @@ const Card = ({ recipe, category }: CardProps) => {
 
 const Container = styled.div`
   height: 16rem;
+  max-width: 13rem;
+  width: 100%;
   overflow: hidden;
   border: 1px solid lightgray;
   border-radius: 15px;
@@ -32,7 +34,7 @@ const Container = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   @media screen and (max-width: 640px) {
-    width: 100%;
+    max-width: none;
     height: 20rem;
   }
 `;
