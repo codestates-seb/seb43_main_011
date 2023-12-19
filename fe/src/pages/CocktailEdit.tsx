@@ -1,13 +1,36 @@
-import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlinePlus, AiFillPlusCircle } from "react-icons/ai";
-import { TiDelete } from "react-icons/ti";
 import { Line } from "../utils/query";
-import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
+import React, { useState, useEffect, KeyboardEvent } from "react";
 import { useQuery, useMutation } from "react-query";
 import FormData from "form-data";
-import { FcEditImage } from "react-icons/fc";
 import { tokenInstance } from "../utils/tokeninstance";
+import {
+  Container,
+  EditForm,
+  TopInfo,
+  TopCocktailSummary,
+  LabelName,
+  InputName,
+  LabelSummary,
+  InputSummary,
+  BottomInfo,
+  IngredientLabel,
+  SelectList,
+  SelectLine,
+  InputType,
+  DeleteButton,
+  InputAmount,
+  UnitSelector,
+  DivisionLine,
+  IconContainer,
+  FillIcon,
+  OutIcon,
+  RecipeLabel,
+  RecipeStep,
+  SubmitButton,
+  ListLabel,
+} from "./CocktailRegistration";
+import ImageUpload from "../components/imageupload/ImageUpload";
 
 const CocktailEdit = () => {
   const navigate = useNavigate();
@@ -16,7 +39,6 @@ const CocktailEdit = () => {
   const [EditpreviewImage, setEditPreviewImage] = useState<string>("");
   const [selectLineId, setSelectLineId] = useState<number>(-1);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [editName, setEditName] = useState<string>("");
   const [editDescription, setEditDescription] = useState<string>("");
   const [editRecipeStep, setEditRecipeStep] = useState<string>("");
@@ -30,21 +52,8 @@ const CocktailEdit = () => {
     navigate("/error");
   }
 
-  // 버튼효과
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-    if (event.key === " ") {
-      event.preventDefault();
-    }
-  }
-
   const [selectLines, setSelectLines] = useState<Line[]>([]);
+
   useEffect(() => {
     interface Line {
       id: number;
@@ -82,6 +91,19 @@ const CocktailEdit = () => {
       setSelectLines(initialSelectLines);
     }
   }, [data, isLoading]);
+  // 버튼효과
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === " ") {
+      event.preventDefault();
+    }
+  }
 
   // +버튼을 누르면 재료등록폼 추가
   const handleAddSelectLine = () => {
@@ -108,20 +130,8 @@ const CocktailEdit = () => {
     }
   };
 
-  const handleUploadImage = () => {
-    // 파일 선택(input) 요소를 클릭하여 이미지 선택 다이얼로그 표시
-    if (inputFileRef.current !== undefined) {
-      inputFileRef.current?.click();
-    }
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // 선택한 이미지 파일
-    if (file) {
-      handleUploadImage();
-      setEditPreviewImage(URL.createObjectURL(file)); // 미리보기 이미지 URL 설정
-      setSelectedImage(file);
-    }
+  const handleImageUpload = (image: File) => {
+    setSelectedImage(image);
   };
 
   interface NewRecipe {
@@ -200,17 +210,10 @@ const CocktailEdit = () => {
     <Container>
       <EditForm>
         <TopInfo>
-          <UploadImgButton onClick={handleUploadImage}>
-            {data ? (
-              <PreviewImg src={EditpreviewImage} alt="Preview" />
-            ) : (
-              <UploadImgIcon />
-            )}
-          </UploadImgButton>
-          <UploadImgInput
-            type="file"
-            ref={inputFileRef}
-            onChange={handleImageChange}
+          <ImageUpload
+            onImageUpload={handleImageUpload}
+            isEmpty={!selectedImage}
+            initialImage={EditpreviewImage}
           />
           <TopCocktailSummary>
             <LabelName>이름을 알려주세요</LabelName>
@@ -233,7 +236,7 @@ const CocktailEdit = () => {
             <React.Fragment key={line.id}>
               <SelectList>
                 <SelectLine>
-                  <ListType>종류 :</ListType>
+                  <ListLabel>종류 :</ListLabel>
                   <InputType
                     placeholder="ex) 화이트럼"
                     onKeyDown={handleKeyDown}
@@ -252,7 +255,7 @@ const CocktailEdit = () => {
                   />
                 </SelectLine>
                 <SelectLine>
-                  <ListAmount>수량 :</ListAmount>
+                  <ListLabel>수량 :</ListLabel>
                   <InputAmount
                     placeholder="ex) 30"
                     value={line.amount}
@@ -314,271 +317,3 @@ const CocktailEdit = () => {
 };
 
 export default CocktailEdit;
-
-const BottomInfo = styled.div`
-  text-align: center;
-  width: 50rem;
-`;
-
-const IconContainer = styled.div`
-  display: inline-block;
-`;
-
-const UnitSelector = styled.select`
-  margin: 0;
-  padding: 0 0 0 5px;
-  width: 5rem;
-  height: 1.5rem;
-  border: 0.5px solid gray;
-  border-radius: 5px;
-`;
-
-const DivisionLine = styled.div`
-  padding: 15px;
-  width: 50rem;
-  border-top: 1px solid gray;
-`;
-
-const RecipeStep = styled.textarea`
-  width: 50rem;
-  height: 8rem;
-  border-radius: 5px;
-  padding: 10px;
-  border: 0.5px solid gray;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
-  }
-`;
-
-const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const IngredientLabel = styled.div`
-  width: 50rem;
-  display: flex;
-  margin: 10px;
-  color: #828282;
-  font-weight: 900;
-`;
-
-const TopInfo = styled.div`
-  display: flex;
-  margin-bottom: 2rem;
-`;
-
-const TopCocktailSummary = styled.div`
-  margin-top: 6rem;
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-`;
-
-const InputName = styled.input`
-  width: 32rem;
-  height: 2rem;
-  padding: 5px;
-  border-radius: 5px;
-  border: 0.5px solid gray;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
-  }
-`;
-
-const InputType = styled.input`
-  margin: 0;
-  padding: 5px;
-  width: 39.5rem;
-  margin-right: 1rem;
-  height: 1.5rem;
-  border: 0.5px solid gray;
-  border-radius: 5px;
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
-  }
-`;
-
-const InputAmount = styled.input`
-  margin-right: 1rem;
-  padding: 5px;
-  width: 33.5rem;
-  height: 1.5rem;
-  border: 0.5px solid gray;
-  border-radius: 5px;
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
-  }
-`;
-
-const InputSummary = styled.input`
-  width: 32rem;
-  height: 8rem;
-  padding: 5px;
-  border-radius: 5px;
-  border: 0.5px solid gray;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.2); /* 흐릿한 색상으로 변경 */
-  }
-`;
-
-const LabelName = styled.label`
-  width: 16rem;
-  margin-bottom: 0.5rem;
-  color: #96a5ff;
-  font-weight: 900;
-  text-align: left;
-`;
-
-const RecipeLabel = styled.label`
-  width: 50rem;
-  color: #828282;
-  font-weight: 900;
-  display: flex;
-  margin: 10px;
-`;
-
-const LabelSummary = styled.label`
-  width: 16rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #96a5ff;
-  font-weight: 900;
-  text-align: left;
-`;
-
-const ListType = styled.label`
-  margin-right: 2.5rem;
-  font-weight: 900;
-  color: #828282;
-`;
-
-const ListAmount = styled.label`
-  margin-right: 2.5rem;
-  font-weight: 900;
-  color: #828282;
-`;
-
-const EditForm = styled.div`
-  margin-top: 60px;
-  width: 100%; //수치조정으로 Figma처럼 그림자 틀 조정가능아래 box-shadow 주석확인
-  min-height: 100%;
-  /* border-right: 1px solid lightgray;
-  border-left: 1px solid lightgray; 
-  box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);  */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const SelectLine = styled.div`
-  margin: 5px;
-  margin-left: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-const SubmitButton = styled.button`
-  width: 5rem;
-  height: 2rem;
-  border-radius: 5px;
-  border-style: none;
-  background-color: #96a5ff;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 60px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  &:hover {
-    cursor: pointer;
-    background-color: #5d5d5d;
-    color: #ffff;
-  }
-`;
-
-const DeleteButton = styled(TiDelete)`
-  font-size: 1.5rem;
-  margin: 0;
-  padding: 0;
-  color: red;
-  display: none;
-  &:hover {
-    cursor: pointer;
-    color: #5d5d5d;
-  }
-`;
-
-const SelectList = styled.div`
-  height: 6rem;
-  margin-bottom: 20px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  position: relative; /* 수정: 추가 */
-  &:hover {
-    ${DeleteButton} {
-      display: block;
-    }
-  }
-`;
-
-const OutIcon = styled(AiOutlinePlus)`
-  font-size: 2rem;
-  color: #96a5ff;
-  &:hover {
-    cursor: pointer;
-    color: #5d5d5d;
-  }
-`;
-
-const FillIcon = styled(AiFillPlusCircle)`
-  font-size: 2rem;
-  color: #96a5ff;
-  &:hover {
-    cursor: pointer;
-    color: #5d5d5d;
-  }
-`;
-
-const UploadImgIcon = styled(FcEditImage)`
-  font-size: 3rem;
-`;
-
-const UploadImgButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-  margin-top: 5rem;
-  width: 16rem;
-  height: 16rem;
-  border: none;
-  background: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
-const PreviewImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
-`;
-
-const UploadImgInput = styled.input`
-  display: none;
-`;

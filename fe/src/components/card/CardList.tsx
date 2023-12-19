@@ -1,16 +1,19 @@
 import styled from "styled-components";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import Card from "./Card";
 import RecipePagination from "./RecipePagination";
 import { useMainPagination } from "../../hooks/useMainPagination";
 import { getCards } from "../../utils/query";
 import LoadingComponent from "../loading/LoadingComponent";
+import { MobileViewContext } from "../../pages/Layout";
 
 const CardsContainer = styled.div`
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const CategoryBox = styled.div`
+  width: 98%;
   display: flex;
   font-weight: bold;
   font-size: 1.1rem;
@@ -34,22 +37,46 @@ const CategoryBox = styled.div`
     flex-basis: 90%;
     margin-bottom: 4px;
   }
+  @media screen and (max-width: 640px) {
+    width: 94%;
+    border-top: 2px solid #6f8892e8;
+    padding-top: 20px;
+    margin: 0 auto;
+    > .boundary {
+      flex-basis: 20%;
+      border-top: none;
+      border-radius: 15px;
+      background-color: #8697f7;
+      color: white;
+    }
+    > .divider {
+      flex-basis: 80%;
+      border-bottom: none;
+      padding-top: 6px;
+    }
+    > .slash {
+      background-color: inherit;
+    }
+  }
 `;
 
-interface RowInterface {
-  isTwo: boolean;
-  isSearch?: boolean;
-}
-const CardsRow = styled.div<RowInterface>`
+export const CardsRow = styled.div`
   margin: 20px 0;
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(
-    ${(props: RowInterface) => (props.isTwo ? 2 : 1)},
-    1fr
-  );
+  grid-template-rows: auto;
   grid-gap: 30px;
   place-items: center;
+  @media screen and (max-width: 1029px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media screen and (max-width: 820px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 interface ListProps {
@@ -59,11 +86,11 @@ interface ListProps {
 export default function CardList({ path }: ListProps) {
   const {
     data,
+    pageInfo,
     isLoading,
     isFetching,
     isPreviousData,
     hasMore,
-    showCardLength,
     onNextClick,
     onPrevClick,
   } = useMainPagination(path, getCards);
@@ -81,27 +108,38 @@ export default function CardList({ path }: ListProps) {
     }
   }, [path]);
 
+  const isMobile = useContext(MobileViewContext);
   return (
     <CardsContainer>
       <CategoryBox>
         <div className="boundary">{`${boundary}`}</div>
         <div className="slash"></div>
-        <div className="divider"></div>
+        <div className="divider">
+          {isMobile && pageInfo && pageInfo.totalPage > 1 && (
+            <RecipePagination
+              pageInfo={pageInfo}
+              hasMore={hasMore}
+              isPreviousData={isPreviousData}
+              onNextClick={onNextClick}
+              onPrevClick={onPrevClick}
+            />
+          )}
+        </div>
       </CategoryBox>
-      <CardsRow isTwo={showCardLength === 5 ? false : true}>
+      <CardsRow>
         {isLoading && <LoadingComponent />}
-        {data?.data?.[0] &&
-          data?.data.map((recipe, i) => {
+        {data?.[0] &&
+          data.map((recipe, i) => {
             return <Card recipe={recipe} key={i} category="regular" />;
           })}
-        {!isFetching && data?.data?.[0] === undefined && (
+        {!isFetching && data?.[0] === undefined && (
           <div>레시피가 존재하지 않습니다</div>
         )}
       </CardsRow>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {!isMobile && pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
-          hasMore={!!hasMore}
+          pageInfo={pageInfo}
+          hasMore={hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}
           onPrevClick={onPrevClick}

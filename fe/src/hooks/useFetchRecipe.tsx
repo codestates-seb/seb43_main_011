@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { tokenInstance } from "../utils/tokeninstance";
+import { queryKeys } from "../utils/queryKeys";
 
 export interface RecipeData {
   data: {
@@ -18,45 +19,57 @@ const fetchRecipe = async (category: string, id: string) => {
   const response = await tokenInstance.get(`/${category}/find/${id}`);
   return response.data;
 };
+interface WishArguments {
+  type: string;
+  id: string | undefined;
+}
+const fetchAddWish = async (data: WishArguments) => {
+  const body = { recipeType: data.type, id: data.id };
+  const res = await tokenInstance.post(
+    `/bookmark/submit/${data.id}`,
+    JSON.stringify(body),
+  );
+  return res.data;
+};
+
+const fetchDeleteWish = async (data: WishArguments) => {
+  const body = { recipeType: data.type, id: data.id };
+  return await tokenInstance
+    .delete(`/bookmark/cancel/${data.id}`, {
+      data: JSON.stringify(body),
+    })
+    .then((res) => res);
+};
 
 export const useFetchRecipe = (category: string, id: string) => {
   const navigate = useNavigate();
+  const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
+  const queryClient = useQueryClient();
   if (category === "" && id === "") {
     navigate("/error");
   }
+
+  const addWishMutation = useMutation(fetchAddWish);
+  const deleteWishMutation = useMutation(fetchDeleteWish);
+  const wishData = { type: rcpType, id: id };
+
+  const addWish = async () => {
+    await addWishMutation.mutateAsync(wishData);
+    queryClient.invalidateQueries(queryKeys.detail(id, category));
+  };
+
+  const deleteWish = async () => {
+    await deleteWishMutation.mutateAsync(wishData);
+    queryClient.invalidateQueries(queryKeys.detail(id, category));
+  };
+
   const { data, isLoading } = useQuery<RecipeData>(
-    ["recipe", id],
+    queryKeys.detail(id, category),
     () => fetchRecipe(category, id),
     {
       retry: 0,
     },
   );
-  return { data, isLoading };
-};
-interface propsData {
-  type: string;
-  recipeId: string | undefined;
-}
-export const useAddWish = (propsData: propsData) => {
-  const addWishList = async () => {
-    const body = { recipeType: propsData.type, id: propsData.recipeId };
-    return await tokenInstance
-      .post(`/bookmark/submit/${propsData.recipeId}`, JSON.stringify(body))
-      .then((res) => res);
-  };
-  const wishMutation = useMutation(addWishList);
-  return wishMutation;
-};
 
-export const useDeleteWish = (propsData: propsData) => {
-  const deleteWish = async () => {
-    const body = { recipeType: propsData.type, id: propsData.recipeId };
-    return await tokenInstance
-      .delete(`/bookmark/cancel/${propsData.recipeId}`, {
-        data: JSON.stringify(body),
-      })
-      .then((res) => res);
-  };
-  const wishMutation = useMutation(deleteWish);
-  return wishMutation;
+  return { data, isLoading, addWish, deleteWish };
 };

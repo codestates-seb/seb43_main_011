@@ -14,8 +14,8 @@ const RegularTab = styled.div<TabProps>`
   background-color: ${({ path }) => (path ? "white" : "#dfdfdf")};
   ${({ path }) => (path ? "border-bottom: none;" : "")}
   font-size: 1.3rem;
-  padding: 10px;
-  flex-basis: 12%;
+  width: 163px;
+  padding: 10px 0ch;
   text-align: center;
   border-radius: 5px 5px 0 0;
   &:hover {
@@ -28,6 +28,12 @@ const LeftMargin = styled.div`
 `;
 const RightMargin = styled(LeftMargin)`
   flex-basis: 73%;
+  @media screen and (max-width: 1000px) {
+    flex-basis: 65%;
+  }
+  @media screen and (max-width: 640px) {
+    flex-basis: 45%;
+  }
 `;
 
 const CustomTab = styled(RegularTab)`

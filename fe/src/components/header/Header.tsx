@@ -4,7 +4,8 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import NavController from "./NavController";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MobileViewContext } from "../../pages/Layout";
 
 const Container = styled.header<{ isNavOpen: boolean }>`
   height: 85px;
@@ -22,7 +23,8 @@ const Container = styled.header<{ isNavOpen: boolean }>`
 `;
 
 const ItemArea = styled.div`
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -44,7 +46,7 @@ interface SearchInputFocus {
 const SearchContainer = styled.div<SearchInputFocus>`
   display: flex;
   align-items: center;
-  width: 100%;
+  flex: 2 2;
   max-width: 900px;
   margin-left: 0.5rem;
   padding: 0.5rem;
@@ -58,7 +60,7 @@ const SearchContainer = styled.div<SearchInputFocus>`
 `;
 const SearchInput = styled.input`
   border: none;
-  width: 95%;
+  width: 90%;
   outline: none;
   margin-right: 10px;
   font-size: 1.3rem;
@@ -68,12 +70,19 @@ const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   margin: 0 1rem 0 0.2rem;
   ${({ isFocus }) => isFocus && `color: #96a5ff;`}
 `;
-const Menu = styled.nav`
+export const Menu = styled.nav`
   display: flex;
   gap: 20px;
   margin: 22px;
+  @media screen and (max-width: 640px) {
+    margin: 0 auto;
+    gap: 5px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 `;
-const MenuItem = styled(Link)`
+export const MenuItem = styled(Link)`
   color: #5a5a5a;
   background-color: #ffff;
   width: max-content;
@@ -86,6 +95,18 @@ const MenuItem = styled(Link)`
     cursor: pointer;
     background-color: #8092f6;
     color: #ffff;
+  }
+  @media screen and (max-width: 640px) {
+    background-color: #8092f6;
+    color: #ffff;
+    padding: 0.5rem;
+    margin: 0 5px;
+    width: 80%;
+    text-align: center;
+    &:hover {
+      background-color: #6379f4;
+      color: #ffff;
+    }
   }
 `;
 
@@ -107,6 +128,7 @@ const Header = () => {
 
   const endPoind = isLogin ? "/myPage" : "/signin";
 
+  const isMobile = useContext(MobileViewContext);
   return (
     <Container isNavOpen={isNavOpen}>
       <ItemArea>
@@ -121,7 +143,7 @@ const Header = () => {
           </p>
           <SearchInput
             type="text"
-            placeholder="오늘의 칵테일은?"
+            placeholder={isMobile ? "" : "오늘의 칵테일은?"}
             onChange={searchOnChangeHandle}
             onKeyUp={searchOnSumbitHandle}
             value={searchText}
@@ -130,19 +152,21 @@ const Header = () => {
           />
         </SearchContainer>
 
-        <Menu>
-          {!isLogin && (
-            <>
-              <MenuItem to={endPoind}>로그인</MenuItem>
-              <MenuItem to={"/signup"}>회원가입</MenuItem>
-            </>
-          )}
-          {isLogin && (
-            <>
-              <MenuItem to={endPoind}>마이페이지</MenuItem>
-            </>
-          )}
-        </Menu>
+        {!isMobile && (
+          <Menu>
+            {!isLogin && (
+              <>
+                <MenuItem to={endPoind}>로그인</MenuItem>
+                <MenuItem to={"/signup"}>회원가입</MenuItem>
+              </>
+            )}
+            {isLogin && (
+              <>
+                <MenuItem to={endPoind}>마이페이지</MenuItem>
+              </>
+            )}
+          </Menu>
+        )}
         <NavController />
       </ItemArea>
     </Container>

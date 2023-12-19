@@ -6,6 +6,10 @@ import { getCustomCards } from "../utils/query";
 import { useMainPagination } from "../hooks/useMainPagination";
 import RecipePagination from "../components/card/RecipePagination";
 import LoadingComponent from "../components/loading/LoadingComponent";
+import { CardsRow } from "../components/card/CardList";
+import { useContext } from "react";
+import { MobileViewContext } from "./Layout";
+
 const CustomGuide = styled.div`
   display: flex;
 `;
@@ -31,19 +35,18 @@ const GuideText = styled.div`
   font-size: 1.2rem;
 `;
 
-const CardsRow = styled.div`
-  margin: 20px 0;
-  padding-bottom: 30px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 30px;
-  place-items: center;
-`;
-
 export default function CustomRecipes() {
   const path = "custom";
-  const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
-    useMainPagination(path, getCustomCards);
+  const {
+    data,
+    pageInfo,
+    isLoading,
+    isPreviousData,
+    hasMore,
+    onNextClick,
+    onPrevClick,
+  } = useMainPagination(path, getCustomCards);
+  const isMobile = useContext(MobileViewContext);
 
   return (
     <RecipesContainer>
@@ -53,15 +56,24 @@ export default function CustomRecipes() {
           레시피 등록하기
         </RegistrationLink>
       </CustomGuide>
+      {isMobile && pageInfo && pageInfo.totalPage > 1 && (
+        <RecipePagination
+          pageInfo={pageInfo}
+          hasMore={!!hasMore}
+          isPreviousData={isPreviousData}
+          onNextClick={onNextClick}
+          onPrevClick={onPrevClick}
+        />
+      )}
       <CardsRow>
         {isLoading && <LoadingComponent />}
-        {data?.data.map((recipe) => {
+        {data?.map((recipe) => {
           return <Card key={recipe.id} recipe={recipe} category="custom" />;
         })}
       </CardsRow>
-      {data?.pageInfo && data.pageInfo.totalPage > 1 && (
+      {!isMobile && pageInfo && pageInfo.totalPage > 1 && (
         <RecipePagination
-          pageInfo={data?.pageInfo}
+          pageInfo={pageInfo}
           hasMore={!!hasMore}
           isPreviousData={isPreviousData}
           onNextClick={onNextClick}

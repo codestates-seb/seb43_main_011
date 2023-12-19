@@ -8,7 +8,8 @@ import { useQueryErrorResetBoundary } from "react-query";
 export const RecipesContainer = styled.div`
   min-height: 100vh;
   height: 100%;
-  width: 1360px;
+  width: 100%;
+  max-width: 1360px;
   margin: 80px auto 0;
   position: relative;
   padding: 60px 0 20px;

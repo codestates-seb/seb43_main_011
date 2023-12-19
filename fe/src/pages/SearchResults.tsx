@@ -2,21 +2,23 @@ import { RecipesContainer } from "./Main";
 import { useSearchParams } from "react-router-dom";
 import SearchResultTab from "../components/card/SearchResultsTab";
 import styled from "styled-components";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SearchedRecipe from "../components/card/SearchedRecipe";
 import RecipePagination from "../components/card/RecipePagination";
 import { useSearchedPagination } from "../hooks/useSearchedPagination";
 import LoadingComponent from "../components/loading/LoadingComponent";
-import { useQueryClient } from "react-query";
 import doNotHave from "../images/doNothaveRecipe.png";
 
 const CardListArea = styled.div`
   margin: 30px 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: auto;
   grid-gap: 30px;
   place-items: center;
+  @media screen and (max-width: 740px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const NoneSearchedBox = styled.div`
@@ -38,14 +40,10 @@ const DoNotHaveImage = styled.img`
 `;
 
 export default function SearchResults() {
-  const queryClient = useQueryClient();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchValue = searchParams.get("value") ?? "";
+  const [searchParams] = useSearchParams();
+  const searchValue = searchParams.get("value") as string;
   const category = useMemo(() => ["regular", "custom"], []);
   const [path, setPath] = useState(category[0]);
-  useEffect(() => {
-    queryClient.clear();
-  }, []);
   const { data, isLoading, isPreviousData, hasMore, onNextClick, onPrevClick } =
     useSearchedPagination(path, searchValue);
   const currentTab = path === "regular" ? "정규" : "커스텀";

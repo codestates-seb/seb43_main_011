@@ -2,32 +2,42 @@ import styled from "styled-components";
 import { MyInfoData } from "../../pages/Mypage";
 import { useNavigate } from "react-router-dom";
 
-const Container = styled.div`
+export const MyInfoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1052px;
+  max-width: 1052px;
+  width: 98%;
   height: 420px;
   background: #ffffff;
   box-shadow: 2px 2px 13px -1px rgba(93, 93, 93, 0.7);
   border-radius: 30px;
   padding: 100px;
+  @media screen and (max-width: 860px) {
+    height: 100%;
+    flex-direction: column;
+  }
 `;
 
 const MyPhoto = styled.img`
-  margin: 0px 50px 50px 0px;
+  margin: -50px 0 0;
   width: 280px;
   height: 280px;
   border-radius: 10px;
 `;
 
-const InfoWrapper = styled.div`
+export const InfoWrapper = styled.div`
   flex: 1;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   flex-direction: column;
   background-color: #ffffff;
+  margin-left: 30px;
+  @media screen and (max-width: 860px) {
+    margin: 0;
+  }
 `;
 
 const Title = styled.h2`
@@ -43,11 +53,13 @@ const Content = styled.div`
   padding-left: 23px;
   margin: 10px 50px 10px 0;
   font-size: 20px;
-  width: 450px;
+  max-width: 450px;
+  width: 100%;
   height: 50px;
 `;
 
 const InputWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
@@ -103,7 +115,7 @@ export default function MyInfo({
     return null;
   }
   return (
-    <Container>
+    <MyInfoContainer>
       <MyPhoto src={data.imageUrl} />
       <InfoWrapper>
         <InputWrapper>
@@ -129,6 +141,6 @@ export default function MyInfo({
           <Button onClick={ToggleEditHandle}>Edit</Button>
         </ButtonRow>
       </InfoWrapper>
-    </Container>
+    </MyInfoContainer>
   );
 }

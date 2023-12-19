@@ -1,35 +1,26 @@
 import styled from "styled-components";
 import { BsBookmarkStar, BsBookmarkStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import {
-  useFetchRecipe,
-  useAddWish,
-  useDeleteWish,
-} from "../hooks/useFetchRecipe";
-import { useQueryClient } from "react-query";
+import { useFetchRecipe } from "../hooks/useFetchRecipe";
 import LoadingComponent from "../components/loading/LoadingComponent";
 import { useEffect } from "react";
 
 export default function DetailPage() {
   const { category, id } = useParams();
-  const queryClient = useQueryClient();
-  const { data, isLoading } = useFetchRecipe(category || "", id || "");
+  const { data, isLoading, addWish, deleteWish } = useFetchRecipe(
+    category || "",
+    id || "",
+  );
   const separator = new RegExp(`${"\n|\\\\n"}`);
-  const rcpType = category === "regular" ? "REGULAR_RECIPE" : "CUSTOM_RECIPE";
-  const propsData = { type: rcpType, recipeId: id };
   const isNotLogin = sessionStorage.getItem("UTK") === null;
-  const deleteWishMutation = useDeleteWish(propsData);
-  const addWishMutation = useAddWish(propsData);
-  const widhClickHandle = async () => {
+  const widhClickHandle = () => {
     if (isNotLogin) {
       window.alert("찜하기는 로그인 후 이용하실 수 있습니다.");
     } else {
       if (data?.data.wishList) {
-        await deleteWishMutation.mutateAsync();
-        queryClient.invalidateQueries("recipe");
+        deleteWish();
       } else {
-        await addWishMutation.mutateAsync();
-        queryClient.invalidateQueries("recipe");
+        addWish();
       }
     }
   };
@@ -96,6 +87,10 @@ const Container = styled.div`
   justify-content: center;
   min-height: 83vh;
   margin-top: 7rem;
+  width: 100%;
+  @media screen and (max-width: 980px) {
+    margin-top: 3rem;
+  }
 `;
 
 const InfoWrapper = styled.div`
@@ -104,27 +99,41 @@ const InfoWrapper = styled.div`
   align-items: start;
   margin-bottom: 2rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 1360px;
+  max-width: 1360px;
+  width: 100%;
   padding: 4rem;
   border: 1px solid gray;
   border-radius: 20px;
+  @media screen and (max-width: 980px) {
+    flex-direction: column;
+    border: none;
+    padding: 4rem 1rem 1rem;
+  }
 `;
 
 const PhotoArea = styled.img`
   max-width: 500px;
+  width: 100%;
   min-height: 600px;
   height: 100%;
   border-radius: 3%;
+  @media screen and (max-width: 980px) {
+    margin: 0 auto 50px;
+  }
 `;
 
 const DetailArea = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 7rem;
-  width: 470px;
+  max-width: 470px;
+  width: 100%;
   min-height: 665px;
   padding: 0 20px 20px;
   border-radius: 3%;
+  @media screen and (max-width: 980px) {
+    margin: 0 auto;
+  }
 `;
 
 const TitleArea = styled.div`

@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 const RecipeContainer = styled.div`
   display: flex;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   height: 200px;
   border-radius: 7px;
   overflow: hidden;
@@ -17,7 +18,7 @@ const RecipeContainer = styled.div`
 `;
 
 const RecipeImg = styled.img`
-  width: 36%;
+  width: 180px;
 `;
 
 const TextBox = styled.div`

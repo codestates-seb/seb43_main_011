@@ -1,6 +1,8 @@
 import { RegularResponseData } from "../utils/query";
 import { useQuery, useQueryClient } from "react-query";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
+import { queryKeys } from "../utils/queryKeys";
+import { useDeleteRecipe } from "./useDeleteRecipe";
 
 export const useMainPagination = (
   path: string,
@@ -10,7 +12,6 @@ export const useMainPagination = (
     page: number,
   ) => Promise<RegularResponseData>,
 ) => {
-  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const listSize = useMemo(() => {
     switch (path) {
@@ -29,7 +30,7 @@ export const useMainPagination = (
 
   const { data, isLoading, isFetching, isPreviousData } =
     useQuery<RegularResponseData>(
-      [`${path}`, listSize],
+      queryKeys.recipeCategory(path, listSize, page),
       () => getFunction(path, listSize, page),
       {
         useErrorBoundary: true,
@@ -43,26 +44,33 @@ export const useMainPagination = (
   const hasMore = maxPage && maxPage > page;
 
   const onNextClick = () => {
-    setPage((page) => (!!hasMore ? page + 1 : page));
+    setPage(!!hasMore ? page + 1 : page);
   };
   const onPrevClick = () => {
     setPage((page) => Math.max(page - 1, 1));
   };
 
-  useEffect(() => {
-    getFunction(path, listSize, page).then((responseData) => {
-      queryClient.setQueryData([`${path}`, listSize], responseData);
+  const deleteMyRecipe = (id: number) => {
+    const queryClient = useQueryClient();
+    useDeleteRecipe().mutateAsync(id, {
+      onSettled: () => {
+        queryClient.invalidateQueries(
+          queryKeys.recipeCategory(path, listSize, page),
+        );
+      },
     });
-  }, [path, listSize, page, queryClient]);
+  };
 
   return {
-    data,
+    data: data?.data,
+    pageInfo: data?.pageInfo,
     isLoading,
     isFetching,
     isPreviousData,
-    hasMore,
+    hasMore: !!hasMore,
     showCardLength: data?.pageInfo?.size,
     onNextClick,
     onPrevClick,
+    deleteMyRecipe: path !== "myRecipe" ? undefined : deleteMyRecipe,
   };
 };

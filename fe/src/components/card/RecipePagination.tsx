@@ -7,6 +7,9 @@ const CardsPageNationContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 20px 0 10px;
+  @media screen and (max-width: 640px) {
+    margin: 0 auto;
+  }
 `;
 
 const CardsPageNationDisplay = styled.div`
@@ -43,11 +46,11 @@ export default function RecipePagination({
   return (
     <CardsPageNationContainer>
       <CardsPageNationButton disabled={pageInfo.page === 1}>
-        <GrPrevious onClick={onPrevClick} size={"1.1rem"} />
+        <GrPrevious onClick={onPrevClick} />
       </CardsPageNationButton>
       <CardsPageNationDisplay>{`${pageInfo.page} / ${pageInfo.totalPage}`}</CardsPageNationDisplay>
-      <CardsPageNationButton disabled={isPreviousData || hasMore}>
-        <GrNext onClick={onNextClick} size={"1.1rem"} />
+      <CardsPageNationButton disabled={isPreviousData || !hasMore}>
+        <GrNext onClick={onNextClick} />
       </CardsPageNationButton>
     </CardsPageNationContainer>
   );
