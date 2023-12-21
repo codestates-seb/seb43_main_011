@@ -60,7 +60,8 @@ const Signup = () => {
 
   const mutation = useMutation(postUserData);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const userData = {
       nickName: nickname,
       email: email,
@@ -78,15 +79,9 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
-  const passwordEnterHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && password) {
-      handleSubmit();
-    }
-  };
-
   return (
     <Container>
-      <SignupForm>
+      <SignupForm onSubmit={handleSubmit}>
         <Link to="/">
           <Logo src={logo} alt="logo"></Logo>
         </Link>
@@ -114,7 +109,6 @@ const Signup = () => {
               value={password}
               onChange={handlePassword}
               type={showPassword ? "password" : "text"}
-              onKeyUp={passwordEnterHandle}
             ></InputArea>
             <VisibilityIcon onClick={handleTogglePassword}>
               {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
@@ -128,7 +122,7 @@ const Signup = () => {
           )}
         </PasswordForm>
 
-        <SignupButton onClick={handleSubmit}>가입하기</SignupButton>
+        <SignupButton type="submit">가입하기</SignupButton>
       </SignupForm>
     </Container>
   );
@@ -219,7 +213,7 @@ const Logo = styled.img`
   padding: 0;
 `;
 
-const SignupForm = styled.div`
+const SignupForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
