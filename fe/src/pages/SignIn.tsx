@@ -2,7 +2,6 @@ import styled from "styled-components";
 import signup from "../images/enter3.jpg";
 import logo from "../images/logo.png";
 import { useState } from "react";
-import GooogleSignInButton from "../components/loginbutton/GoogleSignIn";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
@@ -51,7 +50,8 @@ const Signup = () => {
   const loginMutate = useMutation(setLogin);
 
   //눌렀을때 서버로 전송하는 함수
-  const handlelogin = (/*보내는데이터 타입*/) => {
+  const handlelogin = (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
     //post 요청으로 데이터보내기 axios
     const loginInfo = {
       email: email,
@@ -71,15 +71,9 @@ const Signup = () => {
     });
   };
 
-  const handlePasswordKeyup = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter" && email && password) {
-      handlelogin();
-    }
-  };
-
   return (
     <Container>
-      <SignupForm>
+      <SignupForm onSubmit={handlelogin}>
         <Link to="/">
           <Logo src={logo} alt="logo"></Logo>
         </Link>
@@ -101,7 +95,6 @@ const Signup = () => {
             placeholder="비밀번호"
             value={password}
             onChange={handlePassword}
-            onKeyUp={handlePasswordKeyup}
           ></InputArea>
           {showPasswordError && (
             <ErrorMessage>
@@ -109,8 +102,7 @@ const Signup = () => {
             </ErrorMessage>
           )}
         </PasswordForm>
-        {/* <GooogleSignInButton /> */}
-        <SignupButton onClick={handlelogin}>로그인</SignupButton>
+        <SignupButton type="submit">로그인</SignupButton>
         <NavSignup to={"/signup"}>회원가입</NavSignup>
       </SignupForm>
     </Container>
@@ -185,7 +177,7 @@ const Logo = styled.img`
   padding: 0;
 `;
 
-const SignupForm = styled.div`
+const SignupForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,11 +212,3 @@ const SignupButton = styled.button`
     color: #ffff;
   }
 `;
-
-// const BlankFrom = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 36rem;
-//   width: 21rem;
-// `;
