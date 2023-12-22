@@ -1,8 +1,8 @@
 import { RegularResponseData } from "../utils/query";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useState, useMemo } from "react";
 import { queryKeys } from "../utils/queryKeys";
-import { useDeleteRecipe } from "./useDeleteRecipe";
+import { deleteRecipe } from "./useDeleteRecipe";
 
 export const useMainPagination = (
   path: string,
@@ -50,9 +50,11 @@ export const useMainPagination = (
     setPage((page) => Math.max(page - 1, 1));
   };
 
+  const queryClient = useQueryClient();
+  const deleteMutate = useMutation(deleteRecipe);
+
   const deleteMyRecipe = (id: number) => {
-    const queryClient = useQueryClient();
-    useDeleteRecipe().mutateAsync(id, {
+    deleteMutate.mutateAsync(id, {
       onSettled: () => {
         queryClient.invalidateQueries(
           queryKeys.recipeCategory(path, listSize, page),
