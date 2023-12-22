@@ -187,15 +187,14 @@ export default function MyRecipes() {
   };
 
   const recipeDeleteClick = async () => {
-    if (deleteMyRecipe && deleteQueue) {
+    if (deleteMyRecipe && deleteQueue.length) {
       await Promise.all(deleteQueue.map((id) => deleteMyRecipe(id)));
     }
+    return;
   };
 
   const EditFormChange = async () => {
-    if (deleteQueue && deleteQueue.length > 0) {
-      recipeDeleteClick();
-    }
+    recipeDeleteClick();
     setDeleteQueue([]);
     setIsEdit((isEdit) => !isEdit);
   };

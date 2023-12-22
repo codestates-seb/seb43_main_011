@@ -109,6 +109,7 @@ const Signup = () => {
               value={password}
               onChange={handlePassword}
               type={showPassword ? "password" : "text"}
+              autoComplete="off"
             ></InputArea>
             <VisibilityIcon onClick={handleTogglePassword}>
               {showPassword ? <MdVisibilityOff /> : <MdVisibility />}

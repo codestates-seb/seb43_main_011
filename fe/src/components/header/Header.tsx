@@ -40,7 +40,7 @@ const LogoWrapper = styled.div`
 `;
 
 interface SearchInputFocus {
-  isFocus: boolean;
+  $isFocus: boolean;
 }
 
 const SearchContainer = styled.div<SearchInputFocus>`
@@ -52,8 +52,8 @@ const SearchContainer = styled.div<SearchInputFocus>`
   padding: 0.5rem;
   border: 1px solid #d5d4d4;
   border-radius: 10px;
-  ${({ isFocus }) =>
-    isFocus &&
+  ${({ $isFocus }) =>
+    $isFocus &&
     `outline: none;
     border: 1px solid #96a5ff;
     box-shadow: 0 0 5px 1px #abb7fc;`}
@@ -68,7 +68,7 @@ const SearchInput = styled.input`
 const SearchIcon = styled(HiMagnifyingGlass)<SearchInputFocus>`
   font-size: 1.5rem;
   margin: 0 1rem 0 0.2rem;
-  ${({ isFocus }) => isFocus && `color: #96a5ff;`}
+  ${({ $isFocus }) => $isFocus && `color: #96a5ff;`}
 `;
 export const Menu = styled.nav`
   display: flex;
@@ -137,9 +137,9 @@ const Header = () => {
             <img src={logo} alt="Logo" />
           </LogoWrapper>
         </Link>
-        <SearchContainer isFocus={isFocus}>
+        <SearchContainer $isFocus={isFocus}>
           <p>
-            <SearchIcon isFocus={isFocus} />
+            <SearchIcon $isFocus={isFocus} />
           </p>
           <SearchInput
             type="text"
