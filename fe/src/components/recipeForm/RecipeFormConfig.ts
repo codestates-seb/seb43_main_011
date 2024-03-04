@@ -81,7 +81,7 @@ export const ingredientReducer = (
         ...state[action.id],
         [action.target]: action.payload,
       };
-      return [...state.slice(0, idx), newIngredient, ...state.slice(idx)];
+      return [...state.slice(0, idx), newIngredient, ...state.slice(idx + 1)];
     case "delete":
       if (state.length === 1) {
         return [
