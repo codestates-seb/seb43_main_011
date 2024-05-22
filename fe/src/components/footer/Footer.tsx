@@ -7,9 +7,7 @@ const Footer = () => {
       <ItemArea>
         <Info>
           <Description>made by tippler</Description>
-          <Description>
-            Copyright©2023 SideQuest.All rights reserved.
-          </Description>
+          <Description>Copyright©2023 tippler all rights reserved.</Description>
         </Info>
         <Logo>
           <img src={tippler} alt="logo" />
